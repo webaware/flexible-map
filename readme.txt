@@ -14,6 +14,8 @@ Flexible map using Google Maps, for displaying a map specified by centre coodina
 
 Flexible map using Google Maps, for displaying a map specified by centre coodinates or by Google Earth KML file.
 
+== Instructions ==
+
 To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and give it some useful parameters. Map can either be specified using centre coordinates, or by loading a KML file.
 
 **Parameters for centre coordinates map:**
