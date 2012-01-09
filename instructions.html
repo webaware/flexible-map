@@ -1,0 +1,65 @@
+<style type="text/css">
+.flxmap-instructions-parameters dt {
+	font-weight: bold;
+}
+.flxmap-instructions-parameters dd {
+	margin-left: 1.5em;
+}
+.flxmap-instructions-parameters code {
+	font-family: "Liberation Mono", monospace;
+	font-size: 110%;
+}
+</style>
+
+<p>To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and give it some useful parameters.</p>
+<p>Map can either be specified using centre coordinates, or by loading a KML file.</p>
+
+<h3>Parameters for centre coordinates map:</h3>
+<dl class="flxmap-instructions-parameters">
+	<dt>width</dt>
+	<dd>width in pixels, e.g. <em>width=&quot;500&quot;</em></dd>
+	<dt>height</dt>
+	<dd>height in pixels, e.g. <em>height=&quot;400&quot;</em></dd>
+	<dt>center</dt>
+	<dd>coordinates of centre in latitude,longitude, e.g. <em>center=&quot;-34.916721,138.828878&quot;</em></dd>
+	<dt>marker</dt>
+	<dd>coordinates of the marker if different from the centre, in latitude,longitude, e.g. <em>marker=&quot;-34.916721,138.828878&quot;</em></dd>
+	<dt>title</dt>
+	<dd>title of the marker, displayed in a text bubble, e.g. <em>title=&quot;Adelaide Hills&quot;</em></dd>
+	<dt>link</dt>
+	<dd>URL to link from the marker title, e.g. <em>link=&quot;http://example.com/&quot;</em></dd>
+	<dt>description</dt>
+	<dd>a description of the marker location (can have HTML links), e.g. <em>description=&quot;Lorem ipsum dolor sit amet&quot;</em></dd>
+	<dt>directions</dt>
+	<dd>show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here.</dd>
+	<dt>zoom</dt>
+	<dd>zoom level as an integer, larger is closer, e.g. <em>zoom=&quot;16&quot;</em></dd>
+	<dt>maptype</dt>
+	<dd>type of map to show, from [roadmap, satellite], e.g. <em>maptype=&quot;roadmap&quot;</em></dd>
+	<dt>hideMapType</dt>
+	<dd>hide the map type controls, from [true, false], e.g. <em>hideMapType=&quot;true&quot;</em></dd>
+	<dt>Samples:</dt>
+	<dd><code>[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]</code></dd>
+	<dd><code>[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true"]</code></dd>
+	<dd><code>[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="my-dir-div"]</code></dd>
+</dl>
+
+<hr />
+
+<h3>Parameters for KML map:</h3>
+<dl class="flxmap-instructions-parameters">
+	<dt>width</dt>
+	<dd>width in pixels, e.g. <em>width=&quot;500&quot;</em></dd>
+	<dt>height</dt>
+	<dd>height in pixels, e.g. <em>height=&quot;400&quot;</em></dd>
+	<dt>src</dt>
+	<dd>URL for KML file to load map details from, e.g. <em>src=&quot;http://example.com/map.kml&quot;</em></dd>
+	<dt>zoom</dt>
+	<dd>zoom level as an integer, larger is closer, e.g. <em>zoom=&quot;16&quot;</em></dd>
+	<dt>maptype</dt>
+	<dd>type of map to show, from [roadmap, satellite], e.g. <em>maptype=&quot;roadmap&quot;</em></dd>
+	<dt>hideMapType</dt>
+	<dd>hide the map type controls, from [true, false], e.g. <em>hideMapType=&quot;true&quot;</em></dd>
+	<dt>Sample:</dt>
+	<dd><code>[flexiblemap src="http://code.google.com/apis/kml/documentation/KML_Samples.kml" width="500" height="400"]</code></dd>
+</dl>
