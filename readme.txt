@@ -6,17 +6,30 @@ Author URI: http://www.webaware.com.au/
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 Flexible map using Google Maps, for displaying a map specified by centre coodinates or by Google Earth KML file.
 
 == Description ==
 
-Flexible map using Google Maps, for displaying a map specified by centre coodinates or by Google Earth KML file.
+Flexible Map allows you to add Google Maps to your WordPress website.
 
-== Instructions ==
+**Features:**
 
-To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and give it some useful parameters. Map can either be specified using centre coordinates, or by loading a KML file.
+* specify map by centre coordinates
+* load map from Google Earth KML file
+* no special Google Maps key is required -- uses the latest stable Google Maps API
+* simple shortcode for adding maps to pages/posts
+* PHP function `flexmap_show_map()` for theme and plugin developers
+* supports multiple maps on a page/post
+* map marker doesn't have to be the centre of the map
+* optional description for info window
+* optional directions link for info window
+* directions can be dropped into any div element with an ID
+
+== Installation ==
+
+To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and give it some useful parameters. A map can either be specified using centre coordinates, or by loading a KML file.
 
 **Parameters for centre coordinates map:**
 
@@ -66,7 +79,25 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 *Sample*:
 `[flexiblemap src="http://code.google.com/apis/kml/documentation/KML_Samples.kml" width="500" height="400"]`
 
+**Calling from templates or plugins**
+
+There is a PHP function `flexmap_show_map()` for theme and plugin developers. All of the same parameters for the shortcode can be passed to the function in an associative array.
+
+*Sample*:
+`flexmap_show_map(array(
+  'center' => '-34.916721,138.828878',
+  'width' => 500,
+  'height' => 400,
+  'zoom' => 12,
+  'title' => 'Adelaide Hills',
+  'description' => 'The Adelaide Hills are repleat with wineries.',
+  'directions' => 'my-dir-div',
+));`
+
 == Changelog ==
+
+= 1.0.1 [2012-01-26] =
+* fix directions bugs in JavaScript for Opera, IE
 
 = 1.0.0 [2012-01-08] =
 * final cleanup for public release

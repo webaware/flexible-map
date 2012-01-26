@@ -73,7 +73,7 @@ class FlxMapPlugin {
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH);
+			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=2';
 
 			echo <<<HTML
 <script src="$url"></script>
