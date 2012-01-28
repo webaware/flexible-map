@@ -63,3 +63,22 @@
 	<dt>Sample:</dt>
 	<dd><code>[flexiblemap src="http://code.google.com/apis/kml/documentation/KML_Samples.kml" width="500" height="400"]</code></dd>
 </dl>
+
+<hr />
+
+<h3>Calling from templates or plugins</h3>
+
+<p>There is a PHP function `flexmap_show_map()` for theme and plugin developers. All of the same parameters for the shortcode can be passed to the function in an associative array.</p>
+
+<dl class="flxmap-instructions-parameters">
+	<dt>Sample:</dt>
+	<dd><pre><code>flexmap_show_map(array(
+  'center' => '-34.916721,138.828878',
+  'width' => 500,
+  'height' => 400,
+  'zoom' => 12,
+  'title' => 'Adelaide Hills',
+  'description' => 'The Adelaide Hills are repleat with wineries.',
+  'directions' => 'my-dir-div',
+));</code></pre></dd>
+</dl>

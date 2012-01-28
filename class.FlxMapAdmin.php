@@ -15,7 +15,7 @@ class FlxMapAdmin {
 	public function __construct($plugin) {
 		$this->plugin = $plugin;
 
-		// add wines admin menu items
+		// add admin menu items
 		add_action('admin_menu', array($this, 'addAdminMenu'));
 
 		// add action hook for adding plugin meta links
@@ -32,8 +32,8 @@ class FlxMapAdmin {
 		$hookname = get_plugin_page_hookname(self::MENU_PAGE . '-instructions', '');
 		if (!empty($hookname)) {
 			add_action($hookname, array($this, 'instructions'));
+			$_registered_pages[$hookname] = true;
 		}
-		$_registered_pages[$hookname] = true;
 	}
 
 	/**
@@ -47,6 +47,9 @@ class FlxMapAdmin {
 		return $links;
 	}
 
+	/**
+	* show instructions page
+	*/
 	public function instructions() {
 		echo "<div class='wrap'>\n";
 		screen_icon('plugins');

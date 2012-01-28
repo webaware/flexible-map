@@ -3,7 +3,7 @@
 Plugin Name: Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Description: Flexible map using Google Maps, for displaying a map specified by centre coodinates or by Google Earth KML file.
-Version: 1.0.1
+Version: 1.0.2
 Author: WebAware Pty Ltd
 Author URI: http://www.webaware.com.au/
 */
@@ -34,12 +34,10 @@ if (!defined('FLXMAP_PLUGIN_ROOT')) {
 }
 
 /**
- * autoload classes as/when needed
- *
- * use clues from names of library classes to locate them
- *
- * @param string $class_name name of class to attempt to load
- */
+* autoload classes as/when needed
+*
+* @param string $class_name name of class to attempt to load
+*/
 function flxmap_autoload($class_name) {
 	static $classMap = array (
 		'FlxMapAdmin'						=> 'class.FlxMapAdmin.php',

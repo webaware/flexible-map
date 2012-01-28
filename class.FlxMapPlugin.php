@@ -1,7 +1,7 @@
 <?php
 /**
- * class for managing the plugin
- */
+* class for managing the plugin
+*/
 class FlxMapPlugin {
 	public $urlBase;									// string: base URL path to files in plugin
 
@@ -9,10 +9,10 @@ class FlxMapPlugin {
 	private $loadScripts = FALSE;						// true when scripts should be loaded
 
 	/**
-	 * static method for getting the instance of this singleton object
-	 *
-	 * @return FlxMapPlugin
-	 */
+	* static method for getting the instance of this singleton object
+	*
+	* @return FlxMapPlugin
+	*/
 	public static function getInstance() {
 		static $instance = NULL;
 
@@ -25,8 +25,8 @@ class FlxMapPlugin {
 	}
 
 	/**
-	 * hook the plug-in's initialise event to handle all post-activation initialisation
-	 */
+	* hook the plug-in's initialise event to handle all post-activation initialisation
+	*/
 	private function __construct() {
 		// record plugin URL base
 		$this->urlBase = WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__));
@@ -48,15 +48,15 @@ class FlxMapPlugin {
 	}
 
 	/**
-	 * activate the plug-in (called by activate event): add custom capabilities, etc.
-	 */
+	* activate the plug-in (called by activate event): add custom capabilities, etc.
+	*/
 	public function activate() {
 		// NOP
 	}
 
 	/**
-	 * deactivate the plug-in (called by deactivate event): remove custom capabilities, etc.
-	 */
+	* deactivate the plug-in (called by deactivate event): remove custom capabilities, etc.
+	*/
 	public function deactivate() {
 		// remove deprecated custom capabilities for administrator (from previous versions)
 		$role = get_role('administrator');
@@ -84,11 +84,11 @@ HTML;
 	}
 
 	/**
-	 * handle shortcode for map display
-	 *
-	 * @param array shortcode attributes as supplied by the WP shortcode API
-	 * @return string output to substitute for the shortcode
-	 */
+	* handle shortcode for map display
+	*
+	* @param array shortcode attributes as supplied by the WP shortcode API
+	* @return string output to substitute for the shortcode
+	*/
 	public function shortcodeMap($attrs) {
 		$html = '';
 
@@ -181,16 +181,12 @@ HTML;
 		return $html;
 	}
 
+	/**
+	* decode HTML-encoded text and encode for JavaScript string
+	* @param string $text
+	* @return string
+	*/
 	private static function unhtml($text) {
 		return addcslashes(html_entity_decode($text), "\\\'\"&\n\r<>");
-	}
-
-	/**
-	 * display a message (already HTML-conformant)
-	 *
-	 * @param string $msg HTML-encoded message to display inside a paragraph
-	 */
-	public static function showMessage($msg) {
-		echo "<div id='message' class='updated fade'><p><strong>$msg</strong></p></div>\n";
 	}
 }
