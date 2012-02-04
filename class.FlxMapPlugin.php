@@ -73,7 +73,7 @@ class FlxMapPlugin {
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=2';
+			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=3';
 
 			echo <<<HTML
 <script src="$url"></script>
@@ -92,7 +92,7 @@ HTML;
 	public function shortcodeMap($attrs) {
 		$html = '';
 
-		if (!empty($attrs['src']) || !empty($attrs['center'])) {
+		if (!empty($attrs['src']) || !empty($attrs['center']) || !empty($attrs['address'])) {
 			$this->loadScripts = TRUE;
 			$divID = uniqid('flxmap-');
 			$width = isset($attrs['width']) ? preg_replace('/\D/', '', $attrs['width']) : 400;
@@ -100,9 +100,9 @@ HTML;
 
 			$directions = FALSE;
 			$divDirections = '';
-			if (isset($attrs['directions'])) {
+			if (isset($attrs['directions']) && !self::isNo($attrs['directions'])) {
 				$directions = TRUE;
-				if (preg_match('/^(?:y|yes|true|1)$/i', $attrs['directions'])) {
+				if (self::isYes($attrs['directions'])) {
 					$divDirectionsID = "$divID-dir";
 					$divDirections = "\n<div id='$divDirectionsID' class='flxmap-directions'></div>";
 				}
@@ -123,7 +123,7 @@ HTML;
 
 HTML;
 
-			if (!(isset($attrs['hideMapType']) && preg_match('/^(?:y|yes|true|1)$/i', $attrs['hideMapType']))) {
+			if (!(isset($attrs['hideMapType']) && self::isYes($attrs['hideMapType']))) {
 				$html .= " f.mapTypeControl = true;\n";
 			}
 
@@ -131,7 +131,7 @@ HTML;
 				$html .= " f.markerDirections = \"$divDirectionsID\";\n";
 			}
 
-			if (isset($attrs['showinfo']) && preg_match('/^(?:n|no|false|0)$/i', $attrs['showinfo'])) {
+			if (isset($attrs['showinfo']) && self::isNo($attrs['showinfo'])) {
 				$html .= " f.markerShowInfo = false;\n";
 			}
 
@@ -144,9 +144,9 @@ HTML;
 			}
 
 			// add map based on coordinates, with optional marker coordinates
-			if (isset($attrs['center']) && preg_match('/^-?\\d+(?:\\.\\d+),-?\\d+(?:\\.\\d+)$/', $attrs['center'])) {
+			if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
 				$marker = $attrs['center'];
-				if (isset($attrs['marker']) && preg_match('/^-?\\d+(?:\\.\\d+),-?\\d+(?:\\.\\d+)$/', $attrs['marker']))
+				if (isset($attrs['marker']) && self::isCoordinates($attrs['marker']))
 					$marker = $attrs['marker'];
 
 				if (isset($attrs['zoom']))
@@ -158,15 +158,39 @@ HTML;
 				if (!empty($attrs['description']))
 					$html .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
 
-				if (!empty($attrs['link']))
-					$html .= " f.markerLink = \"{$attrs['link']}\";\n";
+				if (!empty($attrs['address']))
+					$html .= " f.markerAddress = \"{$this->unhtml($attrs['address'])}\";\n";
+
+				if (!empty($attrs['link'])) {
+					$link = self::str2js($attrs['link']);
+					$html .= " f.markerLink = \"$link\";\n";
+				}
 
 				$html .= " f.showMarker(\"$divID\", [{$attrs['center']}], [{$marker}]);\n";
 			}
 
+			// add map based on address query
+			else if (isset($attrs['address'])) {
+				if (isset($attrs['zoom']))
+					$html .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
+
+				if (!empty($attrs['title']))
+					$html .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
+
+				if (!empty($attrs['description']))
+					$html .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
+
+				if (!empty($attrs['link'])) {
+					$link = self::str2js($attrs['link']);
+					$html .= " f.markerLink = \"$link\";\n";
+				}
+
+				$html .= " f.showAddress(\"$divID\", \"{$this->unhtml($attrs['address'])}\");\n";
+			}
+
 			// add map based on KML file
 			else if (isset($attrs['src'])) {
-				$kmlfile = $attrs['src'];
+				$kmlfile = self::str2js($attrs['src']);
 				$html .= " f.showKML(\"$divID\", \"$kmlfile\"";
 
 				if (isset($attrs['zoom']))
@@ -182,11 +206,47 @@ HTML;
 	}
 
 	/**
+	* test string to see if contents equate to yes/true
+	* @param string $text
+	* @return boolean
+	*/
+	private static function isYes($text) {
+		return preg_match('/^(?:y|yes|true|1)$/i', $text);
+	}
+
+	/**
+	* test string to see if contents equate to no/false
+	* @param string $text
+	* @return boolean
+	*/
+	private static function isNo($text) {
+		return preg_match('/^(?:n|no|false|0)$/i', $text);
+	}
+
+	/**
+	* test string to see if contents are map coordinates (latitude,longitude)
+	* @param string $text
+	* @return boolean
+	*/
+	private static function isCoordinates($text) {
+		return preg_match('/^-?\\d+(?:\\.\\d+),-?\\d+(?:\\.\\d+)$/', $text);
+	}
+
+	/**
 	* decode HTML-encoded text and encode for JavaScript string
 	* @param string $text
 	* @return string
 	*/
 	private static function unhtml($text) {
-		return addcslashes(html_entity_decode($text), "\\\'\"&\n\r<>");
+		return self::str2js(html_entity_decode($text));
+	}
+
+	/**
+	* encode for JavaScript string
+	* @param string $text
+	* @return string
+	*/
+	private static function str2js($text) {
+		return addcslashes($text, "\\/\'\"&\n\r<>");
 	}
 }

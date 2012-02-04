@@ -2,9 +2,9 @@
 /*
 Plugin Name: Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
-Description: Flexible map using Google Maps, for displaying a map specified by centre coodinates or by Google Earth KML file.
+Description: Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 Version: 1.0.2
-Author: WebAware Pty Ltd
+Author: WebAware
 Author URI: http://www.webaware.com.au/
 */
 

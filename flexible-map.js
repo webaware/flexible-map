@@ -16,6 +16,7 @@ function FlexibleMap() {
 	this.markerLink = '';								// link for marker title
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
+	this.markerAddress = '';							// address of marker, if given
 	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
 	this.dirService = false;
 	this.dirPanel = false;
@@ -71,7 +72,6 @@ FlexibleMap.prototype = (function() {
 		* @param {String} divID the ID of the div that will contain the map
 		* @param {Array} centre an array of two integers: [ latitude, longitude ]
 		* @param {Array} marker an array of two integers: [ latitude, longitude ]
-		* @param {String} title the title for the marker
 		*/
 		showMarker: function(divID, centre, marker) {
 			var	map = this.showMap(divID, centre),
@@ -156,6 +156,32 @@ FlexibleMap.prototype = (function() {
 		},
 
 		/**
+		* show a map centred at address
+		* @param {String} divID the ID of the div that will contain the map
+		* @param {String} address the address (should return a unique location in Google Maps!)
+		*/
+		showAddress: function(divID, address) {
+			var	self = this,
+				geocoder = new google.maps.Geocoder();
+
+			this.markerAddress = address;
+
+			if (this.markerTitle == "")
+				this.markerTitle = address;
+
+			geocoder.geocode({address: address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					var	location = results[0].geometry.location,
+						centre = [ location.Oa, location.Pa ];
+					self.showMarker(divID, centre, centre);
+				}
+				else {
+					alert("Map address returns error: " + status);
+				}
+			});
+		},
+
+		/**
 		* show a map at specified centre latitude / longitude
 		* @param {String} divID the ID of the div that will contain the map
 		* @param {Array} centre an array of two integers: [ latitude, longitude ]
@@ -220,12 +246,14 @@ FlexibleMap.prototype = (function() {
 
 				// only process if something was entered to search on
 				if (/\S/.test(from)) {
-					var request = {
-						origin: from,
-						region: region,
-						destination: new google.maps.LatLng(latitude, longitude),
-						travelMode: google.maps.DirectionsTravelMode.DRIVING
-					};
+					var	dest = (self.markerAddress == "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
+						request = {
+							origin: from,
+							region: region,
+							destination: dest,
+							travelMode: google.maps.DirectionsTravelMode.DRIVING
+						};
+
 					self.dirService.route(request, function(response, status) {
 						var DirectionsStatus = google.maps.DirectionsStatus;
 
