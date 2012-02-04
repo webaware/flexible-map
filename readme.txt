@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: trunk
+Stable tag: 1.0.2
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
