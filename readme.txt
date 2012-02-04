@@ -38,6 +38,7 @@ Click to see [WP Flexible Map in action](http://snippets.webaware.com.au/wordpre
 3. Add the shortcode [flexiblemap] to your pages / posts to embed maps
 
 There are two ways to load maps with this plugin:
+
 * specify the map's coordinates or street address
 * specify the URL to a KML file (e.g. from Google Earth)
 
