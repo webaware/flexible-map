@@ -80,6 +80,9 @@ FlexibleMap.prototype = (function() {
 					position: new google.maps.LatLng(marker[0], marker[1])
 				});
 
+			if (!this.markerTitle)
+				this.markerTitle = this.markerAddress;
+
 			if (this.markerTitle) {
 				var i, len, lines, infowin, element, a,
 					self = this,
@@ -172,7 +175,7 @@ FlexibleMap.prototype = (function() {
 			geocoder.geocode({address: address}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					var	location = results[0].geometry.location,
-						centre = [ location.Oa, location.Pa ];
+						centre = [ location.Sa, location.Ta ];
 					self.showMarker(divID, centre, centre);
 				}
 				else {

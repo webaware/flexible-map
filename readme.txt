@@ -110,6 +110,10 @@ When you use just centre coordinates for your map, the directions may send peopl
 
 == Changelog ==
 
+= 1.0.3 [2012-02-27] =
+* fixed: address query updated to work with Google Maps v3.8 (so using address for centre marker works again)
+* fixed: tied Google Maps API to v3.8 so newer versions don't break plugin, and will keep updated as API changes
+
 = 1.0.2 [2012-02-04] =
 * added: address parameter as alternative to center coordinates
 * added: use address parameter for directions, if given (so that directions match address)

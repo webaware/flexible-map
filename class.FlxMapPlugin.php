@@ -73,11 +73,11 @@ class FlxMapPlugin {
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=3';
+			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=4';
 
 			echo <<<HTML
 <script src="$url"></script>
-<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+<script src="http://maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
 
 HTML;
 		}
