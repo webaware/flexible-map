@@ -73,7 +73,7 @@ class FlxMapPlugin {
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=4';
+			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=5';
 
 			echo <<<HTML
 <script src="$url"></script>
@@ -112,10 +112,10 @@ HTML;
 			}
 
 			$html = <<<HTML
-<div id="$divID" class='flxmap-container' style="width: {$width}px; height: ${height}px;"></div>$divDirections
+<div id="$divID" class='flxmap-container' style="width:{$width}px;height:${height}px;"></div>$divDirections
 <script>
 //<![CDATA[
-(function (w, fn) {
+(function(w, fn) {
  if (w.addEventListener) w.addEventListener("DOMContentLoaded", fn, false);
  else if (w.attachEvent) w.attachEvent("onload", fn);
 })(window, function() {
@@ -123,16 +123,44 @@ HTML;
 
 HTML;
 
-			if (!(isset($attrs['hideMapType']) && self::isYes($attrs['hideMapType']))) {
-				$html .= " f.mapTypeControl = true;\n";
+			if (isset($attrs['hidemaptype']) && self::isYes($attrs['hidemaptype'])) {
+				$html .= " f.mapTypeControl = false;\n";
 			}
 
-			if ($directions) {
-				$html .= " f.markerDirections = \"$divDirectionsID\";\n";
+			if (isset($attrs['hidescale']) && self::isNo($attrs['hidescale'])) {
+				$html .= " f.scaleControl = true;\n";
+			}
+
+			if (isset($attrs['hidepanning']) && self::isNo($attrs['hidepanning'])) {
+				$html .= " f.panControl = true;\n";
+			}
+
+			if (isset($attrs['hidezooming']) && self::isYes($attrs['hidezooming'])) {
+				$html .= " f.zoomControl = false;\n";
+			}
+
+			if (isset($attrs['hidestreetview']) && self::isNo($attrs['hidestreetview'])) {
+				$html .= " f.streetViewControl = true;\n";
 			}
 
 			if (isset($attrs['showinfo']) && self::isNo($attrs['showinfo'])) {
 				$html .= " f.markerShowInfo = false;\n";
+			}
+
+			if (isset($attrs['scrollwheel']) && self::isYes($attrs['scrollwheel'])) {
+				$html .= " f.scrollwheel = true;\n";
+			}
+
+			if (isset($attrs['draggable']) && self::isNo($attrs['draggable'])) {
+				$html .= " f.draggable = false;\n";
+			}
+
+			if (isset($attrs['dblclickzoom']) && self::isNo($attrs['dblclickzoom'])) {
+				$html .= " f.dblclickZoom = false;\n";
+			}
+
+			if ($directions) {
+				$html .= " f.markerDirections = \"$divDirectionsID\";\n";
 			}
 
 			if (isset($attrs['maptype'])) {

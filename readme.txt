@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
@@ -44,12 +44,25 @@ There are two ways to load maps with this plugin:
 
 To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and give it some useful parameters. A map can either be specified using centre coordinates or street address, or by loading a KML file.
 
-= Parameters for centre coordinates or street address map =
-
-Either the center or the address paramater is required. If you provide both, the centre coordinates will be used for the map centre, but directions will use the street address. (This will prevent directions from telling people how to get to the destination opposite yours!)
+= Parameters for all maps =
 
 * **width**: width in pixels, e.g. *width="500"*
 * **height**: height in pixels, e.g. *height="400"*
+* **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
+* **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*; default=roadmap
+* **hidemaptype**: hide the map type controls, from [true, false], e.g. *hidemaptype="true"*; default=false
+* **hidepanning**: hide the panning controls, from [true, false], e.g. *hidepanning="true"*; default=true
+* **hidezooming**: hide the zoom controls, from [true, false], e.g. *hidezooming="true"*; default=false
+* **hidestreetview**: hide the street view control, from [true, false], e.g. *hidestreetview="true"*; default=true
+* **hidescale**: hide the map scale, from [true, false], e.g. *hidescale="true"*; default=true
+* **scrollwheel**: enable zoom with mouse scroll wheel, from [true, false], e.g. *scrollwheel="true"*; default=false
+* **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
+* **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
+
+= Additional parameters for centre coordinates or street address map =
+
+Either the center or the address paramater is required. If you provide both, the centre coordinates will be used for the map centre, but directions will use the street address. (This will prevent directions from telling people how to get to the destination opposite yours!)
+
 * **center**: coordinates of centre in latitude,longitude, e.g. *center="-34.916721,138.828878"*
 * **address**: street address of map centre, e.g. *address="116 Beaumont Street Hamilton NSW Australia"*
 * **marker**: coordinates of the marker if different from the centre, in latitude,longitude, e.g. *marker="-34.916721,138.828878"*
@@ -57,9 +70,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here.
-* **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
-* **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*
-* **hideMapType**: hide the map type controls, from [true, false], e.g. *hideMapType="true"*
+* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
 
 *Samples*:
 `[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
@@ -67,17 +78,12 @@ Either the center or the address paramater is required. If you provide both, the
 [flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true"]
 [flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="my-dir-div"]`
 
-= Parameters for KML map =
+= Additional parameters for KML map =
 
-* **width**: width in pixels, e.g. *width="500"*
-* **height**: height in pixels, e.g. *height="400"*
 * **src**: the URL for a KML file to load map details from, e.g. *src="http://example.com/map.kml"*
-* **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
-* **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*
-* **hideMapType**: hide the map type controls, from [true, false], e.g. *hideMapType="true"*
 
 *Sample*:
-`[flexiblemap src="http://code.google.com/apis/kml/documentation/KML_Samples.kml" width="500" height="400"]`
+`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="500" height="400"]`
 
 = Calling from templates or plugins =
 
@@ -108,7 +114,16 @@ When you use a street address instead of centre coordinates, you are effectively
 
 When you use just centre coordinates for your map, the directions may send people to the location *opposite* your location! Yes, I know... anyway, if you specify both the centre coordinates and the street address, the map will be centred correctly and the directions will be to your address.
 
+= Why won't my KML map update when I edit the KML file? =
+
+Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time your change the KML file. A nice simple and commonly used parameter name is v (for version), like this: .../my-map.kml?v=2
+
 == Changelog ==
+
+= 1.0.4 [2012-03-??] =
+* fixed: use LatLng methods to access latitude/longitude, instead of (ever changing) Google Maps API private members
+* added: tooltip on markers in non-KML maps
+* added: options to disable pan control, zoom control, drag to pan, double-click to zoom
 
 = 1.0.3 [2012-02-27] =
 * fixed: address query updated to work with Google Maps v3.8 (so using address for centre marker works again)

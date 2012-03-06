@@ -6,10 +6,14 @@ copyright (c) 2011-2012 WebAware Pty Ltd, released under LGPL v2.1
 function FlexibleMap() {
 	// set map defaults
 	this.mapTypeId = google.maps.MapTypeId.ROADMAP;
-	this.mapTypeControl = false;						// no control for changing map type
+	this.mapTypeControl = true;							// no control for changing map type
 	this.scaleControl = false;							// no control for changing scale
+	this.panControl = false;							// no control for panning
+	this.zoomControl = true;							// show control for zooming
 	this.streetViewControl = false;						// no control for street view
 	this.scrollwheel = false;							// no scroll wheel zoom
+	this.draggable = true;								// support dragging to pan
+	this.dblclickZoom = true;							// support double-click zoom
 	this.zoom = 16;										// zoom level, smaller is closer
 	this.markerTitle = '';								// title for marker info window
 	this.markerDescription = '';						// description for marker info window
@@ -90,6 +94,9 @@ FlexibleMap.prototype = (function() {
 
 				container.style.fontFamily = "Arial,Helvetica,sans-serif";
 
+				// add tooltip title for marker
+				point.setTitle(this.markerTitle);
+
 				// heading for info window
 				element = document.createElement("DIV");
 				element.style.fontWeight = "bold";
@@ -169,13 +176,13 @@ FlexibleMap.prototype = (function() {
 
 			this.markerAddress = address;
 
-			if (this.markerTitle == "")
+			if (this.markerTitle === "")
 				this.markerTitle = address;
 
 			geocoder.geocode({address: address}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					var	location = results[0].geometry.location,
-						centre = [ location.Sa, location.Ta ];
+						centre = [ location.lat(), location.lng() ];
 					self.showMarker(divID, centre, centre);
 				}
 				else {
@@ -195,6 +202,10 @@ FlexibleMap.prototype = (function() {
 				mapTypeId: this.mapTypeId,
 				mapTypeControl: this.mapTypeControl,
 				scaleControl: this.scaleControl,
+				panControl: this.panControl,
+				zoomControl: this.zoomControl,
+				draggable: this.draggable,
+				disableDoubleClickZoom: !this.dblclickZoom,
 				scrollwheel: this.scrollwheel,
 				streetViewControl: this.streetViewControl,
 				navigationControlOptions: this.navigationControlOptions,
@@ -249,7 +260,7 @@ FlexibleMap.prototype = (function() {
 
 				// only process if something was entered to search on
 				if (/\S/.test(from)) {
-					var	dest = (self.markerAddress == "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
+					var	dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
 						request = {
 							origin: from,
 							region: region,
