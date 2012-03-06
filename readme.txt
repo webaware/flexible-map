@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.4
+Stable tag: 1.0.4a
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
@@ -120,7 +120,7 @@ Google Maps API caches the KML file, so it often won't get your new changes. To 
 
 == Changelog ==
 
-= 1.0.4 [2012-03-??] =
+= 1.0.4 [2012-03-06] =
 * fixed: use LatLng methods to access latitude/longitude, instead of (ever changing) Google Maps API private members
 * added: tooltip on markers in non-KML maps
 * added: options to disable pan control, zoom control, drag to pan, double-click to zoom
