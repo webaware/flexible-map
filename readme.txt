@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.4a
+Stable tag: 1.0.5
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
@@ -98,6 +98,9 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
   'title' => 'Adelaide Hills',
   'description' => 'The Adelaide Hills are repleat with wineries.',
   'directions' => 'my-dir-div',
+  'hidepanning' => 'false',
+  'hidescale' => 'false',
+  'maptype' => 'satellite',
 ));`
 
 == Frequently Asked Questions ==
@@ -119,6 +122,10 @@ When you use just centre coordinates for your map, the directions may send peopl
 Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time your change the KML file. A nice simple and commonly used parameter name is v (for version), like this: .../my-map.kml?v=2
 
 == Changelog ==
+
+= 1.0.5 [2012-03-17] =
+* fixed: CSS fixes for themes that muck up Google Maps images (e.g. twentyeleven)
+* added: infowindow styles now in enqueued stylesheet
 
 = 1.0.4 [2012-03-06] =
 * fixed: use LatLng methods to access latitude/longitude, instead of (ever changing) Google Maps API private members

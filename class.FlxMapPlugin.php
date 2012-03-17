@@ -30,6 +30,8 @@ class FlxMapPlugin {
 	private function __construct() {
 		// record plugin URL base
 		$this->urlBase = WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__));
+		if (!empty($_SERVER['HTTPS']))
+			$this->urlBase = preg_replace('@^http:@', 'https:', $this->urlBase);
 
 		if (is_admin()) {
 			// kick off the admin handling
@@ -44,6 +46,7 @@ class FlxMapPlugin {
 
 			// custom actions and filters for this plugin
 			add_filter('flexmap_getmap', array($this, 'shortcodeMap'), 10, 1);
+			add_action('wp_print_styles', array($this, 'actionEnqueueStyles'));
 		}
 	}
 
@@ -68,15 +71,22 @@ class FlxMapPlugin {
 	}
 
 	/**
+	* enqueue any styles we require
+	*/
+	public function actionEnqueueStyles() {
+		// theme writers: you can remove by calling wp_dequeue_script('flxmap');
+		wp_enqueue_style('flxmap', "{$this->urlBase}/styles.css", FALSE, '1');
+	}
+
+	/**
 	* output anything we need in the footer
 	*/
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = parse_url("{$this->urlBase}/flexible-map.min.js", PHP_URL_PATH) . '?v=5';
-
+			$url = parse_url($this->urlBase, PHP_URL_PATH);
 			echo <<<HTML
-<script src="$url"></script>
+<script src="$url/flexible-map.min.js?v=6"></script>
 <script src="http://maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
 
 HTML;
@@ -266,7 +276,7 @@ HTML;
 	* @return string
 	*/
 	private static function unhtml($text) {
-		return self::str2js(html_entity_decode($text));
+		return self::str2js(html_entity_decode($text, ENT_QUOTES, get_option('blog_charset')));
 	}
 
 	/**

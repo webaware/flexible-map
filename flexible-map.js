@@ -92,22 +92,21 @@ FlexibleMap.prototype = (function() {
 					self = this,
 					container = document.createElement("DIV");
 
-				container.style.fontFamily = "Arial,Helvetica,sans-serif";
+				container.className = "flxmap-infowin";
 
 				// add tooltip title for marker
 				point.setTitle(this.markerTitle);
 
 				// heading for info window
 				element = document.createElement("DIV");
-				element.style.fontWeight = "bold";
-				element.style.fontSize = "medium";
+				element.className = "flxmap-marker-title";
 				element.appendChild(document.createTextNode(this.markerTitle));
 				container.appendChild(element);
 
 				// body of info window, with link
 				if (this.markerDescription || this.markerLink) {
 					element = document.createElement("DIV");
-					element.style.fontSize = "small";
+					element.className = "flxmap-marker-link";
 					if (this.markerDescription) {
 						lines = this.markerDescription.split("\n");
 						for (i = 0, len = lines.length; i < len; i++) {
@@ -130,7 +129,7 @@ FlexibleMap.prototype = (function() {
 				// add a link for directions if wanted
 				if (this.markerDirections) {
 					element = document.createElement("DIV");
-					element.style.fontSize = "small";
+					element.className = "flxmap-directions-link";
 					a = document.createElement("A");
 					a.href = "#";
 					a.dataLatitude = marker[0];
