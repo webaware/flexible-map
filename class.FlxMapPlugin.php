@@ -5,7 +5,6 @@
 class FlxMapPlugin {
 	public $urlBase;									// string: base URL path to files in plugin
 
-	private $admin;										// handle to admin object if running in wp-admin
 	private $loadScripts = FALSE;						// true when scripts should be loaded
 
 	/**
@@ -29,13 +28,11 @@ class FlxMapPlugin {
 	*/
 	private function __construct() {
 		// record plugin URL base
-		$this->urlBase = WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__));
-		if (!empty($_SERVER['HTTPS']))
-			$this->urlBase = preg_replace('@^http:@', 'https:', $this->urlBase);
+		$this->urlBase = plugin_dir_url(__FILE__);
 
 		if (is_admin()) {
 			// kick off the admin handling
-			$this->admin = new FlxMapAdmin($this);
+			new FlxMapAdmin($this);
 		}
 		else {
 			// add shortcodes
@@ -87,7 +84,7 @@ class FlxMapPlugin {
 			$url = parse_url($this->urlBase, PHP_URL_PATH);
 			echo <<<HTML
 <script src="$url/flexible-map.min.js?v=6"></script>
-<script src="http://maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
+<script src="//maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
 
 HTML;
 		}

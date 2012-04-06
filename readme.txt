@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
@@ -107,7 +107,11 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
 
 = Can I add multiple markers to a map? =
 
-Using a KML file, you can have as many markers on a map as you like, with as much detail in the info windows. With KML you can also change marker icons and add other nice features. You can create your KML file in an application like Google Earth, or you can create it yourself (in a text editor or with your own programming). [Learn more about KML](http://code.google.com/apis/kml/).
+Using a KML file, you can have as many markers on a map as you like, with as much detail in the info windows. With KML you can also change marker icons and add other nice features. You can generate your KML file from an application like Google Earth, or you can create it yourself (in a text editor or with your own programming). [Learn more about KML](https://developers.google.com/kml/).
+
+= Why won't my KML map update when I edit the KML file? =
+
+Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time you change the KML file. A nice simple and commonly used parameter name is v (for version), like this: .../my-map.kml?v=2
 
 = Why won't the map show my place when I use the address parameter? =
 
@@ -117,11 +121,10 @@ When you use a street address instead of centre coordinates, you are effectively
 
 When you use just centre coordinates for your map, the directions may send people to the location *opposite* your location! Yes, I know... anyway, if you specify both the centre coordinates and the street address, the map will be centred correctly and the directions will be to your address.
 
-= Why won't my KML map update when I edit the KML file? =
-
-Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time your change the KML file. A nice simple and commonly used parameter name is v (for version), like this: .../my-map.kml?v=2
-
 == Changelog ==
+
+= 1.0.6 [2012-04-06] =
+* fixed: use plugin_dir_url() to get url base, and protocol-relative url to load Google Maps API (SSL compatible)
 
 = 1.0.5 [2012-03-17] =
 * fixed: CSS fixes for themes that muck up Google Maps images (e.g. twentyeleven)
