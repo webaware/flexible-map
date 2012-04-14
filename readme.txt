@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 

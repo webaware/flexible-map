@@ -3,7 +3,7 @@
 Plugin Name: Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Description: Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
-Version: 1.1.0
+Version: 1.1.1
 Author: WebAware
 Author URI: http://www.webaware.com.au/
 */
