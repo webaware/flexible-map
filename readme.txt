@@ -130,6 +130,9 @@ Since version 1.1.0, this plugin now uses localised messages for things like the
 
 == Changelog ==
 
+= 1.1.1 [2012-04-15] =
+* fixed: instructions updated to reflect recent changes
+
 = 1.1.0 [2012-04-15] =
 * added: locale-specific messages (using translations from Google Translate) e.g. Directions link
 * wanted: translators to help me add new translations, and clean up the messages I got from Google Translate!
