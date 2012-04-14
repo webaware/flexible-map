@@ -6,6 +6,8 @@ class FlxMapPlugin {
 	public $urlBase;									// string: base URL path to files in plugin
 
 	private $loadScripts = FALSE;						// true when scripts should be loaded
+	private $locales;									// hash map of locales required for i18n
+	private $locale;
 
 	/**
 	* static method for getting the instance of this singleton object
@@ -30,6 +32,8 @@ class FlxMapPlugin {
 		// record plugin URL base
 		$this->urlBase = plugin_dir_url(__FILE__);
 
+		add_action('init', array($this, 'actionInit'));
+
 		if (is_admin()) {
 			// kick off the admin handling
 			new FlxMapAdmin($this);
@@ -40,10 +44,10 @@ class FlxMapPlugin {
 
 			// non-admin actions and filters for this plugin
 			add_action('wp_footer', array($this, 'actionFooter'));
+			add_action('wp_print_styles', array($this, 'actionEnqueueStyles'));
 
 			// custom actions and filters for this plugin
 			add_filter('flexmap_getmap', array($this, 'shortcodeMap'), 10, 1);
-			add_action('wp_print_styles', array($this, 'actionEnqueueStyles'));
 		}
 	}
 
@@ -68,6 +72,17 @@ class FlxMapPlugin {
 	}
 
 	/**
+	* initialise the plugin, called on init action
+	*/
+	public function actionInit() {
+		// start off required locales with this website's WP locale
+		$this->locales = array();
+		$this->locale = get_locale();
+		if ($this->locale != '' && $this->locale != 'en_US')
+			$this->locales[str_replace('_', '-', $this->locale)] = 1;
+	}
+
+	/**
 	* enqueue any styles we require
 	*/
 	public function actionEnqueueStyles() {
@@ -81,12 +96,28 @@ class FlxMapPlugin {
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = parse_url($this->urlBase, PHP_URL_PATH);
+			$url = rtrim(parse_url($this->urlBase, PHP_URL_PATH), '/');
+
 			echo <<<HTML
-<script src="$url/flexible-map.min.js?v=6"></script>
+<script src="$url/flexible-map.min.js?v=7"></script>
 <script src="//maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
 
 HTML;
+
+			// see if we need to load i18n messages
+			foreach (array_keys($this->locales) as $locale) {
+				// check for specific locale first, e.g. 'zh-CN'
+				if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
+					echo "<script charset='utf-8' src=\"$url/i18n/$locale.js\"></script>\n";
+				}
+				else {
+					// not found, so check for generic locale, e.g. 'zh'
+					$locale = substr($locale, 0, 2);
+					if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
+						echo "<script charset='utf-8' src=\"$url/i18n/$locale.js\"></script>\n";
+					}
+				}
+			}
 		}
 	}
 
@@ -176,6 +207,16 @@ HTML;
 
 			if (isset($attrs['region'])) {
 				$html .= " f.region = \"{$attrs['region']}\";\n";
+			}
+
+			if (isset($attrs['locale'])) {
+				$html .= " f.setlocale(\"{$attrs['locale']}\");\n";
+				$this->locales[$attrs['locale']] = 1;
+			}
+			else if ($this->locale != '' || $this->locale != 'en-US') {
+				$locale = str_replace('_', '-', $this->locale);
+				$html .= " f.setlocale(\"$locale\");\n";
+				$this->locales[$locale] = 1;
 			}
 
 			// add map based on coordinates, with optional marker coordinates

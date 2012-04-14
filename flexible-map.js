@@ -24,7 +24,9 @@ function FlexibleMap() {
 	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
 	this.dirService = false;
 	this.dirPanel = false;
-	this.region = false;
+	this.region = '';
+	this.locale = 'en';
+	this.localeActive = 'en';
 }
 
 FlexibleMap.prototype = (function() {
@@ -45,6 +47,57 @@ FlexibleMap.prototype = (function() {
 
 	return {
 		constructor: FlexibleMap,
+
+		/**
+		* collection of locale / phrase mapping for internationalisation of messages
+		*/
+		i18n: {
+			"en": {
+				"Click for details" : "Click for details",
+				"Directions" : "Directions",
+				"From" : "From",
+				"Get directions" : "Get directions"
+			}
+		},
+
+		/**
+		* set the locale used for i18n phrase lookup, picking the best match
+		* @param {String} localeWanted the locale wanted, e.g. en-AU, da.DK
+		* @return {String} the locale that will be used (nearest match, or default if none)
+		*/
+		setlocale: function(localeWanted) {
+			this.locale = localeWanted;
+
+			// attempt to set this locale as active
+			if (localeWanted in this.i18n) {
+				this.localeActive = localeWanted;
+			}
+			else {
+				// not found, so try simplified locale
+				localeWanted = localeWanted.substr(0, 2);
+				if (localeWanted in this.i18n) {
+					this.localeActive = localeWanted;
+				}
+				else {
+					// still not found, use default (en)
+					this.localeActive = "en";
+				}
+			}
+		},
+
+		/**
+		* get phrase from the current locale domain, or the default domain (en) if not found
+		* @param {String} key the key for the desired phrase
+		* @return {String}
+		*/
+		gettext: function(key) {
+			var phrases = this.i18n[this.localeActive];
+
+			if (key in phrases)
+				return phrases[key];
+
+			return "";
+		},
 
 		/**
 		* show a map based on a KML file
@@ -120,7 +173,7 @@ FlexibleMap.prototype = (function() {
 					if (this.markerLink) {
 						a = document.createElement("A");
 						a.href = this.markerLink;
-						a.appendChild(document.createTextNode("Click for details"));
+						a.appendChild(document.createTextNode(this.gettext("Click for details")));
 						element.appendChild(a);
 					}
 					container.appendChild(element);
@@ -139,7 +192,7 @@ FlexibleMap.prototype = (function() {
 						stopEvent(event);
 						self.showDirections(this.dataLatitude, this.dataLongitude, this.dataTitle);
 					});
-					a.appendChild(document.createTextNode("Directions"));
+					a.appendChild(document.createTextNode(this.gettext("Directions")));
 					element.appendChild(a);
 					container.appendChild(element);
 
@@ -178,7 +231,7 @@ FlexibleMap.prototype = (function() {
 			if (this.markerTitle === "")
 				this.markerTitle = address;
 
-			geocoder.geocode({address: address}, function(results, status) {
+			geocoder.geocode({address: address, region: this.region}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					var	location = results[0].geometry.location,
 						centre = [ location.lat(), location.lng() ];
@@ -232,14 +285,14 @@ FlexibleMap.prototype = (function() {
 
 			// populate form and add to panel
 			p = document.createElement("p");
-			p.appendChild(document.createTextNode("From: "));
+			p.appendChild(document.createTextNode(this.gettext("From") + ": "));
 			from = document.createElement("input");
 			from.type = "text";
 			from.name = "from";
 			p.appendChild(from);
 			input = document.createElement("input");
 			input.type = "submit";
-			input.value = "Get directions";
+			input.value = this.gettext("Get directions");
 			p.appendChild(input);
 			form.appendChild(p);
 			panel.appendChild(form);

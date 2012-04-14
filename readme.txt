@@ -3,10 +3,11 @@ Contributors: webaware
 Plugin Name: WP Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Author URI: http://www.webaware.com.au/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.1
-Stable tag: 1.0.6
+Stable tag: 1.1.0
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
@@ -71,6 +72,8 @@ Either the center or the address paramater is required. If you provide both, the
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here.
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
+* **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
+* **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 
 *Samples*:
 `[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
@@ -115,13 +118,22 @@ Google Maps API caches the KML file, so it often won't get your new changes. To 
 
 = Why won't the map show my place when I use the address parameter? =
 
-When you use a street address instead of centre coordinates, you are effectively searching Google Maps for your location. Try being very specific about your address, including your town / city, state / province, and country to make sure Google can find where you mean. If the marker is still in the wrong place, you might need to specify the location using centre coordinates instead.
+When you use a street address instead of centre coordinates, you are effectively searching Google Maps for your location. Try being very specific about your address, including your town / city, state / province, and country to make sure Google can find where you mean. You can also specify your region with the `region` parameter to help Google Maps refine its search. If the marker is still in the wrong place, you might need to specify the location using centre coordinates instead.
 
 = How can I use centre coordinates for the map and have directions to my address? =
 
 When you use just centre coordinates for your map, the directions may send people to the location *opposite* your location! Yes, I know... anyway, if you specify both the centre coordinates and the street address, the map will be centred correctly and the directions will be to your address.
 
+= How do I get the maps to use my language? =
+
+Since version 1.1.0, this plugin now uses localised messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](http://codex.wordpress.org/WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` parameter, e.g. `locale="ru"` or `locale="zh-TW"`. Google Maps will use the locale information from your web browser to help display maps in your language (see your browser's language settings).
+
 == Changelog ==
+
+= 1.1.0 [2012-04-15] =
+* added: locale-specific messages (using translations from Google Translate) e.g. Directions link
+* wanted: translators to help me add new translations, and clean up the messages I got from Google Translate!
+* fixed: use region to help refine street address searches
 
 = 1.0.6 [2012-04-06] =
 * fixed: use plugin_dir_url() to get url base, and protocol-relative url to load Google Maps API (SSL compatible)
