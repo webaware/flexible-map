@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, maps, shortcode, kml
 Requires at least: 3.0.1
-Tested up to: 3.3.1
+Tested up to: 3.3.2
 Stable tag: 1.1.1
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
