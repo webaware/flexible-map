@@ -4,10 +4,12 @@ Plugin Name: WP Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
-Tags: google, maps, shortcode, kml
+Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.3.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
 
@@ -84,6 +86,7 @@ Either the center or the address paramater is required. If you provide both, the
 = Additional parameters for KML map =
 
 * **src**: the URL for a KML file to load map details from, e.g. *src="http://example.com/map.kml"*
+* **targetfix**: prevent links from opening in new window, from [true, false], e.g. *targetfix="true"*; default=true
 
 *Sample*:
 `[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="500" height="400"]`
@@ -129,6 +132,10 @@ When you use just centre coordinates for your map, the directions may send peopl
 Since version 1.1.0, this plugin now uses localised messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](http://codex.wordpress.org/WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` parameter, e.g. `locale="ru"` or `locale="zh-TW"`. Google Maps will use the locale information from your web browser to help display maps in your language (see your browser's language settings).
 
 == Changelog ==
+
+= 1.1.2 [2012-05-20] =
+* fixed: some themes set box-shadow on all images, now forceably fixed for Google Maps images
+* added: option to control whether links on KML maps open in new window
 
 = 1.1.1 [2012-04-15] =
 * fixed: instructions updated to reflect recent changes

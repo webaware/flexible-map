@@ -1,7 +1,10 @@
 /* stop some themes from messing up Google Maps' styling (e.g. twentyeleven) */
 
 .flxmap-container img {
-	max-width: none;
+	max-width: none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
 }
 
 /* some basic styling for info window */

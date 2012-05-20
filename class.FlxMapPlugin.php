@@ -52,26 +52,6 @@ class FlxMapPlugin {
 	}
 
 	/**
-	* activate the plug-in (called by activate event): add custom capabilities, etc.
-	*/
-	public function activate() {
-		// NOP
-	}
-
-	/**
-	* deactivate the plug-in (called by deactivate event): remove custom capabilities, etc.
-	*/
-	public function deactivate() {
-		// remove deprecated custom capabilities for administrator (from previous versions)
-		$role = get_role('administrator');
-		$role->remove_cap('flxmap_options');
-
-		// remove deprecated custom capabilities for editor (from previous versions)
-		$role = get_role('editor');
-		$role->remove_cap('flxmap_options');
-	}
-
-	/**
 	* initialise the plugin, called on init action
 	*/
 	public function actionInit() {
@@ -86,8 +66,8 @@ class FlxMapPlugin {
 	* enqueue any styles we require
 	*/
 	public function actionEnqueueStyles() {
-		// theme writers: you can remove by calling wp_dequeue_script('flxmap');
-		wp_enqueue_style('flxmap', "{$this->urlBase}/styles.css", FALSE, '1');
+		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
+		wp_enqueue_style('flxmap', "{$this->urlBase}styles.css", FALSE, '2');
 	}
 
 	/**
@@ -96,11 +76,12 @@ class FlxMapPlugin {
 	public function actionFooter() {
 		if ($this->loadScripts) {
 			// load required scripts
-			$url = rtrim(parse_url($this->urlBase, PHP_URL_PATH), '/');
+			$url = parse_url($this->urlBase, PHP_URL_PATH);
+			$version = 8;
 
 			echo <<<HTML
-<script src="$url/flexible-map.min.js?v=7"></script>
 <script src="//maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
+<script src="{$url}flexible-map.min.js?v=$version"></script>
 
 HTML;
 
@@ -108,13 +89,13 @@ HTML;
 			foreach (array_keys($this->locales) as $locale) {
 				// check for specific locale first, e.g. 'zh-CN'
 				if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-					echo "<script charset='utf-8' src=\"$url/i18n/$locale.js\"></script>\n";
+					echo "<script charset='utf-8' src=\"{$url}i18n/$locale.js?v=$version\"></script>\n";
 				}
 				else {
 					// not found, so check for generic locale, e.g. 'zh'
 					$locale = substr($locale, 0, 2);
 					if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-						echo "<script charset='utf-8' src=\"$url/i18n/$locale.js\"></script>\n";
+						echo "<script charset='utf-8' src=\"{$url}i18n/$locale.js?v=$version\"></script>\n";
 					}
 				}
 			}
@@ -266,6 +247,10 @@ HTML;
 
 			// add map based on KML file
 			else if (isset($attrs['src'])) {
+				if (isset($attrs['targetfix']) && self::isNo($attrs['targetfix'])) {
+					$html .= " f.targetFix = false;\n";
+				}
+
 				$kmlfile = self::str2js($attrs['src']);
 				$html .= " f.showKML(\"$divID\", \"$kmlfile\"";
 

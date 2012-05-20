@@ -21,6 +21,7 @@ function FlexibleMap() {
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
 	this.markerAddress = '';							// address of marker, if given
+	this.targetFix = true;								// remove target="_blank" from links on KML map
 	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
 	this.dirService = false;
 	this.dirPanel = false;
@@ -62,7 +63,7 @@ FlexibleMap.prototype = (function() {
 
 		/**
 		* set the locale used for i18n phrase lookup, picking the best match
-		* @param {String} localeWanted the locale wanted, e.g. en-AU, da.DK
+		* @param {String} localeWanted the locale wanted, e.g. en-AU, da-DK, sv
 		* @return {String} the locale that will be used (nearest match, or default if none)
 		*/
 		setlocale: function(localeWanted) {
@@ -119,9 +120,11 @@ FlexibleMap.prototype = (function() {
 			}
 
 			// stop links opening in a new window (thanks, Stack Overflow!)
-			google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
-				kmlEvent.featureData.description = kmlEvent.featureData.description.replace(/ target="_blank"/ig, "");
-			});
+			if (this.targetFix) {
+				google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
+					kmlEvent.featureData.description = kmlEvent.featureData.description.replace(/ target="_blank"/ig, "");
+				});
+			}
 		},
 
 		/**
