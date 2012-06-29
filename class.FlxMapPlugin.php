@@ -77,7 +77,7 @@ class FlxMapPlugin {
 		if ($this->loadScripts) {
 			// load required scripts
 			$url = parse_url($this->urlBase, PHP_URL_PATH);
-			$version = 8;
+			$version = 9;
 
 			echo <<<HTML
 <script src="//maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
@@ -126,7 +126,7 @@ HTML;
 					$divDirections = "\n<div id='$divDirectionsID' class='flxmap-directions'></div>";
 				}
 				else {
-					$divDirectionsID = $attrs['directions'];
+					$divDirectionsID = self::str2js($attrs['directions']);
 				}
 			}
 
@@ -182,29 +182,37 @@ HTML;
 				$html .= " f.markerDirections = \"$divDirectionsID\";\n";
 			}
 
+			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
+				$html .= " f.markerDirectionsShow = true;\n";
+			}
+
+			if (isset($attrs['directionsfrom'])) {
+				$html .= " f.markerDirectionsDefault = \"{$this->str2js($attrs['directionsfrom'])}\";\n";
+			}
+
 			if (isset($attrs['maptype'])) {
-				$html .= " f.mapTypeId = \"{$attrs['maptype']}\";\n";
+				$html .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
 			}
 
 			if (isset($attrs['region'])) {
-				$html .= " f.region = \"{$attrs['region']}\";\n";
+				$html .= " f.region = \"{$this->str2js($attrs['region'])}\";\n";
 			}
 
 			if (isset($attrs['locale'])) {
-				$html .= " f.setlocale(\"{$attrs['locale']}\");\n";
+				$html .= " f.setlocale(\"{$this->str2js($attrs['locale'])}\");\n";
 				$this->locales[$attrs['locale']] = 1;
 			}
 			else if ($this->locale != '' || $this->locale != 'en-US') {
-				$locale = str_replace('_', '-', $this->locale);
+				$locale = self::str2js(str_replace('_', '-', $this->locale));
 				$html .= " f.setlocale(\"$locale\");\n";
 				$this->locales[$locale] = 1;
 			}
 
 			// add map based on coordinates, with optional marker coordinates
 			if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
-				$marker = $attrs['center'];
+				$marker = self::str2js($attrs['center']);
 				if (isset($attrs['marker']) && self::isCoordinates($attrs['marker']))
-					$marker = $attrs['marker'];
+					$marker = self::str2js($attrs['marker']);
 
 				if (isset($attrs['zoom']))
 					$html .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";

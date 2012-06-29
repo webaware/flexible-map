@@ -6,8 +6,8 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
-Tested up to: 3.3.2
-Stable tag: 1.1.2
+Tested up to: 3.4.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,8 @@ Either the center or the address paramater is required. If you provide both, the
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here.
+* **showdirections**: show directions when the map loads
+* **directionsfrom**: initial from: location for directions
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
@@ -132,6 +134,10 @@ When you use just centre coordinates for your map, the directions may send peopl
 Since version 1.1.0, this plugin now uses localised messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](http://codex.wordpress.org/WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` parameter, e.g. `locale="ru"` or `locale="zh-TW"`. Google Maps will use the locale information from your web browser to help display maps in your language (see your browser's language settings).
 
 == Changelog ==
+
+= 1.2.0 [2012-06-29] =
+* added: option showdirections, to show the directions search when the map loads
+* added: option directionsfrom, to set the default from: location, and immediately search for directions when showdirections is set
 
 = 1.1.2 [2012-05-20] =
 * fixed: some themes set box-shadow on all images, now forceably fixed for Google Maps images

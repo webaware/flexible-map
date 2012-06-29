@@ -20,6 +20,8 @@ function FlexibleMap() {
 	this.markerLink = '';								// link for marker title
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
+	this.markerDirectionsShow = false;					// show directions as soon as page loads
+	this.markerDirectionsDefault = '';					// default from: location for directions
 	this.markerAddress = '';							// address of marker, if given
 	this.targetFix = true;								// remove target="_blank" from links on KML map
 	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
@@ -32,18 +34,41 @@ function FlexibleMap() {
 
 FlexibleMap.prototype = (function() {
 
-	var addEventListener, stopEvent;
+	var addEventListener, stopEvent, fireEvent;
 
 	// detect standard event model
 	if (document.addEventListener) {
-		addEventListener = function(element, eventName, hook) { element.addEventListener(eventName, hook, false); };
-		stopEvent = function(event) { event.stopPropagation(); event.preventDefault(); };
+		addEventListener = function(element, eventName, hook) {
+			element.addEventListener(eventName, hook, false);
+		};
+
+		stopEvent = function(event) {
+			event.stopPropagation(); event.preventDefault();
+		};
+
+		fireEvent = function(element, eventName) {
+			var event = document.createEvent("HTMLEvents");
+			event.initEvent(eventName, true, true);
+			element.dispatchEvent(event);
+		};
 	}
 	else
 	// detect IE event model
 	if (document.attachEvent) {
-		addEventListener = function(element, event, hook) { element.attachEvent("on" + event, function() { hook.call(element, window.event); }); };
-		stopEvent = function(event) { event.cancelBubble = true; event.returnValue = 0; };
+		addEventListener = function(element, event, hook) {
+			element.attachEvent("on" + event, function() { hook.call(element, window.event); });
+		};
+
+		stopEvent = function(event) {
+			event.cancelBubble = true;
+			event.returnValue = 0;
+		};
+
+		fireEvent = function(element, eventName) {
+			var event = document.createEventObject();
+			event.eventType = eventName;
+			element.fireEvent("on" + eventName, event);
+		};
 	}
 
 	return {
@@ -84,6 +109,8 @@ FlexibleMap.prototype = (function() {
 					this.localeActive = "en";
 				}
 			}
+
+			return this.localeActive;
 		},
 
 		/**
@@ -198,7 +225,10 @@ FlexibleMap.prototype = (function() {
 					a.appendChild(document.createTextNode(this.gettext("Directions")));
 					element.appendChild(a);
 					container.appendChild(element);
+				}
 
+				// add a directions service if needed
+				if (this.markerDirections || this.markerDirectionsShow) {
 					// make sure we have a directions service
 					if (!this.dirService)
 						this.dirService = new google.maps.DirectionsService();
@@ -207,6 +237,11 @@ FlexibleMap.prototype = (function() {
 							map: map,
 							panel: document.getElementById(this.markerDirections)
 						});
+					}
+
+					// show directions immediately if required
+					if (this.markerDirectionsShow) {
+						this.showDirections(marker[0], marker[1], this.markerTitle);
 					}
 				}
 
@@ -292,6 +327,7 @@ FlexibleMap.prototype = (function() {
 			from = document.createElement("input");
 			from.type = "text";
 			from.name = "from";
+			from.value = this.markerDirectionsDefault;
 			p.appendChild(from);
 			input = document.createElement("input");
 			input.type = "submit";
@@ -359,6 +395,11 @@ FlexibleMap.prototype = (function() {
 				}
 
 			});
+
+			// if the from: location is already set, trigger the directions query
+			if (from.value) {
+				fireEvent(form, "submit");
+			}
 
 		}
 
