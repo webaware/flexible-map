@@ -49,8 +49,8 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 
 = Parameters for all maps =
 
-* **width**: width in pixels, e.g. *width="500"*
-* **height**: height in pixels, e.g. *height="400"*
+* **width**: width in pixels or valid CSS units, e.g. *width="500"*
+* **height**: height in pixels or valid CSS units, e.g. *height="400"*
 * **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
 * **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*; default=roadmap
 * **hidemaptype**: hide the map type controls, from [true, false], e.g. *hidemaptype="true"*; default=false
@@ -152,6 +152,7 @@ The initial translations were made using Google Translate, so it's likely that s
 * fixed: Norwegian translation had incorrect file name
 * fixed: Malaysian translation had incorrect index (was overwriting Macedonian translation)
 * added: filters so that theme and plugin developers can modify the behaviour of this plugin
+* added: width and height can be any valid CSS units, not just pixels
 
 = 1.2.0 [2012-06-29] =
 * added: option showdirections, to show the directions search when the map loads
