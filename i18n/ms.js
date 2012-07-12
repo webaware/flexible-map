@@ -3,7 +3,7 @@
 
 if (typeof FlexibleMap != "undefined") {
 
-	FlexibleMap.prototype.i18n["mk"] = {
+	FlexibleMap.prototype.i18n["ms"] = {
 		"Click for details" : "Klik untuk maklumat lanjut",
 		"Directions" : "arahan",
 		"From" : "Tempat berlepas",

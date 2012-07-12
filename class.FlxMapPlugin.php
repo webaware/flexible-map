@@ -44,7 +44,7 @@ class FlxMapPlugin {
 
 			// non-admin actions and filters for this plugin
 			add_action('wp_footer', array($this, 'actionFooter'));
-			add_action('wp_print_styles', array($this, 'actionEnqueueStyles'));
+			add_action('wp_enqueue_scripts', array($this, 'actionEnqueueStyles'));
 
 			// custom actions and filters for this plugin
 			add_filter('flexmap_getmap', array($this, 'shortcodeMap'), 10, 1);
@@ -79,11 +79,13 @@ class FlxMapPlugin {
 			$url = parse_url($this->urlBase, PHP_URL_PATH);
 			$version = 9;
 
-			echo <<<HTML
-<script src="//maps.google.com/maps/api/js?v=3.8&amp;sensor=false"></script>
-<script src="{$url}flexible-map.min.js?v=$version"></script>
+			// allow others to override the Google Maps API URL
+			$apiURL = apply_filters('flexmap_google_maps_api_url', '//maps.google.com/maps/api/js?v=3.8&amp;sensor=false');
+			if (!empty($apiURL)) {
+				echo "<script src=\"$apiURL\"></script>\n";
+			}
 
-HTML;
+			echo "<script src=\"{$url}flexible-map.min.js?v=$version\"></script>\n";
 
 			// see if we need to load i18n messages
 			foreach (array_keys($this->locales) as $locale) {
@@ -111,12 +113,30 @@ HTML;
 	public function shortcodeMap($attrs) {
 		$html = '';
 
+		// allow others to change the shortcode attributes used
+		$attrs = apply_filters('flexmap_shortcode_attrs', $attrs);
+
 		if (!empty($attrs['src']) || !empty($attrs['center']) || !empty($attrs['address'])) {
 			$this->loadScripts = TRUE;
 			$divID = uniqid('flxmap-');
-			$width = isset($attrs['width']) ? preg_replace('/\D/', '', $attrs['width']) : 400;
-			$height = isset($attrs['height']) ? preg_replace('/\D/', '', $attrs['height']) : 400;
 
+			// build the inline styles for the div
+			$styles = array();
+			$styles['width'] = isset($attrs['width']) ? self::getUnits($attrs['width']) : '400px';
+			$styles['height'] = isset($attrs['height']) ? self::getUnits($attrs['height']) : '400px';
+			$styles = apply_filters('flexmap_shortcode_styles', $styles, $attrs);
+			if (empty($styles)) {
+				$inlinestyles = '';
+			}
+			else {
+				$inlinestyles = 'style="';
+				foreach ($styles as $style => $value) {
+					$inlinestyles .= $style . ':' . $value . ';';
+				}
+				$inlinestyles .= '"';
+			}
+
+			// build the directions div, if required
 			$directions = FALSE;
 			$divDirections = '';
 			if (isset($attrs['directions']) && !self::isNo($attrs['directions'])) {
@@ -131,7 +151,7 @@ HTML;
 			}
 
 			$html = <<<HTML
-<div id="$divID" class='flxmap-container' style="width:{$width}px;height:${height}px;"></div>$divDirections
+<div id="$divID" class='flxmap-container' $inlinestyles></div>$divDirections
 <script>
 //<![CDATA[
 (function(w, fn) {
@@ -271,7 +291,34 @@ HTML;
 			$html .= "});\n//]]>\n</script>\n";
 		}
 
+		// allow others to change the generated html
+		$html = apply_filters('flexmap_shortcode_html', $html, $attrs);
+
 		return $html;
+	}
+
+	/**
+	* get valid CSS units from string, or default to 400px if invalid
+	* @param string $units
+	* @return string
+	*/
+	private static function getUnits($units) {
+		$units = trim($units);
+
+		// check for valid CSS units
+		if (!preg_match('/^auto$|^[+-]?[0-9]+\\.?(?:[0-9]+)?(?:px|em|ex|%|in|cm|mm|pt|pc)?$/', $units)) {
+			// not valid, so check to see if it's only digits
+			if (preg_match('/\D/', $units)) {
+				// not digits, so set to default
+				$units = '400px';
+			}
+			else {
+				// found only digits, so append px
+				$units .= 'px';
+			}
+		}
+
+		return $units;
 	}
 
 	/**

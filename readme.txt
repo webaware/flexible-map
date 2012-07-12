@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.4.1
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,15 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
   'maptype' => 'satellite',
 ));`
 
+There are also some filter hooks that allow you to change the behaviour of the plugin.
+
+* **flexmap_google_maps_api_url**: allows you to replace the Google Maps API URL, e.g. if you need a different API version (NB: this plugin's scripts are coded for a specific API major version!)
+* **flexmap_shortcode_attrs**: allows you to change the shortcode attributes, e.g. change the width and height
+* **flexmap_shortcode_styles**: allows you to change the inline styles applied to the div wrapping the map, e.g. remove width and height so that it can be specified in the theme's stylesheets
+* **flexmap_shortcode_html**: allows you to change the generated html, e.g. wrap in another div, add a link to Google Maps, etc.
+
+For more information and examples, see [the website](http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/).
+
 == Frequently Asked Questions ==
 
 = Can I add multiple markers to a map? =
@@ -133,7 +142,16 @@ When you use just centre coordinates for your map, the directions may send peopl
 
 Since version 1.1.0, this plugin now uses localised messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](http://codex.wordpress.org/WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` parameter, e.g. `locale="ru"` or `locale="zh-TW"`. Google Maps will use the locale information from your web browser to help display maps in your language (see your browser's language settings).
 
+= You've translated my language badly / it's missing =
+
+The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the support forum.
+
 == Changelog ==
+
+= 1.3.0 [2012-07-12] =
+* fixed: Norwegian translation had incorrect file name
+* fixed: Malaysian translation had incorrect index (was overwriting Macedonian translation)
+* added: filters so that theme and plugin developers can modify the behaviour of this plugin
 
 = 1.2.0 [2012-06-29] =
 * added: option showdirections, to show the directions search when the map loads
