@@ -306,7 +306,7 @@ HTML;
 		$units = trim($units);
 
 		// check for valid CSS units
-		if (!preg_match('/^auto$|^[+-]?[0-9]+\\.?(?:[0-9]+)?(?:px|em|ex|%|in|cm|mm|pt|pc)?$/', $units)) {
+		if (!preg_match('/^auto$|^[+-]?[0-9]+\\.?(?:[0-9]+)?(?:px|em|ex|%|in|cm|mm|pt|pc)$/', $units)) {
 			// not valid, so check to see if it's only digits
 			if (preg_match('/\D/', $units)) {
 				// not digits, so set to default
@@ -314,7 +314,7 @@ HTML;
 			}
 			else {
 				// found only digits, so append px
-				$units .= 'px';
+				$units = $units . 'px';
 			}
 		}
 
