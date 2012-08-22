@@ -80,7 +80,7 @@ class FlxMapPlugin {
 			$version = 9;
 
 			// allow others to override the Google Maps API URL
-			$apiURL = apply_filters('flexmap_google_maps_api_url', '//maps.google.com/maps/api/js?v=3.8&amp;sensor=false');
+			$apiURL = apply_filters('flexmap_google_maps_api_url', '//maps.google.com/maps/api/js?v=3.9&amp;sensor=false');
 			if (!empty($apiURL)) {
 				echo "<script src=\"$apiURL\"></script>\n";
 			}
@@ -306,7 +306,7 @@ HTML;
 		$units = trim($units);
 
 		// check for valid CSS units
-		if (!preg_match('/^auto$|^[+-]?[0-9]+\\.?(?:[0-9]+)?(?:px|em|ex|%|in|cm|mm|pt|pc)$/', $units)) {
+		if (!preg_match('/^auto$|^[+-]?[0-9]+\\.?(?:[0-9]+)?(?:px|em|ex|ch|%|in|cm|mm|pt|pc|rem|vh|vw|vmin|vmax)$/', $units)) {
 			// not valid, so check to see if it's only digits
 			if (preg_match('/\D/', $units)) {
 				// not digits, so set to default

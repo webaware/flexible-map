@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.4.1
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,10 @@ Since version 1.1.0, this plugin now uses localised messages for things like the
 The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the support forum.
 
 == Changelog ==
+
+= 1.4.0 [2012-08-22] =
+* changed: bump version of Google Maps API to 3.9
+* added: allow CSS units in ch, rem, vh, vw, vmin, vmax
 
 = 1.3.1 [2012-07-13] =
 * fixed: width/height in digits (no units) defaults to pixels (sorry folks, I thought I tested that, but missed it somehow!)
