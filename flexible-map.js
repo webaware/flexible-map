@@ -1,0 +1,408 @@
+/*!
+JavaScript for the WordPress plugin wp-flexible-map
+copyright (c) 2011-2012 WebAware Pty Ltd, released under LGPL v2.1
+*/
+
+function FlexibleMap() {
+	// set map defaults
+	this.mapTypeId = google.maps.MapTypeId.ROADMAP;
+	this.mapTypeControl = true;							// no control for changing map type
+	this.scaleControl = false;							// no control for changing scale
+	this.panControl = false;							// no control for panning
+	this.zoomControl = true;							// show control for zooming
+	this.streetViewControl = false;						// no control for street view
+	this.scrollwheel = false;							// no scroll wheel zoom
+	this.draggable = true;								// support dragging to pan
+	this.dblclickZoom = true;							// support double-click zoom
+	this.zoom = 16;										// zoom level, smaller is closer
+	this.markerTitle = '';								// title for marker info window
+	this.markerDescription = '';						// description for marker info window
+	this.markerLink = '';								// link for marker title
+	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
+	this.markerDirections = false;						// show directions link in info window
+	this.markerDirectionsShow = false;					// show directions as soon as page loads
+	this.markerDirectionsDefault = '';					// default from: location for directions
+	this.markerAddress = '';							// address of marker, if given
+	this.targetFix = true;								// remove target="_blank" from links on KML map
+	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
+	this.dirService = false;
+	this.dirPanel = false;
+	this.region = '';
+	this.locale = 'en';
+	this.localeActive = 'en';
+}
+
+FlexibleMap.prototype = (function() {
+
+	var addEventListener, stopEvent, fireEvent;
+
+	// detect standard event model
+	if (document.addEventListener) {
+		addEventListener = function(element, eventName, hook) {
+			element.addEventListener(eventName, hook, false);
+		};
+
+		stopEvent = function(event) {
+			event.stopPropagation(); event.preventDefault();
+		};
+
+		fireEvent = function(element, eventName) {
+			var event = document.createEvent("HTMLEvents");
+			event.initEvent(eventName, true, true);
+			element.dispatchEvent(event);
+		};
+	}
+	else
+	// detect IE event model
+	if (document.attachEvent) {
+		addEventListener = function(element, event, hook) {
+			element.attachEvent("on" + event, function() { hook.call(element, window.event); });
+		};
+
+		stopEvent = function(event) {
+			event.cancelBubble = true;
+			event.returnValue = 0;
+		};
+
+		fireEvent = function(element, eventName) {
+			var event = document.createEventObject();
+			event.eventType = eventName;
+			element.fireEvent("on" + eventName, event);
+		};
+	}
+
+	return {
+		constructor: FlexibleMap,
+
+		/**
+		* collection of locale / phrase mapping for internationalisation of messages
+		*/
+		i18n: {
+			"en": {
+				"Click for details" : "Click for details",
+				"Directions" : "Directions",
+				"From" : "From",
+				"Get directions" : "Get directions"
+			}
+		},
+
+		/**
+		* set the locale used for i18n phrase lookup, picking the best match
+		* @param {String} localeWanted the locale wanted, e.g. en-AU, da-DK, sv
+		* @return {String} the locale that will be used (nearest match, or default if none)
+		*/
+		setlocale: function(localeWanted) {
+			this.locale = localeWanted;
+
+			// attempt to set this locale as active
+			if (localeWanted in this.i18n) {
+				this.localeActive = localeWanted;
+			}
+			else {
+				// not found, so try simplified locale
+				localeWanted = localeWanted.substr(0, 2);
+				if (localeWanted in this.i18n) {
+					this.localeActive = localeWanted;
+				}
+				else {
+					// still not found, use default (en)
+					this.localeActive = "en";
+				}
+			}
+
+			return this.localeActive;
+		},
+
+		/**
+		* get phrase from the current locale domain, or the default domain (en) if not found
+		* @param {String} key the key for the desired phrase
+		* @return {String}
+		*/
+		gettext: function(key) {
+			var phrases = this.i18n[this.localeActive];
+
+			if (key in phrases)
+				return phrases[key];
+
+			return "";
+		},
+
+		/**
+		* show a map based on a KML file
+		* @param {String} divID the ID of the div that will contain the map
+		* @param {String} kmlFile path to the KML file to load
+		* @param {Number} zoom [optional] zoom level
+		*/
+		showKML: function(divID, kmlFile, zoom) {
+			var	map = this.showMap(divID, [0, 0]),
+				kmlLayer = new google.maps.KmlLayer(kmlFile);
+
+			kmlLayer.setMap(map);
+
+			if (typeof zoom != "undefined") {
+				// listen for KML loaded, and reset zoom
+				google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+					map.setZoom(zoom);
+				});
+			}
+
+			// stop links opening in a new window (thanks, Stack Overflow!)
+			if (this.targetFix) {
+				google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
+					kmlEvent.featureData.description = kmlEvent.featureData.description.replace(/ target="_blank"/ig, "");
+				});
+			}
+		},
+
+		/**
+		* show a map centred at latitude / longitude and with marker at latitude / longitude
+		* @param {String} divID the ID of the div that will contain the map
+		* @param {Array} centre an array of two integers: [ latitude, longitude ]
+		* @param {Array} marker an array of two integers: [ latitude, longitude ]
+		*/
+		showMarker: function(divID, centre, marker) {
+			var	map = this.showMap(divID, centre),
+				point = new google.maps.Marker({
+					map: map,
+					position: new google.maps.LatLng(marker[0], marker[1])
+				});
+
+			if (!this.markerTitle)
+				this.markerTitle = this.markerAddress;
+
+			if (this.markerTitle) {
+				var i, len, lines, infowin, element, a,
+					self = this,
+					container = document.createElement("DIV");
+
+				container.className = "flxmap-infowin";
+
+				// add tooltip title for marker
+				point.setTitle(this.markerTitle);
+
+				// heading for info window
+				element = document.createElement("DIV");
+				element.className = "flxmap-marker-title";
+				element.appendChild(document.createTextNode(this.markerTitle));
+				container.appendChild(element);
+
+				// body of info window, with link
+				if (this.markerDescription || this.markerLink) {
+					element = document.createElement("DIV");
+					element.className = "flxmap-marker-link";
+					if (this.markerDescription) {
+						lines = this.markerDescription.split("\n");
+						for (i = 0, len = lines.length; i < len; i++) {
+							if (i > 0)
+								element.appendChild(document.createElement("BR"));
+							element.appendChild(document.createTextNode(lines[i]));
+						}
+						if (this.markerLink)
+							element.appendChild(document.createElement("BR"));
+					}
+					if (this.markerLink) {
+						a = document.createElement("A");
+						a.href = this.markerLink;
+						a.appendChild(document.createTextNode(this.gettext("Click for details")));
+						element.appendChild(a);
+					}
+					container.appendChild(element);
+				}
+
+				// add a link for directions if wanted
+				if (this.markerDirections) {
+					element = document.createElement("DIV");
+					element.className = "flxmap-directions-link";
+					a = document.createElement("A");
+					a.href = "#";
+					a.dataLatitude = marker[0];
+					a.dataLongitude = marker[1];
+					a.dataTitle = this.markerTitle;
+					addEventListener(a, "click", function(event) {
+						stopEvent(event);
+						self.showDirections(this.dataLatitude, this.dataLongitude, this.dataTitle);
+					});
+					a.appendChild(document.createTextNode(this.gettext("Directions")));
+					element.appendChild(a);
+					container.appendChild(element);
+				}
+
+				// add a directions service if needed
+				if (this.markerDirections || this.markerDirectionsShow) {
+					// make sure we have a directions service
+					if (!this.dirService)
+						this.dirService = new google.maps.DirectionsService();
+					if (!this.dirPanel) {
+						this.dirPanel = new google.maps.DirectionsRenderer({
+							map: map,
+							panel: document.getElementById(this.markerDirections)
+						});
+					}
+
+					// show directions immediately if required
+					if (this.markerDirectionsShow) {
+						this.showDirections(marker[0], marker[1], this.markerTitle);
+					}
+				}
+
+				infowin = new google.maps.InfoWindow({content: container});
+				if (this.markerShowInfo)
+					infowin.open(map, point);
+
+				google.maps.event.addListener(point, "click", function() {
+					infowin.open(map, point);
+				});
+			}
+		},
+
+		/**
+		* show a map centred at address
+		* @param {String} divID the ID of the div that will contain the map
+		* @param {String} address the address (should return a unique location in Google Maps!)
+		*/
+		showAddress: function(divID, address) {
+			var	self = this,
+				geocoder = new google.maps.Geocoder();
+
+			this.markerAddress = address;
+
+			if (this.markerTitle === "")
+				this.markerTitle = address;
+
+			geocoder.geocode({address: address, region: this.region}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					var	location = results[0].geometry.location,
+						centre = [ location.lat(), location.lng() ];
+					self.showMarker(divID, centre, centre);
+				}
+				else {
+					alert("Map address returns error: " + status);
+				}
+			});
+		},
+
+		/**
+		* show a map at specified centre latitude / longitude
+		* @param {String} divID the ID of the div that will contain the map
+		* @param {Array} centre an array of two integers: [ latitude, longitude ]
+		* @return {google.maps.Map} the Google Maps map created
+		*/
+		showMap: function(divID, centre) {
+			return new google.maps.Map(document.getElementById(divID), {
+				mapTypeId: this.mapTypeId,
+				mapTypeControl: this.mapTypeControl,
+				scaleControl: this.scaleControl,
+				panControl: this.panControl,
+				zoomControl: this.zoomControl,
+				draggable: this.draggable,
+				disableDoubleClickZoom: !this.dblclickZoom,
+				scrollwheel: this.scrollwheel,
+				streetViewControl: this.streetViewControl,
+				navigationControlOptions: this.navigationControlOptions,
+				center: new google.maps.LatLng(centre[0], centre[1]),
+				zoom: this.zoom
+			});
+		},
+
+		/**
+		* show directions for specified latitude / longitude and title
+		* @param {Number} latitude
+		* @param {Number} longitude
+		* @param {String} title
+		*/
+		showDirections: function(latitude, longitude, title) {
+			var	panel = document.getElementById(this.markerDirections),
+				form = document.createElement("form"),
+				self = this,
+				region = this.region || '',
+				input, p, from;
+
+			// remove all from panel
+			while (!!(p = panel.lastChild))
+				panel.removeChild(p);
+
+			// populate form and add to panel
+			p = document.createElement("p");
+			p.appendChild(document.createTextNode(this.gettext("From") + ": "));
+			from = document.createElement("input");
+			from.type = "text";
+			from.name = "from";
+			from.value = this.markerDirectionsDefault;
+			p.appendChild(from);
+			input = document.createElement("input");
+			input.type = "submit";
+			input.value = this.gettext("Get directions");
+			p.appendChild(input);
+			form.appendChild(p);
+			panel.appendChild(form);
+			from.focus();
+
+			// hack to fix IE<=7 name weirdness for dynamically created form elements;
+			// see http://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready
+			if (typeof form.elements.from == "undefined") {
+				form.elements.from = from;
+			}
+
+			// handle the form submit
+			addEventListener(form, "submit", function(event) {
+				stopEvent(event);
+
+				var from = this.elements.from.value;
+
+				// only process if something was entered to search on
+				if (/\S/.test(from)) {
+					var	dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
+						request = {
+							origin: from,
+							region: region,
+							destination: dest,
+							travelMode: google.maps.DirectionsTravelMode.DRIVING
+						};
+
+					self.dirService.route(request, function(response, status) {
+						var DirectionsStatus = google.maps.DirectionsStatus;
+
+						switch (status) {
+							case DirectionsStatus.OK:
+								self.dirPanel.setDirections(response);
+								break;
+
+							case DirectionsStatus.ZERO_RESULTS:
+								alert("No route could be found between the origin and destination.");
+								break;
+
+							case DirectionsStatus.OVER_QUERY_LIMIT:
+								alert("The webpage has gone over the requests limit in too short a period of time.");
+								break;
+
+							case DirectionsStatus.REQUEST_DENIED:
+								alert("The webpage is not allowed to use the directions service.");
+								break;
+
+							case DirectionsStatus.INVALID_REQUEST:
+								alert("Invalid directions request.");
+								break;
+
+							case DirectionsStatus.NOT_FOUND:
+								alert("Origin or destination was not found.");
+								break;
+
+							default:
+								alert("A directions request could not be processed due to a server error. The request may succeed if you try again.");
+								break;
+						}
+					});
+				}
+
+			});
+
+			// if the from: location is already set, trigger the directions query
+			if (from.value) {
+				fireEvent(form, "submit");
+			}
+
+		}
+
+	};
+
+})();
