@@ -147,9 +147,14 @@ FlexibleMap.prototype = (function() {
 			}
 
 			// stop links opening in a new window (thanks, Stack Overflow!)
+			// NB: since Google Maps API v3.9 the info window HTML is precomposed, so just changing the description won't fix link
 			if (this.targetFix) {
 				google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
-					kmlEvent.featureData.description = kmlEvent.featureData.description.replace(/ target="_blank"/ig, "");
+					var	featureData = kmlEvent.featureData,
+						reTargetFix = / target="_blank"/ig;
+
+					featureData.description = featureData.description.replace(reTargetFix, "");
+					featureData.infoWindowHtml = featureData.infoWindowHtml.replace(reTargetFix, "");
 				});
 			}
 		},

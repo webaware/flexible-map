@@ -77,7 +77,7 @@ class FlxMapPlugin {
 		if ($this->loadScripts) {
 			// load required scripts
 			$url = parse_url($this->urlBase, PHP_URL_PATH);
-			$version = 9;
+			$version = 10;
 
 			// allow others to override the Google Maps API URL
 			$apiURL = apply_filters('flexmap_google_maps_api_url', '//maps.google.com/maps/api/js?v=3.9&amp;sensor=false');
