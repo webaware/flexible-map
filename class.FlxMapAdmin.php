@@ -44,9 +44,8 @@ class FlxMapAdmin {
 		if ($file == FLXMAP_PLUGIN_NAME) {
 			$links[] = '<a href="admin.php?page=' . self::MENU_PAGE . '-instructions">' . __('Instructions') . '</a>';
 			$links[] = '<a href="http://wordpress.org/support/plugin/wp-flexible-map">' . __('Support') . '</a>';
-			$links[] = '<a href="http://wordpress.org/extend/plugins/wp-flexible-map/">' . __('Rate') . '</a>';
-			$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ" title="Please consider making a donation to help support maintenance and further development of this plugin.">'
-				. __('Donate') . '</a>';
+			$links[] = '<a href="http://wordpress.org/extend/plugins/wp-flexible-map/">' . __('Rating') . '</a>';
+			$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6ZCY9PST8E4GQ">' . __('Donate') . '</a>';
 		}
 
 		return $links;

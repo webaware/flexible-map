@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.4.2
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,12 @@ Flexible Map allows you to add Google Maps to your WordPress website.
 
 Click to see [WP Flexible Map in action](http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/).
 
+= Sponsorships =
+
+* directions on KML maps generously sponsored by [Roger Los](http://www.rogerlos.com/)
+
+Thanks for sponsoring new features on WP Flexible Maps!
+
 == Installation ==
 
 1. Upload this plugin to your /wp-content/plugins/ directory.
@@ -51,6 +57,7 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 
 * **width**: width in pixels or valid CSS units, e.g. *width="500"*
 * **height**: height in pixels or valid CSS units, e.g. *height="400"*
+* **id**: the CSS id of the container div (instead of a random generated unique ID), e.g. *id="my_map"*
 * **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
 * **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*; default=roadmap
 * **hidemaptype**: hide the map type controls, from [true, false], e.g. *hidemaptype="true"*; default=false
@@ -61,6 +68,11 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **scrollwheel**: enable zoom with mouse scroll wheel, from [true, false], e.g. *scrollwheel="true"*; default=false
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
+* **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here
+* **showdirections**: show directions when the map loads
+* **directionsfrom**: initial from: location for directions
+* **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
+* **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
 = Additional parameters for centre coordinates or street address map =
 
@@ -72,18 +84,13 @@ Either the center or the address paramater is required. If you provide both, the
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
-* **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here.
-* **showdirections**: show directions when the map loads
-* **directionsfrom**: initial from: location for directions
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
-* **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
-* **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 
 *Samples*:
 `[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
-[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" width="500" height="400" directions="true"]
-[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true"]
-[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="my-dir-div"]`
+[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" region="au" directions="true"]
+[flexiblemap center="-32.891058,151.538042" title="Mount Sugarloaf" directions="true"]
+[flexiblemap center="-32.918827,151.806164" title="Nobby's Head" directions="my-dir-div"]`
 
 = Additional parameters for KML map =
 
@@ -128,7 +135,7 @@ Using a KML file, you can have as many markers on a map as you like, with as muc
 
 = Why won't my KML map update when I edit the KML file? =
 
-Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time you change the KML file. A nice simple and commonly used parameter name is v (for version), like this: .../my-map.kml?v=2
+Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time you change the KML file (known as a cache buster). A nice simple and commonly used parameter name is v (for version), like this: http://example.com/my-map.kml?v=2
 
 = Why won't the map show my place when I use the address parameter? =
 
@@ -146,7 +153,52 @@ Since version 1.1.0, this plugin now uses localised messages for things like the
 
 The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the support forum.
 
+= The map is broken in jQuery UI tabs =
+
+When you hide the map in a tab, and then click on the tab to reveal its contents, the map doesn't know how big to draw until it is revealed. You need to give Google Maps a nudge so that it will pick up the correct size and position when you reveal it. Here's some sample jQuery code to do this, which you should add somewhere on the page (e.g. in your theme's footer):
+
+`<script>
+jQuery(function($) {
+
+$('div.ui-tabs').bind('tabsshow', function(event, ui) {
+    $("#" + ui.panel.id + " div.flxmap-container").each(function() {
+        var flxmap = window[this.getAttribute("data-flxmap")],
+        flxmap.redrawOnce();
+    });
+});
+
+});
+</script>`
+
+= How can I get access to the map object? =
+
+If you want to add your own scripting for the map, you can get the map object by identifying the FlexibleMap global variable for your map, and asking it to getMap(). By default, each FlexibleMap is given a randomly generated ID and the global variable name is derived from that. The map's containing div has a data property with this global variable name. Here's some sample jQuery code that gets the map object for the (first) map:
+
+`$(window).load(function() {
+    var flxmapName = $("div.flxmap-container").attr("data-flxmap");
+    var flxmap = window[flxmapName];
+    var map = flxmap.getMap();
+    // ... use map ...
+});`
+
+Alternatively, you can specify the ID used for a given map, and it will then derive the global variable name from that. Here's a sample shortcode:
+
+`[flexiblemap center="-32.891058,151.538042" id="sugarloaf"]`
+
+And here's some sample jQuery code:
+
+`$(window).load(function() {
+    var map = flxmap_sugarloaf.getMap();
+    // ... use map ...
+});`
+
 == Changelog ==
+
+= 1.5.0 [2012-09-29] =
+* added: new shortcode attribute "id" which will be used for the container div, instead of the random unique div id
+* added: FlexibleMap object is accessible via global variable with name derived from container div id (e.g. if you need to access the Google Maps map object in your own scripts)
+* added: redraw() and redrawOnce() methods, for when the map needs to be redrawn correctly (e.g. when hidden then revealed)
+* added: KML maps support directions (sponsored by [Roger Los](http://www.rogerlos.com/) -- thanks!)
 
 = 1.4.1 [2012-09-11] =
 * fixed: targetfix was not stopping KML marker links opening in new window/tab since Google Maps API 3.9

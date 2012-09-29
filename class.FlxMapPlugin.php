@@ -47,7 +47,7 @@ class FlxMapPlugin {
 			add_action('wp_enqueue_scripts', array($this, 'actionEnqueueStyles'));
 
 			// custom actions and filters for this plugin
-			add_filter('flexmap_getmap', array($this, 'shortcodeMap'), 10, 1);
+			add_filter('flexmap_getmap', array($this, 'getMap'), 10, 1);
 		}
 	}
 
@@ -58,8 +58,9 @@ class FlxMapPlugin {
 		// start off required locales with this website's WP locale
 		$this->locales = array();
 		$this->locale = get_locale();
-		if ($this->locale != '' && $this->locale != 'en_US')
+		if ($this->locale != '' && $this->locale != 'en_US') {
 			$this->locales[str_replace('_', '-', $this->locale)] = 1;
+		}
 	}
 
 	/**
@@ -67,7 +68,7 @@ class FlxMapPlugin {
 	*/
 	public function actionEnqueueStyles() {
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
-		wp_enqueue_style('flxmap', "{$this->urlBase}styles.css", FALSE, '2');
+		wp_enqueue_style('flxmap', "{$this->urlBase}styles.css", FALSE, FLXMAP_PLUGIN_VERSION);
 	}
 
 	/**
@@ -77,7 +78,7 @@ class FlxMapPlugin {
 		if ($this->loadScripts) {
 			// load required scripts
 			$url = parse_url($this->urlBase, PHP_URL_PATH);
-			$version = 10;
+			$version = FLXMAP_PLUGIN_VERSION;
 
 			// allow others to override the Google Maps API URL
 			$apiURL = apply_filters('flexmap_google_maps_api_url', '//maps.google.com/maps/api/js?v=3.9&amp;sensor=false');
@@ -111,6 +112,16 @@ class FlxMapPlugin {
 	* @return string output to substitute for the shortcode
 	*/
 	public function shortcodeMap($attrs) {
+		return $this->getMap($attrs);
+	}
+
+	/**
+	* get HTML and script for map
+	*
+	* @param array shortcode attributes as supplied by the WP shortcode API
+	* @return string HTML and script for the map
+	*/
+	public function getMap($attrs) {
 		$html = '';
 
 		// allow others to change the shortcode attributes used
@@ -118,7 +129,15 @@ class FlxMapPlugin {
 
 		if (!empty($attrs['src']) || !empty($attrs['center']) || !empty($attrs['address'])) {
 			$this->loadScripts = TRUE;
-			$divID = uniqid('flxmap-');
+			if (empty($attrs['id'])) {
+				$ID = uniqid();
+				$divID = 'flxmap-' . $ID;
+			}
+			else {
+				$ID = $attrs['id'];
+				$divID = esc_attr($ID);
+			}
+			$varID = 'flxmap_' . preg_replace('/[^a-z0-9_$]/i', '_', $ID);
 
 			// build the inline styles for the div
 			$styles = array();
@@ -151,9 +170,10 @@ class FlxMapPlugin {
 			}
 
 			$html = <<<HTML
-<div id="$divID" class='flxmap-container' $inlinestyles></div>$divDirections
+<div id="$divID" class='flxmap-container' data-flxmap='$varID' $inlinestyles></div>$divDirections
 <script>
 //<![CDATA[
+var $varID = false;
 (function(w, fn) {
  if (w.addEventListener) w.addEventListener("DOMContentLoaded", fn, false);
  else if (w.attachEvent) w.attachEvent("onload", fn);
@@ -288,7 +308,13 @@ HTML;
 				$html .= ");\n";
 			}
 
-			$html .= "});\n//]]>\n</script>\n";
+			$html .= <<<HTML
+ $varID = f;
+});
+//]]>
+</script>
+
+HTML;
 		}
 
 		// allow others to change the generated html

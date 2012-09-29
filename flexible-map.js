@@ -4,6 +4,70 @@ copyright (c) 2011-2012 WebAware Pty Ltd, released under LGPL v2.1
 */
 
 function FlexibleMap() {
+	// instance-private members with accessors
+	var	map,						// google.maps.Map object
+		centre,						// google.maps.LatLng object for map centre
+		kmlLayer,					// if map has a KML layer, this is the layer object
+		hasRedrawn = false;			// boolean, whether map has been asked to redrawOnce() already
+
+	/**
+	* get the Google Maps API Map object
+	* @return {google.maps.Map}
+	*/
+	this.getMap = function() {
+		return map;
+	};
+
+	/**
+	* set the Google Maps API Map object
+	* @param {google.maps.Map} map
+	*/
+	this.setMap = function(newMap) {
+		map = newMap;
+	};
+
+	/**
+	* get the centrepoint of the map at time of creation
+	* @return {google.maps.LatLng}
+	*/
+	this.getCenter = function() {
+		return centre;
+	};
+
+	/**
+	* set the centrepoint of the map at time of creation
+	* @param {google.maps.LatLng} latLng
+	*/
+	this.setCenter = function(latLng) {
+		centre = latLng;
+	};
+
+	/**
+	* get the map's KML layer if set
+	* @return {google.maps.KmlLayer}
+	*/
+	this.getKmlLayer = function() {
+		return kmlLayer;
+	};
+
+	/**
+	* record the map's KML layer
+	* @param {google.maps.KmlLayer} layer
+	*/
+	this.setKmlLayer = function(layer) {
+		kmlLayer = layer;
+	};
+
+	/**
+	* if map starts life hidden and needs to be redrawn when revealed, this function will perform that redraw *once*
+	*/
+	this.redrawOnce = function() {
+		if (!hasRedrawn) {
+			hasRedrawn = true;
+			this.redraw();
+		}
+	};
+
 	// set map defaults
 	this.mapTypeId = google.maps.MapTypeId.ROADMAP;
 	this.mapTypeControl = true;							// no control for changing map type
@@ -43,7 +107,8 @@ FlexibleMap.prototype = (function() {
 		};
 
 		stopEvent = function(event) {
-			event.stopPropagation(); event.preventDefault();
+			event.stopPropagation();
+			event.preventDefault();
 		};
 
 		fireEvent = function(element, eventName) {
@@ -69,6 +134,28 @@ FlexibleMap.prototype = (function() {
 			event.eventType = eventName;
 			element.fireEvent("on" + eventName, event);
 		};
+	}
+
+	/**
+	* escape some text for inserting into HTML as an attribute value delimited by quotes (")
+	* @param {String} text
+	* @return {String}
+	*/
+	function escAttr(text) {
+		// add text to a P element and extract HTML
+		var element = document.createElement("p");
+		element.appendChild(document.createTextNode(text));
+
+		// convert non-JS safe characters to Unicode hex
+		return element.innerHTML.replace(/[\\\/"'\x00-\x1f\x7f-\xa0\u2000-\u200f\u2028-\u202f]/g, toUnicodeHex);
+	}
+
+	/**
+	* encode character as Unicode hex
+	*/
+	function toUnicodeHex(ch) {
+		var c = ch.charCodeAt(0);
+		return "\\u" + ("0000" + c.toString(16)).slice(-4);
 	}
 
 	return {
@@ -134,29 +221,73 @@ FlexibleMap.prototype = (function() {
 		* @param {Number} zoom [optional] zoom level
 		*/
 		showKML: function(divID, kmlFile, zoom) {
-			var	map = this.showMap(divID, [0, 0]),
+			var	self = this,
+				mapDiv = document.getElementById(divID),
+				varName,
+				map = this.showMap(divID, [0, 0]),
 				kmlLayer = new google.maps.KmlLayer(kmlFile);
 
+			this.setKmlLayer(kmlLayer);
 			kmlLayer.setMap(map);
 
-			if (typeof zoom != "undefined") {
-				// listen for KML loaded, and reset zoom
-				google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+			// listen for KML loaded
+			google.maps.event.addListenerOnce(map, "tilesloaded", function() {
+				// grab true centre of map
+				self.setCenter(map.getCenter());
+
+				// set zoom if specified
+				if (typeof zoom != "undefined") {
 					map.setZoom(zoom);
+					self.zoom = zoom;
+				}
+			});
+
+			// add a directions service if needed
+			if (this.markerDirections || this.markerDirectionsShow) {
+				this.startDirService(map);
+
+				// grab name of variable holding this object instance, need it for directions links
+				varName = mapDiv.getAttribute("data-flxmap");
+			}
+
+			// customise the infowindow as required; can do this on click event on KML layer (thanks, Stack Overflow!)
+			google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
+				var	featureData = kmlEvent.featureData;
+
+				// NB: since Google Maps API v3.9 the info window HTML is precomposed before this event occurs,
+				// so just changing the description won't change infowindow
+
+				if (!featureData._flxmapOnce) {
+					// add a flag to stop doing this on every click; once is enough
+					featureData._flxmapOnce = true;
+
+					// stop links opening in a new window
+					if (self.targetFix) {
+						var reTargetFix = / target="_blank"/ig;
+						featureData.description = featureData.description.replace(reTargetFix, "");
+						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(reTargetFix, "");
+					}
+
+					// if we're showing directions, add directions link to marker description
+					if (self.markerDirections) {
+						var	latLng = kmlEvent.latLng,
+							params = latLng.lat() + ',' + latLng.lng() + ",'" + escAttr(featureData.name) + "'",
+							a = '<br /><a href="#" data-flxmap-isdir="1" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
+
+						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(/<\/div><\/div>$/i, a + "</div></div>");
+					}
+				}
+			});
+
+			// hack for directions links on Opera, which fails to ignore events when onclick returns false
+			if (window.opera && this.markerDirections) {
+				addEventListener(mapDiv, "click", function(event) {
+					if (event.target.getAttribute("data-flxmap-isdir")) {
+						stopEvent(event);
+					}
 				});
 			}
 
-			// stop links opening in a new window (thanks, Stack Overflow!)
-			// NB: since Google Maps API v3.9 the info window HTML is precomposed, so just changing the description won't fix link
-			if (this.targetFix) {
-				google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
-					var	featureData = kmlEvent.featureData,
-						reTargetFix = / target="_blank"/ig;
-
-					featureData.description = featureData.description.replace(reTargetFix, "");
-					featureData.infoWindowHtml = featureData.infoWindowHtml.replace(reTargetFix, "");
-				});
-			}
 		},
 
 		/**
@@ -234,15 +365,7 @@ FlexibleMap.prototype = (function() {
 
 				// add a directions service if needed
 				if (this.markerDirections || this.markerDirectionsShow) {
-					// make sure we have a directions service
-					if (!this.dirService)
-						this.dirService = new google.maps.DirectionsService();
-					if (!this.dirPanel) {
-						this.dirPanel = new google.maps.DirectionsRenderer({
-							map: map,
-							panel: document.getElementById(this.markerDirections)
-						});
-					}
+					this.startDirService(map);
 
 					// show directions immediately if required
 					if (this.markerDirectionsShow) {
@@ -293,20 +416,62 @@ FlexibleMap.prototype = (function() {
 		* @return {google.maps.Map} the Google Maps map created
 		*/
 		showMap: function(divID, centre) {
-			return new google.maps.Map(document.getElementById(divID), {
-				mapTypeId: this.mapTypeId,
-				mapTypeControl: this.mapTypeControl,
-				scaleControl: this.scaleControl,
-				panControl: this.panControl,
-				zoomControl: this.zoomControl,
-				draggable: this.draggable,
-				disableDoubleClickZoom: !this.dblclickZoom,
-				scrollwheel: this.scrollwheel,
-				streetViewControl: this.streetViewControl,
-				navigationControlOptions: this.navigationControlOptions,
-				center: new google.maps.LatLng(centre[0], centre[1]),
-				zoom: this.zoom
-			});
+			var	latLng = new google.maps.LatLng(centre[0], centre[1]),
+				map = new google.maps.Map(document.getElementById(divID), {
+					mapTypeId: this.mapTypeId,
+					mapTypeControl: this.mapTypeControl,
+					scaleControl: this.scaleControl,
+					panControl: this.panControl,
+					zoomControl: this.zoomControl,
+					draggable: this.draggable,
+					disableDoubleClickZoom: !this.dblclickZoom,
+					scrollwheel: this.scrollwheel,
+					streetViewControl: this.streetViewControl,
+					navigationControlOptions: this.navigationControlOptions,
+					center: latLng,
+					zoom: this.zoom
+				});
+
+			// record map and centre in instance, so we can refer to them later
+			this.setMap(map);
+			this.setCenter(latLng);
+
+			return map;
+		},
+
+		/**
+		* tell Google Maps to redraw the map, and centre it back where it started with default zoom
+		*/
+		redraw: function() {
+			var map = this.getMap(),
+				centre = this.getCenter(),
+				kmlLayer = this.getKmlLayer();
+
+			google.maps.event.trigger(map, "resize");
+			map.setCenter(centre);
+
+			// if map is KML, must refit to computed bounds, else use zoom setting
+			if (kmlLayer) {
+				map.fitBounds(kmlLayer.getDefaultViewport());
+			}
+			else {
+				map.setZoom(this.zoom);
+			}
+		},
+
+		/**
+		* create directions service
+		*/
+		startDirService: function(map) {
+			// make sure we have a directions service
+			if (!this.dirService)
+				this.dirService = new google.maps.DirectionsService();
+			if (!this.dirPanel) {
+				this.dirPanel = new google.maps.DirectionsRenderer({
+					map: map,
+					panel: document.getElementById(this.markerDirections)
+				});
+			}
 		},
 
 		/**
