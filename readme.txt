@@ -69,8 +69,6 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here
-* **showdirections**: show directions when the map loads
-* **directionsfrom**: initial from: location for directions
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
@@ -85,6 +83,8 @@ Either the center or the address paramater is required. If you provide both, the
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
+* **showdirections**: show directions when the map loads
+* **directionsfrom**: initial from: location for directions
 
 *Samples*:
 `[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
