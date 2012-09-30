@@ -19,14 +19,6 @@ function FlexibleMap() {
 	};
 
 	/**
-	* set the Google Maps API Map object
-	* @param {google.maps.Map} map
-	*/
-	this.setMap = function(newMap) {
-		map = newMap;
-	};
-
-	/**
 	* get the centrepoint of the map at time of creation
 	* @return {google.maps.LatLng}
 	*/
@@ -35,11 +27,12 @@ function FlexibleMap() {
 	};
 
 	/**
-	* set the centrepoint of the map at time of creation
+	* set the centrepoint of the map
 	* @param {google.maps.LatLng} latLng
 	*/
 	this.setCenter = function(latLng) {
 		centre = latLng;
+		map.setCenter(centre);
 	};
 
 	/**
@@ -51,14 +44,6 @@ function FlexibleMap() {
 	};
 
 	/**
-	* record the map's KML layer
-	* @param {google.maps.KmlLayer} layer
-	*/
-	this.setKmlLayer = function(layer) {
-		kmlLayer = layer;
-	};
-
-	/**
 	* if map starts life hidden and needs to be redrawn when revealed, this function will perform that redraw *once*
 	*/
 	this.redrawOnce = function() {
@@ -66,6 +51,52 @@ function FlexibleMap() {
 			hasRedrawn = true;
 			this.redraw();
 		}
+	};
+
+	/**
+	* show a map at specified centre latitude / longitude
+	* @param {String} divID the ID of the div that will contain the map
+	* @param {Array} latLng the map centre, an array of two integers: [ latitude, longitude ]
+	* @return {google.maps.Map} the Google Maps map created
+	*/
+	this.showMap = function(divID, latLng) {
+		centre = new google.maps.LatLng(latLng[0], latLng[1]);
+
+		map = new google.maps.Map(document.getElementById(divID), {
+				mapTypeId: this.mapTypeId,
+				mapTypeControl: this.mapTypeControl,
+				scaleControl: this.scaleControl,
+				panControl: this.panControl,
+				zoomControl: this.zoomControl,
+				draggable: this.draggable,
+				disableDoubleClickZoom: !this.dblclickZoom,
+				scrollwheel: this.scrollwheel,
+				streetViewControl: this.streetViewControl,
+				navigationControlOptions: this.navigationControlOptions,
+				center: centre,
+				zoom: this.zoom
+			});
+
+		return map;
+	};
+
+	/**
+	* load a map from a KML file and add as a layer on the Google Maps map
+	* @param {String} kmlFileURL
+	* @return {google.maps.KmlLayer}
+	*/
+	this.loadKmlMap = function(kmlFileURL) {
+		// load KML file as a layer and add to map
+		kmlLayer = new google.maps.KmlLayer(kmlFileURL);
+		kmlLayer.setMap(map);
+
+		// listen for KML loaded
+		google.maps.event.addListenerOnce(kmlLayer, "status_changed", function() {
+			// update centre of map from bounds on KML layer
+			centre = kmlLayer.getDefaultViewport().getCenter();
+		});
+
+		return kmlLayer;
 	};
 
 	// set map defaults
@@ -217,30 +248,24 @@ FlexibleMap.prototype = (function() {
 		/**
 		* show a map based on a KML file
 		* @param {String} divID the ID of the div that will contain the map
-		* @param {String} kmlFile path to the KML file to load
+		* @param {String} kmlFileURL path to the KML file to load
 		* @param {Number} zoom [optional] zoom level
 		*/
-		showKML: function(divID, kmlFile, zoom) {
+		showKML: function(divID, kmlFileURL, zoom) {
 			var	self = this,
 				mapDiv = document.getElementById(divID),
 				varName,
 				map = this.showMap(divID, [0, 0]),
-				kmlLayer = new google.maps.KmlLayer(kmlFile);
+				kmlLayer = this.loadKmlMap(kmlFileURL);
 
-			this.setKmlLayer(kmlLayer);
-			kmlLayer.setMap(map);
-
-			// listen for KML loaded
-			google.maps.event.addListenerOnce(map, "tilesloaded", function() {
-				// grab true centre of map
-				self.setCenter(map.getCenter());
-
-				// set zoom if specified
-				if (typeof zoom != "undefined") {
+			// set zoom if specified
+			if (typeof zoom != "undefined") {
+				// listen for KML layer load finished
+				google.maps.event.addListenerOnce(map, "tilesloaded", function() {
 					map.setZoom(zoom);
 					self.zoom = zoom;
-				}
-			});
+				});
+			}
 
 			// add a directions service if needed
 			if (this.markerDirections || this.markerDirectionsShow) {
@@ -272,7 +297,7 @@ FlexibleMap.prototype = (function() {
 					if (self.markerDirections) {
 						var	latLng = kmlEvent.latLng,
 							params = latLng.lat() + ',' + latLng.lng() + ",'" + escAttr(featureData.name) + "'",
-							a = '<br /><a href="#" data-flxmap-isdir="1" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
+							a = '<br /><a href="#" data-flxmap-fix-opera="1" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
 
 						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(/<\/div><\/div>$/i, a + "</div></div>");
 					}
@@ -282,7 +307,7 @@ FlexibleMap.prototype = (function() {
 			// hack for directions links on Opera, which fails to ignore events when onclick returns false
 			if (window.opera && this.markerDirections) {
 				addEventListener(mapDiv, "click", function(event) {
-					if (event.target.getAttribute("data-flxmap-isdir")) {
+					if (event.target.getAttribute("data-flxmap-fix-opera")) {
 						stopEvent(event);
 					}
 				});
@@ -410,45 +435,14 @@ FlexibleMap.prototype = (function() {
 		},
 
 		/**
-		* show a map at specified centre latitude / longitude
-		* @param {String} divID the ID of the div that will contain the map
-		* @param {Array} centre an array of two integers: [ latitude, longitude ]
-		* @return {google.maps.Map} the Google Maps map created
-		*/
-		showMap: function(divID, centre) {
-			var	latLng = new google.maps.LatLng(centre[0], centre[1]),
-				map = new google.maps.Map(document.getElementById(divID), {
-					mapTypeId: this.mapTypeId,
-					mapTypeControl: this.mapTypeControl,
-					scaleControl: this.scaleControl,
-					panControl: this.panControl,
-					zoomControl: this.zoomControl,
-					draggable: this.draggable,
-					disableDoubleClickZoom: !this.dblclickZoom,
-					scrollwheel: this.scrollwheel,
-					streetViewControl: this.streetViewControl,
-					navigationControlOptions: this.navigationControlOptions,
-					center: latLng,
-					zoom: this.zoom
-				});
-
-			// record map and centre in instance, so we can refer to them later
-			this.setMap(map);
-			this.setCenter(latLng);
-
-			return map;
-		},
-
-		/**
 		* tell Google Maps to redraw the map, and centre it back where it started with default zoom
 		*/
 		redraw: function() {
 			var map = this.getMap(),
-				centre = this.getCenter(),
 				kmlLayer = this.getKmlLayer();
 
 			google.maps.event.trigger(map, "resize");
-			map.setCenter(centre);
+			map.setCenter(this.getCenter());
 
 			// if map is KML, must refit to computed bounds, else use zoom setting
 			if (kmlLayer) {
@@ -466,6 +460,7 @@ FlexibleMap.prototype = (function() {
 			// make sure we have a directions service
 			if (!this.dirService)
 				this.dirService = new google.maps.DirectionsService();
+
 			if (!this.dirPanel) {
 				this.dirPanel = new google.maps.DirectionsRenderer({
 					map: map,

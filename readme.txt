@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.4.2
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -193,6 +193,9 @@ And here's some sample jQuery code:
 });`
 
 == Changelog ==
+
+= 1.5.1 [2012-09-30] =
+* changed: tighten up FlexibleMap API to keep private members private (in case they change later)
 
 = 1.5.0 [2012-09-29] =
 * added: new shortcode attribute "id" which will be used for the container div, instead of the random unique div id
