@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.0.1
 Tested up to: 3.4.2
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -193,6 +193,9 @@ And here's some sample jQuery code:
 });`
 
 == Changelog ==
+
+= 1.5.2 [2012-10-12] =
+* fixed: KML maps broken; KMLLayer status_changed event unreliable, use defaultviewport_changed event instead (possible Google Maps API change)
 
 = 1.5.1 [2012-09-30] =
 * changed: tighten up FlexibleMap API to keep private members private (in case they change later)

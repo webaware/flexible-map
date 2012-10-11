@@ -19,7 +19,7 @@ function FlexibleMap() {
 	};
 
 	/**
-	* get the centrepoint of the map at time of creation
+	* get the centrepoint of the map at creation, or via setCenter()
 	* @return {google.maps.LatLng}
 	*/
 	this.getCenter = function() {
@@ -91,7 +91,7 @@ function FlexibleMap() {
 		kmlLayer.setMap(map);
 
 		// listen for KML loaded
-		google.maps.event.addListenerOnce(kmlLayer, "status_changed", function() {
+		google.maps.event.addListenerOnce(kmlLayer, "defaultviewport_changed", function() {
 			// update centre of map from bounds on KML layer
 			centre = kmlLayer.getDefaultViewport().getCenter();
 		});
@@ -168,26 +168,37 @@ FlexibleMap.prototype = (function() {
 	}
 
 	/**
-	* escape some text for inserting into HTML as an attribute value delimited by quotes (")
+	* encode special JavaScript characters, so text is safe when building JavaScript/HTML dynamically
+	* NB: conservatively assumes that HTML special characters are unsafe, and encodes them too
 	* @param {String} text
 	* @return {String}
 	*/
-	function escAttr(text) {
-		// add text to a P element and extract HTML
-		var element = document.createElement("p");
-		element.appendChild(document.createTextNode(text));
+	var encodeJS = (function() {
 
-		// convert non-JS safe characters to Unicode hex
-		return element.innerHTML.replace(/[\\\/"'\x00-\x1f\x7f-\xa0\u2000-\u200f\u2028-\u202f]/g, toUnicodeHex);
-	}
+		/**
+		* encode character as Unicode hexadecimal escape sequence
+		* @param {String} ch character to encode
+		* @return {String}
+		*/
+		function toUnicodeHex(ch) {
+			var	c = ch.charCodeAt(0),
+				s = c.toString(16);
 
-	/**
-	* encode character as Unicode hex
-	*/
-	function toUnicodeHex(ch) {
-		var c = ch.charCodeAt(0);
-		return "\\u" + ("0000" + c.toString(16)).slice(-4);
-	}
+			// see if we can use 2-digit hex code
+			if (c < 0x100) {
+				return "\\x" + ("00" + s).slice(-2);
+			}
+
+			// must use 4-digit hex code
+			return "\\u" + ("0000" + s).slice(-4);
+		}
+
+		return function(text) {
+			// search for JavaScript and HTML special characters, convert to Unicode hex
+			return text.replace(/[\\\/"'&<>\x00-\x1f\x7f-\xa0\u2000-\u200f\u2028-\u202f]/g, toUnicodeHex);
+		};
+
+	})();
 
 	return {
 		constructor: FlexibleMap,
@@ -254,7 +265,7 @@ FlexibleMap.prototype = (function() {
 		showKML: function(divID, kmlFileURL, zoom) {
 			var	self = this,
 				mapDiv = document.getElementById(divID),
-				varName,
+				varName = mapDiv.getAttribute("data-flxmap"),
 				map = this.showMap(divID, [0, 0]),
 				kmlLayer = this.loadKmlMap(kmlFileURL);
 
@@ -268,11 +279,8 @@ FlexibleMap.prototype = (function() {
 			}
 
 			// add a directions service if needed
-			if (this.markerDirections || this.markerDirectionsShow) {
+			if (this.markerDirections) {
 				this.startDirService(map);
-
-				// grab name of variable holding this object instance, need it for directions links
-				varName = mapDiv.getAttribute("data-flxmap");
 			}
 
 			// customise the infowindow as required; can do this on click event on KML layer (thanks, Stack Overflow!)
@@ -296,7 +304,7 @@ FlexibleMap.prototype = (function() {
 					// if we're showing directions, add directions link to marker description
 					if (self.markerDirections) {
 						var	latLng = kmlEvent.latLng,
-							params = latLng.lat() + ',' + latLng.lng() + ",'" + escAttr(featureData.name) + "'",
+							params = latLng.lat() + ',' + latLng.lng() + ",'" + encodeJS(featureData.name) + "'",
 							a = '<br /><a href="#" data-flxmap-fix-opera="1" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
 
 						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(/<\/div><\/div>$/i, a + "</div></div>");
@@ -442,13 +450,13 @@ FlexibleMap.prototype = (function() {
 				kmlLayer = this.getKmlLayer();
 
 			google.maps.event.trigger(map, "resize");
-			map.setCenter(this.getCenter());
 
-			// if map is KML, must refit to computed bounds, else use zoom setting
+			// if map is KML, must refit to computed bounds, else use centre and zoom setting
 			if (kmlLayer) {
 				map.fitBounds(kmlLayer.getDefaultViewport());
 			}
 			else {
+				map.setCenter(this.getCenter());
 				map.setZoom(this.zoom);
 			}
 		},
