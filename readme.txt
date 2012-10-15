@@ -68,7 +68,7 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **scrollwheel**: enable zoom with mouse scroll wheel, from [true, false], e.g. *scrollwheel="true"*; default=false
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
-* **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here
+* **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. *directions="true", directions="my-dir-id"*; default=false
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
@@ -83,8 +83,8 @@ Either the center or the address paramater is required. If you provide both, the
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
-* **showdirections**: show directions when the map loads
-* **directionsfrom**: initial from: location for directions
+* **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
+* **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
 
 *Samples*:
 `[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
@@ -203,7 +203,7 @@ And here's some sample jQuery code:
 = 1.5.0 [2012-09-29] =
 * added: new shortcode attribute "id" which will be used for the container div, instead of the random unique div id
 * added: FlexibleMap object is accessible via global variable with name derived from container div id (e.g. if you need to access the Google Maps map object in your own scripts)
-* added: redraw() and redrawOnce() methods, for when the map needs to be redrawn correctly (e.g. when hidden then revealed)
+* added: redraw() and redrawOnce() methods, for when the map needs to be redrawn correctly (e.g. when initially hidden then revealed)
 * added: KML maps support directions (sponsored by [Roger Los](http://www.rogerlos.com/) -- thanks!)
 
 = 1.4.1 [2012-09-11] =
