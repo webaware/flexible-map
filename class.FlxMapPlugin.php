@@ -18,8 +18,7 @@ class FlxMapPlugin {
 		static $instance = NULL;
 
 		if (is_null($instance)) {
-			$class = __CLASS__;
-			$instance = new $class;
+			$instance = new self;
 		}
 
 		return $instance;
@@ -155,17 +154,27 @@ class FlxMapPlugin {
 				$inlinestyles .= '"';
 			}
 
-			// build the directions div, if required
+			// test for any conditions that show directions (thus requiring the directions div)
 			$directions = FALSE;
-			$divDirections = '';
 			if (isset($attrs['directions']) && !self::isNo($attrs['directions'])) {
 				$directions = TRUE;
-				if (self::isYes($attrs['directions'])) {
-					$divDirectionsID = "$divID-dir";
-					$divDirections = "\n<div id='$divDirectionsID' class='flxmap-directions'></div>";
+			}
+			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
+				$directions = TRUE;
+			}
+			if (isset($attrs['directionsfrom'])) {
+				$directions = TRUE;
+			}
+
+			// build the directions div, if required
+			$divDirections = '';
+			if ($directions) {
+				if (isset($attrs['directions']) && !self::isYes($attrs['directions'])) {
+					$divDirectionsID = self::str2js($attrs['directions']);
 				}
 				else {
-					$divDirectionsID = self::str2js($attrs['directions']);
+					$divDirectionsID = "$divID-dir";
+					$divDirections = "\n<div id='$divDirectionsID' class='flxmap-directions'></div>";
 				}
 			}
 

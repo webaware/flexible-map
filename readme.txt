@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.4.2
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -193,6 +193,9 @@ And here's some sample jQuery code:
 });`
 
 == Changelog ==
+
+= 1.5.3 [2012-11-30] =
+* fixed: when parameters showdirections or directionsfrom were specified, but not directions, the directions panel was not added to page and a JavaScript error was generated
 
 = 1.5.2 [2012-10-12] =
 * fixed: KML maps broken; KMLLayer status_changed event unreliable, use defaultviewport_changed event instead (possible Google Maps API change)
