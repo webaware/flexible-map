@@ -196,6 +196,7 @@ And here's some sample jQuery code:
 
 = 1.5.3 [2012-11-30] =
 * fixed: when parameters showdirections or directionsfrom were specified, but not directions, the directions panel was not added to page and a JavaScript error was generated
+* changed: bump version of Google Maps API to 3.10
 
 = 1.5.2 [2012-10-12] =
 * fixed: KML maps broken; KMLLayer status_changed event unreliable, use defaultviewport_changed event instead (possible Google Maps API change)
