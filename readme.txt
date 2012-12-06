@@ -162,7 +162,7 @@ jQuery(function($) {
 
 $('div.ui-tabs').bind('tabsshow', function(event, ui) {
     $("#" + ui.panel.id + " div.flxmap-container").each(function() {
-        var flxmap = window[this.getAttribute("data-flxmap")],
+        var flxmap = window[this.getAttribute("data-flxmap")];
         flxmap.redrawOnce();
     });
 });
