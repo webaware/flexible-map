@@ -5,7 +5,6 @@
 class FlxMapPlugin {
 	public $urlBase;									// string: base URL path to files in plugin
 
-	private $loadScripts = FALSE;						// true when scripts should be loaded
 	private $locales;									// hash map of locales required for i18n
 	private $locale;
 
@@ -15,10 +14,10 @@ class FlxMapPlugin {
 	* @return FlxMapPlugin
 	*/
 	public static function getInstance() {
-		static $instance = NULL;
+		static $instance = null;
 
 		if (is_null($instance)) {
-			$instance = new self;
+			$instance = new self();
 		}
 
 		return $instance;
@@ -38,15 +37,17 @@ class FlxMapPlugin {
 			new FlxMapAdmin($this);
 		}
 		else {
-			// add shortcodes
-			add_shortcode(FLXMAP_PLUGIN_TAG_MAP, array($this, 'shortcodeMap'));
-
 			// non-admin actions and filters for this plugin
-			add_action('wp_footer', array($this, 'actionFooter'));
-			add_action('wp_enqueue_scripts', array($this, 'actionEnqueueStyles'));
+			add_action('wp_footer', array($this, 'actionFooter'), 100);		// NB: must come after footer enqueued scripts!
+			add_action('wp_enqueue_scripts', array($this, 'actionEnqueueScripts'));
 
 			// custom actions and filters for this plugin
 			add_filter('flexmap_getmap', array($this, 'getMap'), 10, 1);
+		}
+
+		if (!is_admin() || (defined('DOING_AJAX') && DOING_AJAX)) {
+			// add shortcodes
+			add_shortcode(FLXMAP_PLUGIN_TAG_MAP, array($this, 'shortcodeMap'));
 		}
 	}
 
@@ -58,47 +59,54 @@ class FlxMapPlugin {
 		$this->locales = array();
 		$this->locale = get_locale();
 		if ($this->locale != '' && $this->locale != 'en_US') {
-			$this->locales[str_replace('_', '-', $this->locale)] = 1;
+			$this->setLocales(array($this->locale));
 		}
 	}
 
 	/**
-	* enqueue any styles we require
+	* set the reqired locales so that appropriate scripts will be loaded
+	* @param array $locales a list of locale names
 	*/
-	public function actionEnqueueStyles() {
+	public function setLocales($locales) {
+		foreach ($locales as $locale) {
+			$this->locales[strtr($locale, '_', '-')] = 1;
+		}
+	}
+
+	/**
+	* register and enqueue any scripts and styles we require
+	*/
+	public function actionEnqueueScripts() {
+		// allow others to override the Google Maps API URL
+		$protocol = is_ssl() ? 'https' : 'http';
+		$apiURL = apply_filters('flexmap_google_maps_api_url', "$protocol://maps.google.com/maps/api/js?v=3.10&sensor=false");
+		if (!empty($apiURL)) {
+			wp_register_script('google-maps', $apiURL, false, null, true);
+		}
+
+		wp_register_script('flxmap', $this->urlBase . 'flexible-map.min.js', array('google-maps'), FLXMAP_PLUGIN_VERSION, true);
+
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
-		wp_enqueue_style('flxmap', "{$this->urlBase}styles.css", FALSE, FLXMAP_PLUGIN_VERSION);
+		wp_enqueue_style('flxmap', $this->urlBase . 'styles.css', false, FLXMAP_PLUGIN_VERSION);
 	}
 
 	/**
 	* output anything we need in the footer
 	*/
 	public function actionFooter() {
-		if ($this->loadScripts) {
-			// load required scripts
-			$url = parse_url($this->urlBase, PHP_URL_PATH);
-			$version = FLXMAP_PLUGIN_VERSION;
+		$version = FLXMAP_PLUGIN_VERSION;
 
-			// allow others to override the Google Maps API URL
-			$apiURL = apply_filters('flexmap_google_maps_api_url', '//maps.google.com/maps/api/js?v=3.10&amp;sensor=false');
-			if (!empty($apiURL)) {
-				echo "<script src=\"$apiURL\"></script>\n";
+		// see if we need to load i18n messages
+		foreach (array_keys($this->locales) as $locale) {
+			// check for specific locale first, e.g. 'zh-CN'
+			if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
+				echo "<script charset='utf-8' src=\"{$this->urlBase}i18n/$locale.js?v=$version\"></script>\n";
 			}
-
-			echo "<script src=\"{$url}flexible-map.min.js?v=$version\"></script>\n";
-
-			// see if we need to load i18n messages
-			foreach (array_keys($this->locales) as $locale) {
-				// check for specific locale first, e.g. 'zh-CN'
+			else {
+				// not found, so check for generic locale, e.g. 'zh'
+				$locale = substr($locale, 0, 2);
 				if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-					echo "<script charset='utf-8' src=\"{$url}i18n/$locale.js?v=$version\"></script>\n";
-				}
-				else {
-					// not found, so check for generic locale, e.g. 'zh'
-					$locale = substr($locale, 0, 2);
-					if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-						echo "<script charset='utf-8' src=\"{$url}i18n/$locale.js?v=$version\"></script>\n";
-					}
+					echo "<script charset='utf-8' src=\"{$this->urlBase}i18n/$locale.js?v=$version\"></script>\n";
 				}
 			}
 		}
@@ -127,7 +135,7 @@ class FlxMapPlugin {
 		$attrs = apply_filters('flexmap_shortcode_attrs', $attrs);
 
 		if (!empty($attrs['src']) || !empty($attrs['center']) || !empty($attrs['address'])) {
-			$this->loadScripts = TRUE;
+			$this->loadScripts = true;
 			if (empty($attrs['id'])) {
 				$ID = uniqid();
 				$divID = 'flxmap-' . $ID;
@@ -157,13 +165,13 @@ class FlxMapPlugin {
 			// test for any conditions that show directions (thus requiring the directions div)
 			$directions = FALSE;
 			if (isset($attrs['directions']) && !self::isNo($attrs['directions'])) {
-				$directions = TRUE;
+				$directions = true;
 			}
 			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
-				$directions = TRUE;
+				$directions = true;
 			}
 			if (isset($attrs['directionsfrom'])) {
-				$directions = TRUE;
+				$directions = true;
 			}
 
 			// build the directions div, if required
@@ -180,80 +188,74 @@ class FlxMapPlugin {
 
 			$html = <<<HTML
 <div id="$divID" class='flxmap-container' data-flxmap='$varID' $inlinestyles></div>$divDirections
-<script>
-//<![CDATA[
-var $varID = false;
-(function(w, fn) {
- if (w.addEventListener) w.addEventListener("DOMContentLoaded", fn, false);
- else if (w.attachEvent) w.attachEvent("onload", fn);
-})(window, function() {
- var f = new FlexibleMap();
 
 HTML;
 
+			$script = " var f = new FlexibleMap();\n";
+
 			if (isset($attrs['hidemaptype']) && self::isYes($attrs['hidemaptype'])) {
-				$html .= " f.mapTypeControl = false;\n";
+				$script .= " f.mapTypeControl = false;\n";
 			}
 
 			if (isset($attrs['hidescale']) && self::isNo($attrs['hidescale'])) {
-				$html .= " f.scaleControl = true;\n";
+				$script .= " f.scaleControl = true;\n";
 			}
 
 			if (isset($attrs['hidepanning']) && self::isNo($attrs['hidepanning'])) {
-				$html .= " f.panControl = true;\n";
+				$script .= " f.panControl = true;\n";
 			}
 
 			if (isset($attrs['hidezooming']) && self::isYes($attrs['hidezooming'])) {
-				$html .= " f.zoomControl = false;\n";
+				$script .= " f.zoomControl = false;\n";
 			}
 
 			if (isset($attrs['hidestreetview']) && self::isNo($attrs['hidestreetview'])) {
-				$html .= " f.streetViewControl = true;\n";
+				$script .= " f.streetViewControl = true;\n";
 			}
 
 			if (isset($attrs['showinfo']) && self::isNo($attrs['showinfo'])) {
-				$html .= " f.markerShowInfo = false;\n";
+				$script .= " f.markerShowInfo = false;\n";
 			}
 
 			if (isset($attrs['scrollwheel']) && self::isYes($attrs['scrollwheel'])) {
-				$html .= " f.scrollwheel = true;\n";
+				$script .= " f.scrollwheel = true;\n";
 			}
 
 			if (isset($attrs['draggable']) && self::isNo($attrs['draggable'])) {
-				$html .= " f.draggable = false;\n";
+				$script .= " f.draggable = false;\n";
 			}
 
 			if (isset($attrs['dblclickzoom']) && self::isNo($attrs['dblclickzoom'])) {
-				$html .= " f.dblclickZoom = false;\n";
+				$script .= " f.dblclickZoom = false;\n";
 			}
 
 			if ($directions) {
-				$html .= " f.markerDirections = \"$divDirectionsID\";\n";
+				$script .= " f.markerDirections = \"$divDirectionsID\";\n";
 			}
 
 			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
-				$html .= " f.markerDirectionsShow = true;\n";
+				$script .= " f.markerDirectionsShow = true;\n";
 			}
 
 			if (isset($attrs['directionsfrom'])) {
-				$html .= " f.markerDirectionsDefault = \"{$this->str2js($attrs['directionsfrom'])}\";\n";
+				$script .= " f.markerDirectionsDefault = \"{$this->str2js($attrs['directionsfrom'])}\";\n";
 			}
 
 			if (isset($attrs['maptype'])) {
-				$html .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
+				$script .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
 			}
 
 			if (isset($attrs['region'])) {
-				$html .= " f.region = \"{$this->str2js($attrs['region'])}\";\n";
+				$script .= " f.region = \"{$this->str2js($attrs['region'])}\";\n";
 			}
 
 			if (isset($attrs['locale'])) {
-				$html .= " f.setlocale(\"{$this->str2js($attrs['locale'])}\");\n";
+				$script .= " f.setlocale(\"{$this->str2js($attrs['locale'])}\");\n";
 				$this->locales[$attrs['locale']] = 1;
 			}
 			else if ($this->locale != '' || $this->locale != 'en-US') {
 				$locale = self::str2js(str_replace('_', '-', $this->locale));
-				$html .= " f.setlocale(\"$locale\");\n";
+				$script .= " f.setlocale(\"$locale\");\n";
 				$this->locales[$locale] = 1;
 			}
 
@@ -264,70 +266,98 @@ HTML;
 					$marker = self::str2js($attrs['marker']);
 
 				if (isset($attrs['zoom']))
-					$html .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
+					$script .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
 
 				if (!empty($attrs['title']))
-					$html .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
+					$script .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
 
 				if (!empty($attrs['description']))
-					$html .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
+					$script .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
+
+				if (!empty($attrs['html']))
+					$script .= " f.markerHTML = \"{$this->str2js($attrs['html'])}\";\n";
 
 				if (!empty($attrs['address']))
-					$html .= " f.markerAddress = \"{$this->unhtml($attrs['address'])}\";\n";
+					$script .= " f.markerAddress = \"{$this->unhtml($attrs['address'])}\";\n";
 
 				if (!empty($attrs['link'])) {
 					$link = self::str2js($attrs['link']);
-					$html .= " f.markerLink = \"$link\";\n";
+					$script .= " f.markerLink = \"$link\";\n";
 				}
 
-				$html .= " f.showMarker(\"$divID\", [{$attrs['center']}], [{$marker}]);\n";
+				$script .= " f.showMarker(\"$divID\", [{$attrs['center']}], [{$marker}]);\n";
 			}
 
 			// add map based on address query
 			else if (isset($attrs['address'])) {
 				if (isset($attrs['zoom']))
-					$html .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
+					$script .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
 
 				if (!empty($attrs['title']))
-					$html .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
+					$script .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
 
 				if (!empty($attrs['description']))
-					$html .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
+					$script .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
 
 				if (!empty($attrs['link'])) {
 					$link = self::str2js($attrs['link']);
-					$html .= " f.markerLink = \"$link\";\n";
+					$script .= " f.markerLink = \"$link\";\n";
 				}
 
-				$html .= " f.showAddress(\"$divID\", \"{$this->unhtml($attrs['address'])}\");\n";
+				$script .= " f.showAddress(\"$divID\", \"{$this->unhtml($attrs['address'])}\");\n";
 			}
 
 			// add map based on KML file
 			else if (isset($attrs['src'])) {
 				if (isset($attrs['targetfix']) && self::isNo($attrs['targetfix'])) {
-					$html .= " f.targetFix = false;\n";
+					$script .= " f.targetFix = false;\n";
 				}
 
 				$kmlfile = self::str2js($attrs['src']);
-				$html .= " f.showKML(\"$divID\", \"$kmlfile\"";
+				$script .= " f.showKML(\"$divID\", \"$kmlfile\"";
 
 				if (isset($attrs['zoom']))
-					$html .= ', ' . preg_replace('/\D/', '', $attrs['zoom']);
+					$script .= ', ' . preg_replace('/\D/', '', $attrs['zoom']);
 
-				$html .= ");\n";
+				$script .= ");\n";
 			}
 
-			$html .= <<<HTML
- $varID = f;
-});
-//]]>
+			if ((defined('DOING_AJAX') && DOING_AJAX) || (isset($attrs['isajax']) && self::isYes($attrs['isajax']))) {
+				// wrap it up for AJAX load, no event trigger
+				$html .= <<<HTML
+<script>
+/* <![CDATA[ */
+var $varID = (function() {
+$script return f;
+})();
+/* ]]> */
 </script>
 
 HTML;
+			}
+			else {
+				// wrap it up for standard page load, with "content ready" trigger
+				$html .= <<<HTML
+<script>
+/* <![CDATA[ */
+(function(w, fn) {
+ if (w.addEventListener) w.addEventListener("DOMContentLoaded", fn, false);
+ else if (w.attachEvent) w.attachEvent("onload", fn);
+})(window, function() {
+$script window.$varID = f;
+});
+/* ]]> */
+</script>
+
+HTML;
+			}
+
 		}
 
 		// allow others to change the generated html
 		$html = apply_filters('flexmap_shortcode_html', $html, $attrs);
+
+		wp_enqueue_script('flxmap');
 
 		return $html;
 	}

@@ -112,6 +112,7 @@ function FlexibleMap() {
 	this.zoom = 16;										// zoom level, smaller is closer
 	this.markerTitle = '';								// title for marker info window
 	this.markerDescription = '';						// description for marker info window
+	this.markerHTML = '';								// HTML for marker info window (overrides title and description)
 	this.markerLink = '';								// link for marker title
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
@@ -253,7 +254,7 @@ FlexibleMap.prototype = (function() {
 			if (key in phrases)
 				return phrases[key];
 
-			return "";
+			return key;
 		},
 
 		/**
@@ -354,6 +355,13 @@ FlexibleMap.prototype = (function() {
 				element.className = "flxmap-marker-title";
 				element.appendChild(document.createTextNode(this.markerTitle));
 				container.appendChild(element);
+
+				// add precomposed HTML for infowindow
+				if (this.markerHTML) {
+					element = document.createElement("DIV");
+					element.innerHTML = this.markerHTML;
+					container.appendChild(element);
+				}
 
 				// body of info window, with link
 				if (this.markerDescription || this.markerLink) {
@@ -508,7 +516,7 @@ FlexibleMap.prototype = (function() {
 			p.appendChild(input);
 			form.appendChild(p);
 			panel.appendChild(form);
-			from.focus();
+			//~ from.focus();	// -- removed because causing problems autofocusing on elements and scrolling the page!
 
 			// hack to fix IE<=7 name weirdness for dynamically created form elements;
 			// see http://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready

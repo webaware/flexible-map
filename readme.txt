@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.4.2
-Stable tag: 1.5.3
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,7 +82,8 @@ Either the center or the address paramater is required. If you provide both, the
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
-* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true
+* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true	<dt>html</dt>
+* **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
 * **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
 * **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
 
@@ -136,6 +137,10 @@ Using a KML file, you can have as many markers on a map as you like, with as muc
 = Why won't my KML map update when I edit the KML file? =
 
 Google Maps API caches the KML file, so it often won't get your new changes. To force a change, append a URL query parameter with a number and increment the number each time you change the KML file (known as a cache buster). A nice simple and commonly used parameter name is v (for version), like this: http://example.com/my-map.kml?v=2
+
+= What parts of KML are supported? =
+
+The Google Maps API supports many commonly used KML elements, but has some restrictions. Read about [Google Maps support for KML](https://developers.google.com/kml/documentation/mapsSupport) in the developers' guide, and also see the list of [KML elements supported in Google Maps](https://developers.google.com/kml/documentation/kmlelementsinmaps).
 
 = Why won't the map show my place when I use the address parameter? =
 
@@ -192,7 +197,39 @@ And here's some sample jQuery code:
     // ... use map ...
 });`
 
+= Why won't the map load on my AJAX single-page website? =
+
+The plugin only loads the required JavaScript scripts when it knows that they are needed. When your website uses AJAX to load a page, the normal WordPress footer action for that page doesn't happen, and the scripts aren't loaded. You can make the scripts load on every page by adding this snippet to the functions.php file in your theme:
+
+`function my_preload_map_scripts() {
+	if (function_exists('flexmap_load_scripts')) {
+		flexmap_load_scripts();
+	}
+}
+add_action('wp_enqueue_scripts', 'my_preload_map_scripts', 20);`
+
+To make it load locale scripts as well, e.g. for French and Chinese language text, add them to the function call like this:
+
+`flexmap_load_scripts(array('fr', 'zh'));`
+
+The plugin will detect when AJAX is being used via the [WordPress standard method](http://codex.wordpress.org/AJAX_in_Plugins), and adjust accordingly (but you still need to load the scripts as above). If another method is used, add `isajax='true'` to the shortcode parameters.
+
+NB: currently, only AJAX methods that parse script tags will work correctly; this includes some [jQuery methods](http://stackoverflow.com/q/2203762/911083) (but [not all](http://stackoverflow.com/a/2699905/911083). A future version of the plugin will be more AJAX friendly.
+
+
+== Screenshots ==
+
+1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="500" height="400" directions="true" maptype="satellite"]`
+2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="500" height="400" directions="true"]`
+3. `[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml?v=2" width="500" height="400" maptype="satellite"]`
+4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
+
 == Changelog ==
+
+= 1.6.0 [2012-12-30] =
+* added: themes can call function flexmap_load_scripts() to force load of scripts, e.g. on single-page AJAX websites
+* added: can add HTML block to infowindow, e.g. images
+* fixed: no auto-focus on directions search field, thus no auto-scroll page to last directions search field!
 
 = 1.5.3 [2012-11-30] =
 * fixed: when parameters showdirections or directionsfrom were specified, but not directions, the directions panel was not added to page and a JavaScript error was generated
