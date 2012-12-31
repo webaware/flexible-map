@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.4.2
+Tested up to: 3.5.0
 Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
