@@ -1,6 +1,6 @@
 /*!
 JavaScript for the WordPress plugin wp-flexible-map
-copyright (c) 2011-2012 WebAware Pty Ltd, released under LGPL v2.1
+copyright (c) 2011-2013 WebAware Pty Ltd, released under LGPL v2.1
 */
 
 function FlexibleMap() {
@@ -415,8 +415,13 @@ FlexibleMap.prototype = (function() {
 				}
 
 				infowin = new google.maps.InfoWindow({content: container});
-				if (this.markerShowInfo)
-					infowin.open(map, point);
+
+				if (this.markerShowInfo) {
+					// open after map is loaded, so that infowindow will auto-pan and won't be cropped at top
+					google.maps.event.addListenerOnce(map, "tilesloaded", function() {
+						infowin.open(map, point);
+					});
+				}
 
 				google.maps.event.addListener(point, "click", function() {
 					infowin.open(map, point);

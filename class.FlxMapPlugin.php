@@ -5,8 +5,7 @@
 class FlxMapPlugin {
 	public $urlBase;									// string: base URL path to files in plugin
 
-	private $locales;									// hash map of locales required for i18n
-	private $locale;
+	protected $locale;
 
 	/**
 	* static method for getting the instance of this singleton object
@@ -38,8 +37,8 @@ class FlxMapPlugin {
 		}
 		else {
 			// non-admin actions and filters for this plugin
-			add_action('wp_footer', array($this, 'actionFooter'), 100);		// NB: must come after footer enqueued scripts!
 			add_action('wp_enqueue_scripts', array($this, 'actionEnqueueScripts'));
+			add_filter('clean_url', array($this, 'filterCleanURL'), 11);
 
 			// custom actions and filters for this plugin
 			add_filter('flexmap_getmap', array($this, 'getMap'), 10, 1);
@@ -56,11 +55,19 @@ class FlxMapPlugin {
 	*/
 	public function actionInit() {
 		// start off required locales with this website's WP locale
-		$this->locales = array();
 		$this->locale = get_locale();
-		if ($this->locale != '' && $this->locale != 'en_US') {
-			$this->setLocales(array($this->locale));
+	}
+
+	/**
+	* hack: add charset='utf-8' to i18n scripts
+	* @param string $url
+	* @return string
+	*/
+	public function filterCleanURL($url) {
+		if (stripos($url, $this->urlBase . 'i18n/') !== false) {
+			return "$url' charset='utf-8";
 		}
+		return $url;
 	}
 
 	/**
@@ -69,7 +76,7 @@ class FlxMapPlugin {
 	*/
 	public function setLocales($locales) {
 		foreach ($locales as $locale) {
-			$this->locales[strtr($locale, '_', '-')] = 1;
+			$this->enqueueLocale(strtr($locale, '_', '-'));
 		}
 	}
 
@@ -79,7 +86,8 @@ class FlxMapPlugin {
 	public function actionEnqueueScripts() {
 		// allow others to override the Google Maps API URL
 		$protocol = is_ssl() ? 'https' : 'http';
-		$apiURL = apply_filters('flexmap_google_maps_api_url', "$protocol://maps.google.com/maps/api/js?v=3.10&sensor=false");
+		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.11', 'sensor' => 'false'));
+		$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, "$protocol://maps.google.com/maps/api/js"));
 		if (!empty($apiURL)) {
 			wp_register_script('google-maps', $apiURL, false, null, true);
 		}
@@ -91,23 +99,19 @@ class FlxMapPlugin {
 	}
 
 	/**
-	* output anything we need in the footer
+	* enqueue an i18n script
+	* @param string $locale
 	*/
-	public function actionFooter() {
-		$version = FLXMAP_PLUGIN_VERSION;
-
-		// see if we need to load i18n messages
-		foreach (array_keys($this->locales) as $locale) {
-			// check for specific locale first, e.g. 'zh-CN'
+	protected function enqueueLocale($locale) {
+		// check for specific locale first, e.g. 'zh-CN'
+		if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
+			wp_enqueue_script('flxmap-' . $locale, $this->urlBase . "i18n/$locale.js", array('flxmap'), FLXMAP_PLUGIN_VERSION, true);
+		}
+		else {
+			// not found, so check for generic locale, e.g. 'zh'
+			$locale = substr($locale, 0, 2);
 			if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-				echo "<script charset='utf-8' src=\"{$this->urlBase}i18n/$locale.js?v=$version\"></script>\n";
-			}
-			else {
-				// not found, so check for generic locale, e.g. 'zh'
-				$locale = substr($locale, 0, 2);
-				if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-					echo "<script charset='utf-8' src=\"{$this->urlBase}i18n/$locale.js?v=$version\"></script>\n";
-				}
+				wp_enqueue_script('flxmap-' . $locale, $this->urlBase . "i18n/$locale.js", array('flxmap'), FLXMAP_PLUGIN_VERSION, true);
 			}
 		}
 	}
@@ -251,12 +255,12 @@ HTML;
 
 			if (isset($attrs['locale'])) {
 				$script .= " f.setlocale(\"{$this->str2js($attrs['locale'])}\");\n";
-				$this->locales[$attrs['locale']] = 1;
+				$this->enqueueLocale($attrs['locale']);
 			}
 			else if ($this->locale != '' || $this->locale != 'en-US') {
 				$locale = self::str2js(str_replace('_', '-', $this->locale));
 				$script .= " f.setlocale(\"$locale\");\n";
-				$this->locales[$locale] = 1;
+				$this->enqueueLocale($locale);
 			}
 
 			// add map based on coordinates, with optional marker coordinates
@@ -357,7 +361,11 @@ HTML;
 		// allow others to change the generated html
 		$html = apply_filters('flexmap_shortcode_html', $html, $attrs);
 
+		// enqueue scripts
 		wp_enqueue_script('flxmap');
+		if ($this->locale != '' && $this->locale != 'en_US') {
+			$this->enqueueLocale($this->locale);
+		}
 
 		return $html;
 	}
@@ -367,7 +375,7 @@ HTML;
 	* @param string $units
 	* @return string
 	*/
-	private static function getUnits($units) {
+	protected static function getUnits($units) {
 		$units = trim($units);
 
 		// check for valid CSS units
@@ -391,7 +399,7 @@ HTML;
 	* @param string $text
 	* @return boolean
 	*/
-	private static function isYes($text) {
+	public static function isYes($text) {
 		return preg_match('/^(?:y|yes|true|1)$/i', $text);
 	}
 
@@ -400,7 +408,7 @@ HTML;
 	* @param string $text
 	* @return boolean
 	*/
-	private static function isNo($text) {
+	public static function isNo($text) {
 		return preg_match('/^(?:n|no|false|0)$/i', $text);
 	}
 
@@ -409,7 +417,7 @@ HTML;
 	* @param string $text
 	* @return boolean
 	*/
-	private static function isCoordinates($text) {
+	public static function isCoordinates($text) {
 		return preg_match('/^-?\\d+(?:\\.\\d+),-?\\d+(?:\\.\\d+)$/', $text);
 	}
 
@@ -418,7 +426,7 @@ HTML;
 	* @param string $text
 	* @return string
 	*/
-	private static function unhtml($text) {
+	protected static function unhtml($text) {
 		return self::str2js(html_entity_decode($text, ENT_QUOTES, get_option('blog_charset')));
 	}
 
@@ -427,7 +435,7 @@ HTML;
 	* @param string $text
 	* @return string
 	*/
-	private static function str2js($text) {
+	protected static function str2js($text) {
 		return addcslashes($text, "\\/\'\"&\n\r<>");
 	}
 }

@@ -103,7 +103,7 @@ Either the center or the address paramater is required. If you provide both, the
 
 = Calling from templates or plugins =
 
-There is a PHP function `flexmap_show_map()` for theme and plugin developers. All of the same parameters for the shortcode can be passed to the function in an associative array.
+There is a PHP function `flexmap_show_map()` for theme and plugin developers. All of the same parameters for the shortcode can be passed to the function in an associative array. If you want it to return the map as a string without output to screen, add "echo"=>"false" to array of attributes.
 
 *Sample*:
 `flexmap_show_map(array(
@@ -121,10 +121,11 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
 
 There are also some filter hooks that allow you to change the behaviour of the plugin.
 
-* **flexmap_google_maps_api_url**: allows you to replace the Google Maps API URL, e.g. if you need a different API version (NB: this plugin's scripts are coded for a specific API major version!)
-* **flexmap_shortcode_attrs**: allows you to change the shortcode attributes, e.g. change the width and height
-* **flexmap_shortcode_styles**: allows you to change the inline styles applied to the div wrapping the map, e.g. remove width and height so that it can be specified in the theme's stylesheets
-* **flexmap_shortcode_html**: allows you to change the generated html, e.g. wrap in another div, add a link to Google Maps, etc.
+* **flexmap_google_maps_api_args**: filter the array of arguments that will be passed to the Google Maps API, e.g. 'v'=>'3.11', 'sensor'=>'false'
+* **flexmap_google_maps_api_url**: filter the Google Maps API URL, as a string
+* **flexmap_shortcode_attrs**: filter the array of shortcode attributes, e.g. change the width and height
+* **flexmap_shortcode_styles**: filter the array of inline styles applied to the div wrapping the map, e.g. remove width and height so that it can be specified in the theme's stylesheets
+* **flexmap_shortcode_html**: filter the generated html, e.g. wrap another div around it, add a link to Google Maps, add some additonal script, etc.
 
 For more information and examples, see [the website](http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/).
 
@@ -174,6 +175,8 @@ $('div.ui-tabs').bind('tabsshow', function(event, ui) {
 
 });
 </script>`
+
+For tabs in jQuery Tools, see [this support topic](http://wordpress.org/support/topic/tabs-map#post-3784706).
 
 = How can I get access to the map object? =
 
@@ -225,6 +228,13 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.1 [2013-01-29] =
+* fixed: infowindow auto-pans on load, to prevent the top of the bubble being cropped
+* added: WordPress filter 'flexmap_google_maps_api_args' for filtering array of arguments before building Google Maps API URL
+* added: function flexmap_show_map() accepts an attribute "echo", and returns a string without output to screen when "echo"=>"false"
+* changed: all scripts now loaded through wp_enqueue_scripts, including language scripts (thanks to a [tip from toscho](http://wordpress.stackexchange.com/a/38335/24260))
+* changed: bump version of Google Maps API to 3.11
 
 = 1.6.0 [2012-12-30] =
 * added: themes can call function flexmap_load_scripts() to force load of scripts, e.g. on single-page AJAX websites
