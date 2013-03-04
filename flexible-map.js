@@ -114,6 +114,7 @@ function FlexibleMap() {
 	this.markerDescription = '';						// description for marker info window
 	this.markerHTML = '';								// HTML for marker info window (overrides title and description)
 	this.markerLink = '';								// link for marker title
+	this.markerIcon = '';								// link for marker icon, leave blank for default
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
 	this.markerDirectionsShow = false;					// show directions as soon as page loads
@@ -334,7 +335,8 @@ FlexibleMap.prototype = (function() {
 			var	map = this.showMap(divID, centre),
 				point = new google.maps.Marker({
 					map: map,
-					position: new google.maps.LatLng(marker[0], marker[1])
+					position: new google.maps.LatLng(marker[0], marker[1]),
+					icon: this.markerIcon
 				});
 
 			if (!this.markerTitle)

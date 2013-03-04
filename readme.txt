@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **marker**: coordinates of the marker if different from the centre, in latitude,longitude, e.g. *marker="-34.916721,138.828878"*
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
+* **icon**: URL to icon for the marker, e.g. *icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true	<dt>html</dt>
@@ -228,6 +229,10 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.2 [2013-03-04] =
+* fixed: CSS fix for themes that muck up Google Maps images by specifying background colour on images without being selective
+* added: icon parameter to set marker icon on centre / address maps
 
 = 1.6.1 [2013-01-29] =
 * fixed: infowindow auto-pans on load, to prevent the top of the bubble being cropped

@@ -289,6 +289,11 @@ HTML;
 					$script .= " f.markerLink = \"$link\";\n";
 				}
 
+				if (!empty($attrs['icon'])) {
+					$icon = self::str2js($attrs['icon']);
+					$script .= " f.markerIcon = \"$icon\";\n";
+				}
+
 				$script .= " f.showMarker(\"$divID\", [{$attrs['center']}], [{$marker}]);\n";
 			}
 
@@ -306,6 +311,11 @@ HTML;
 				if (!empty($attrs['link'])) {
 					$link = self::str2js($attrs['link']);
 					$script .= " f.markerLink = \"$link\";\n";
+				}
+
+				if (!empty($attrs['icon'])) {
+					$icon = self::str2js($attrs['icon']);
+					$script .= " f.markerIcon = \"$icon\";\n";
 				}
 
 				$script .= " f.showAddress(\"$divID\", \"{$this->unhtml($attrs['address'])}\");\n";
