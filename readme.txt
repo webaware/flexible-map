@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -229,6 +229,9 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.3 [2013-03-14] =
+* fixed: HTML description now works for address-based maps (thanks, [John Sundberg](http://profiles.wordpress.org/bhwebworks/)!)
 
 = 1.6.2 [2013-03-04] =
 * fixed: CSS fix for themes that muck up Google Maps images by specifying background colour on images without being selective
