@@ -4,7 +4,7 @@ Plugin Name: WP Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
-Tags: google, maps, google maps, shortcode, kml
+Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.5.1
 Stable tag: 1.6.3
@@ -131,6 +131,14 @@ There are also some filter hooks that allow you to change the behaviour of the p
 For more information and examples, see [the website](http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/).
 
 == Frequently Asked Questions ==
+
+= Why do I get "The Google Maps API server rejected your request"? =
+
+If Google Maps is telling you this:
+
+> The Google Maps API server rejected your request. The "sensor" parameter specified in the request must be set to either "true" or "false".
+
+then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fixing it, or removing it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if its the theme.
 
 = Can I add multiple markers to a map? =
 
