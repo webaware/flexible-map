@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.5.1
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -138,7 +138,7 @@ If Google Maps is telling you this:
 
 > The Google Maps API server rejected your request. The "sensor" parameter specified in the request must be set to either "true" or "false".
 
-then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fixing it, or removing it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if its the theme.
+then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fix it, or remove it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if the theme is the problem.
 
 = Can I add multiple markers to a map? =
 
@@ -237,6 +237,13 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.4 [2013-06-14] =
+* fixed: can set directions=false and showdirections=true
+* fixed: space before colon in fr translation (thanks, [mister klucha](http://wordpress.org/support/profile/mister-klucha)!)
+* added: load unminified script if SCRIPT_DEBUG is defined / true
+* changed: clicking directions link sets focus on From: address again
+* changed: bump version of Google Maps API to 3.12
 
 = 1.6.3 [2013-03-14] =
 * fixed: HTML description now works for address-based maps (thanks, [John Sundberg](http://profiles.wordpress.org/bhwebworks/)!)
