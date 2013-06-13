@@ -4,10 +4,10 @@ Plugin Name: WP Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
-Tags: google, maps, google maps, shortcode, kml
+Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.5.0
-Stable tag: 1.6.0
+Tested up to: 3.5.1
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **marker**: coordinates of the marker if different from the centre, in latitude,longitude, e.g. *marker="-34.916721,138.828878"*
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
+* **icon**: URL to icon for the marker, e.g. *icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
 * **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true	<dt>html</dt>
@@ -130,6 +131,14 @@ There are also some filter hooks that allow you to change the behaviour of the p
 For more information and examples, see [the website](http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/).
 
 == Frequently Asked Questions ==
+
+= Why do I get "The Google Maps API server rejected your request"? =
+
+If Google Maps is telling you this:
+
+> The Google Maps API server rejected your request. The "sensor" parameter specified in the request must be set to either "true" or "false".
+
+then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fix it, or remove it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if the theme is the problem.
 
 = Can I add multiple markers to a map? =
 
@@ -228,6 +237,20 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.4 [2013-06-14] =
+* fixed: can set directions=false and showdirections=true
+* fixed: space before colon in fr translation (thanks, [mister klucha](http://wordpress.org/support/profile/mister-klucha)!)
+* added: load unminified script if SCRIPT_DEBUG is defined / true
+* changed: clicking directions link sets focus on From: address again
+* changed: bump version of Google Maps API to 3.12
+
+= 1.6.3 [2013-03-14] =
+* fixed: HTML description now works for address-based maps (thanks, [John Sundberg](http://profiles.wordpress.org/bhwebworks/)!)
+
+= 1.6.2 [2013-03-04] =
+* fixed: CSS fix for themes that muck up Google Maps images by specifying background colour on images without being selective
+* added: icon parameter to set marker icon on centre / address maps
 
 = 1.6.1 [2013-01-29] =
 * fixed: infowindow auto-pans on load, to prevent the top of the bubble being cropped
