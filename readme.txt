@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.5.1
+Tested up to: 3.5.2
 Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -84,7 +84,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **icon**: URL to icon for the marker, e.g. *icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
-* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true	<dt>html</dt>
+* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true <dt>html</dt>
 * **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
 * **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
 
@@ -175,7 +175,22 @@ When you hide the map in a tab, and then click on the tab to reveal its contents
 `<script>
 jQuery(function($) {
 
-$('div.ui-tabs').bind('tabsshow', function(event, ui) {
+$("body").bind("tabsactivate", function(event, ui) {
+    $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
+        var flxmap = window[this.getAttribute("data-flxmap")];
+        flxmap.redrawOnce();
+    });
+});
+
+});
+</script>`
+
+For jQuery versions 1.8 or older:
+
+`<script>
+jQuery(function($) {
+
+$("body").bind("tabsshow", function(event, ui) {
     $("#" + ui.panel.id + " div.flxmap-container").each(function() {
         var flxmap = window[this.getAttribute("data-flxmap")];
         flxmap.redrawOnce();
