@@ -4,10 +4,10 @@ Plugin Name: WP Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
-Tags: google, maps, google maps, shortcode, kml
+Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.5.0
-Stable tag: 1.6.0
+Tested up to: 3.6
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,8 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. *directions="true", directions="my-dir-id"*; default=false
+* **dirdraggable**: allow directions to be draggable, from [true, false]; default=false
+* **dirnomarkers**: suppress start and end markers when showing directions, from [true, false]; default=false
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
@@ -81,9 +83,10 @@ Either the center or the address paramater is required. If you provide both, the
 * **marker**: coordinates of the marker if different from the centre, in latitude,longitude, e.g. *marker="-34.916721,138.828878"*
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
+* **icon**: URL to icon for the marker, e.g. *icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
-* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true	<dt>html</dt>
+* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true <dt>html</dt>
 * **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
 * **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
 
@@ -131,6 +134,14 @@ For more information and examples, see [the website](http://snippets.webaware.co
 
 == Frequently Asked Questions ==
 
+= Why do I get "The Google Maps API server rejected your request"? =
+
+If Google Maps is telling you this:
+
+> The Google Maps API server rejected your request. The "sensor" parameter specified in the request must be set to either "true" or "false".
+
+then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fix it, or remove it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if the theme is the problem.
+
 = Can I add multiple markers to a map? =
 
 Using a KML file, you can have as many markers on a map as you like, with as much detail in the info windows. With KML you can also change marker icons and add other nice features. You can generate your KML file from an application like Google Earth, or you can create it yourself (in a text editor or with your own programming). [Learn more about KML](https://developers.google.com/kml/).
@@ -166,7 +177,22 @@ When you hide the map in a tab, and then click on the tab to reveal its contents
 `<script>
 jQuery(function($) {
 
-$('div.ui-tabs').bind('tabsshow', function(event, ui) {
+$("body").bind("tabsactivate", function(event, ui) {
+    $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
+        var flxmap = window[this.getAttribute("data-flxmap")];
+        flxmap.redrawOnce();
+    });
+});
+
+});
+</script>`
+
+For jQuery versions 1.8 or older:
+
+`<script>
+jQuery(function($) {
+
+$("body").bind("tabsshow", function(event, ui) {
     $("#" + ui.panel.id + " div.flxmap-container").each(function() {
         var flxmap = window[this.getAttribute("data-flxmap")];
         flxmap.redrawOnce();
@@ -205,9 +231,9 @@ And here's some sample jQuery code:
 The plugin only loads the required JavaScript scripts when it knows that they are needed. When your website uses AJAX to load a page, the normal WordPress footer action for that page doesn't happen, and the scripts aren't loaded. You can make the scripts load on every page by adding this snippet to the functions.php file in your theme:
 
 `function my_preload_map_scripts() {
-	if (function_exists('flexmap_load_scripts')) {
-		flexmap_load_scripts();
-	}
+    if (function_exists('flexmap_load_scripts')) {
+        flexmap_load_scripts();
+    }
 }
 add_action('wp_enqueue_scripts', 'my_preload_map_scripts', 20);`
 
@@ -228,6 +254,24 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.5 [2013-07-19] =
+* fixed: stop twentythirteen theme stuffing up Google Maps infowindows with its too-promiscuous box-sizing rules
+* added: `dirdraggable` and `dirnomarkers` parameters
+
+= 1.6.4 [2013-06-14] =
+* fixed: can set directions=false and showdirections=true
+* fixed: space before colon in fr translation (thanks, [mister klucha](http://wordpress.org/support/profile/mister-klucha)!)
+* added: load unminified script if SCRIPT_DEBUG is defined / true
+* changed: clicking directions link sets focus on From: address again
+* changed: bump version of Google Maps API to 3.12
+
+= 1.6.3 [2013-03-14] =
+* fixed: HTML description now works for address-based maps (thanks, [John Sundberg](http://profiles.wordpress.org/bhwebworks/)!)
+
+= 1.6.2 [2013-03-04] =
+* fixed: CSS fix for themes that muck up Google Maps images by specifying background colour on images without being selective
+* added: icon parameter to set marker icon on centre / address maps
 
 = 1.6.1 [2013-01-29] =
 * fixed: infowindow auto-pans on load, to prevent the top of the bubble being cropped

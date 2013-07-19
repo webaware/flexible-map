@@ -114,6 +114,7 @@ function FlexibleMap() {
 	this.markerDescription = '';						// description for marker info window
 	this.markerHTML = '';								// HTML for marker info window (overrides title and description)
 	this.markerLink = '';								// link for marker title
+	this.markerIcon = '';								// link for marker icon, leave blank for default
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
 	this.markerDirectionsShow = false;					// show directions as soon as page loads
@@ -123,6 +124,8 @@ function FlexibleMap() {
 	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
 	this.dirService = false;
 	this.dirPanel = false;
+	this.dirDraggable = false;
+	this.dirSuppressMarkers = false;
 	this.region = '';
 	this.locale = 'en';
 	this.localeActive = 'en';
@@ -280,7 +283,7 @@ FlexibleMap.prototype = (function() {
 			}
 
 			// add a directions service if needed
-			if (this.markerDirections) {
+			if (this.markerDirections || this.markerDirectionsShow) {
 				this.startDirService(map);
 			}
 
@@ -305,7 +308,7 @@ FlexibleMap.prototype = (function() {
 					// if we're showing directions, add directions link to marker description
 					if (self.markerDirections) {
 						var	latLng = kmlEvent.latLng,
-							params = latLng.lat() + ',' + latLng.lng() + ",'" + encodeJS(featureData.name) + "'",
+							params = latLng.lat() + ',' + latLng.lng() + ",'" + encodeJS(featureData.name) + "',true",
 							a = '<br /><a href="#" data-flxmap-fix-opera="1" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
 
 						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(/<\/div><\/div>$/i, a + "</div></div>");
@@ -334,7 +337,8 @@ FlexibleMap.prototype = (function() {
 			var	map = this.showMap(divID, centre),
 				point = new google.maps.Marker({
 					map: map,
-					position: new google.maps.LatLng(marker[0], marker[1])
+					position: new google.maps.LatLng(marker[0], marker[1]),
+					icon: this.markerIcon
 				});
 
 			if (!this.markerTitle)
@@ -397,7 +401,7 @@ FlexibleMap.prototype = (function() {
 					a.dataTitle = this.markerTitle;
 					addEventListener(a, "click", function(event) {
 						stopEvent(event);
-						self.showDirections(this.dataLatitude, this.dataLongitude, this.dataTitle);
+						self.showDirections(this.dataLatitude, this.dataLongitude, this.dataTitle, true);
 					});
 					a.appendChild(document.createTextNode(this.gettext("Directions")));
 					element.appendChild(a);
@@ -410,7 +414,7 @@ FlexibleMap.prototype = (function() {
 
 					// show directions immediately if required
 					if (this.markerDirectionsShow) {
-						this.showDirections(marker[0], marker[1], this.markerTitle);
+						this.showDirections(marker[0], marker[1], this.markerTitle, false);
 					}
 				}
 
@@ -485,7 +489,9 @@ FlexibleMap.prototype = (function() {
 			if (!this.dirPanel) {
 				this.dirPanel = new google.maps.DirectionsRenderer({
 					map: map,
-					panel: document.getElementById(this.markerDirections)
+					draggable: this.dirDraggable,
+					suppressMarkers: this.dirSuppressMarkers,
+					panel: document.getElementById(this.markerDirectionsDiv)
 				});
 			}
 		},
@@ -495,9 +501,10 @@ FlexibleMap.prototype = (function() {
 		* @param {Number} latitude
 		* @param {Number} longitude
 		* @param {String} title
+		* @param {bool} focus [optional]
 		*/
-		showDirections: function(latitude, longitude, title) {
-			var	panel = document.getElementById(this.markerDirections),
+		showDirections: function(latitude, longitude, title, focus) {
+			var	panel = document.getElementById(this.markerDirectionsDiv),
 				form = document.createElement("form"),
 				self = this,
 				region = this.region || '',
@@ -521,7 +528,11 @@ FlexibleMap.prototype = (function() {
 			p.appendChild(input);
 			form.appendChild(p);
 			panel.appendChild(form);
-			//~ from.focus();	// -- removed because causing problems autofocusing on elements and scrolling the page!
+
+			// only focus when asked, to prevent problems autofocusing on elements and scrolling the page!
+			if (focus) {
+				from.focus();
+			}
 
 			// hack to fix IE<=7 name weirdness for dynamically created form elements;
 			// see http://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready

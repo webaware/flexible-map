@@ -86,13 +86,14 @@ class FlxMapPlugin {
 	public function actionEnqueueScripts() {
 		// allow others to override the Google Maps API URL
 		$protocol = is_ssl() ? 'https' : 'http';
-		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.11', 'sensor' => 'false'));
+		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.12', 'sensor' => 'false'));
 		$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, "$protocol://maps.google.com/maps/api/js"));
 		if (!empty($apiURL)) {
 			wp_register_script('google-maps', $apiURL, false, null, true);
 		}
 
-		wp_register_script('flxmap', $this->urlBase . 'flexible-map.min.js', array('google-maps'), FLXMAP_PLUGIN_VERSION, true);
+		$min = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script('flxmap', "{$this->urlBase}flexible-map$min.js", array('google-maps'), FLXMAP_PLUGIN_VERSION, true);
 
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
 		wp_enqueue_style('flxmap', $this->urlBase . 'styles.css', false, FLXMAP_PLUGIN_VERSION);
@@ -167,9 +168,13 @@ class FlxMapPlugin {
 			}
 
 			// test for any conditions that show directions (thus requiring the directions div)
-			$directions = FALSE;
+			$directions = false;
+			$divDirectionsID = $divDirectionsID = '';
 			if (isset($attrs['directions']) && !self::isNo($attrs['directions'])) {
 				$directions = true;
+				if (!self::isYes($attrs['directions'])) {
+					$divDirectionsID = self::str2js($attrs['directions']);
+				}
 			}
 			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
 				$directions = true;
@@ -180,14 +185,9 @@ class FlxMapPlugin {
 
 			// build the directions div, if required
 			$divDirections = '';
-			if ($directions) {
-				if (isset($attrs['directions']) && !self::isYes($attrs['directions'])) {
-					$divDirectionsID = self::str2js($attrs['directions']);
-				}
-				else {
-					$divDirectionsID = "$divID-dir";
-					$divDirections = "\n<div id='$divDirectionsID' class='flxmap-directions'></div>";
-				}
+			if ($directions && empty($divDirectionsID)) {
+				$divDirectionsID = "$divID-dir";
+				$divDirections = "\n<div id='$divDirectionsID' class='flxmap-directions'></div>";
 			}
 
 			$html = <<<HTML
@@ -233,8 +233,17 @@ HTML;
 				$script .= " f.dblclickZoom = false;\n";
 			}
 
+			if (isset($attrs['directions'])) {
+				if (self::isNo($attrs['directions'])) {
+					$script .= " f.markerDirections = false;\n";
+				}
+				else {
+					$script .= " f.markerDirections = true;\n";
+				}
+			}
+
 			if ($directions) {
-				$script .= " f.markerDirections = \"$divDirectionsID\";\n";
+				$script .= " f.markerDirectionsDiv = \"$divDirectionsID\";\n";
 			}
 
 			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
@@ -243,6 +252,18 @@ HTML;
 
 			if (isset($attrs['directionsfrom'])) {
 				$script .= " f.markerDirectionsDefault = \"{$this->str2js($attrs['directionsfrom'])}\";\n";
+			}
+
+			if (isset($attrs['directions']) && self::isNo($attrs['directions'])) {
+				$script .= " f.markerDirectionsInfo = false;\n";
+			}
+
+			if (isset($attrs['dirdraggable']) && self::isYes($attrs['dirdraggable'])) {
+				$script .= " f.dirDraggable = true;\n";
+			}
+
+			if (isset($attrs['dirnomarkers']) && self::isYes($attrs['dirnomarkers'])) {
+				$script .= " f.dirSuppressMarkers = true;\n";
 			}
 
 			if (isset($attrs['maptype'])) {
@@ -289,6 +310,11 @@ HTML;
 					$script .= " f.markerLink = \"$link\";\n";
 				}
 
+				if (!empty($attrs['icon'])) {
+					$icon = self::str2js($attrs['icon']);
+					$script .= " f.markerIcon = \"$icon\";\n";
+				}
+
 				$script .= " f.showMarker(\"$divID\", [{$attrs['center']}], [{$marker}]);\n";
 			}
 
@@ -303,9 +329,17 @@ HTML;
 				if (!empty($attrs['description']))
 					$script .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
 
+				if (!empty($attrs['html']))
+					$script .= " f.markerHTML = \"{$this->str2js($attrs['html'])}\";\n";
+
 				if (!empty($attrs['link'])) {
 					$link = self::str2js($attrs['link']);
 					$script .= " f.markerLink = \"$link\";\n";
+				}
+
+				if (!empty($attrs['icon'])) {
+					$icon = self::str2js($attrs['icon']);
+					$script .= " f.markerIcon = \"$icon\";\n";
 				}
 
 				$script .= " f.showAddress(\"$divID\", \"{$this->unhtml($attrs['address'])}\");\n";
