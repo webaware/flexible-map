@@ -1,4 +1,10 @@
-/* stop some themes from messing up Google Maps' styling (e.g. twentyeleven) */
+/* stop some themes from messing up Google Maps' styling (e.g. twentyeleven, twentythirteen) */
+
+.flxmap-container * {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
 
 .flxmap-container img {
 	max-width: none !important;

@@ -258,6 +258,14 @@ HTML;
 				$script .= " f.markerDirectionsInfo = false;\n";
 			}
 
+			if (isset($attrs['dirdraggable']) && self::isYes($attrs['dirdraggable'])) {
+				$script .= " f.dirDraggable = true;\n";
+			}
+
+			if (isset($attrs['dirnomarkers']) && self::isYes($attrs['dirnomarkers'])) {
+				$script .= " f.dirSuppressMarkers = true;\n";
+			}
+
 			if (isset($attrs['maptype'])) {
 				$script .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
 			}

@@ -124,6 +124,8 @@ function FlexibleMap() {
 	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
 	this.dirService = false;
 	this.dirPanel = false;
+	this.dirDraggable = false;
+	this.dirSuppressMarkers = false;
 	this.region = '';
 	this.locale = 'en';
 	this.localeActive = 'en';
@@ -487,6 +489,8 @@ FlexibleMap.prototype = (function() {
 			if (!this.dirPanel) {
 				this.dirPanel = new google.maps.DirectionsRenderer({
 					map: map,
+					draggable: this.dirDraggable,
+					suppressMarkers: this.dirSuppressMarkers,
 					panel: document.getElementById(this.markerDirectionsDiv)
 				});
 			}

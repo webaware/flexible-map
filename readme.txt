@@ -6,8 +6,8 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.5.2
-Stable tag: 1.6.4
+Tested up to: 3.6
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,8 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. *directions="true", directions="my-dir-id"*; default=false
+* **dirdraggable**: allow directions to be draggable, from [true, false]; default=false
+* **dirnomarkers**: suppress start and end markers when showing directions, from [true, false]; default=false
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
@@ -229,9 +231,9 @@ And here's some sample jQuery code:
 The plugin only loads the required JavaScript scripts when it knows that they are needed. When your website uses AJAX to load a page, the normal WordPress footer action for that page doesn't happen, and the scripts aren't loaded. You can make the scripts load on every page by adding this snippet to the functions.php file in your theme:
 
 `function my_preload_map_scripts() {
-	if (function_exists('flexmap_load_scripts')) {
-		flexmap_load_scripts();
-	}
+    if (function_exists('flexmap_load_scripts')) {
+        flexmap_load_scripts();
+    }
 }
 add_action('wp_enqueue_scripts', 'my_preload_map_scripts', 20);`
 
@@ -252,6 +254,10 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.6.5 [2013-07-19] =
+* fixed: stop twentythirteen theme stuffing up Google Maps infowindows with its too-promiscuous box-sizing rules
+* added: `dirdraggable` and `dirnomarkers` parameters
 
 = 1.6.4 [2013-06-14] =
 * fixed: can set directions=false and showdirections=true
