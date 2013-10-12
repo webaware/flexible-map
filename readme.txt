@@ -4,10 +4,10 @@ Plugin Name: WP Flexible Map
 Plugin URI: http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/
 Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
-Tags: google, maps, google maps, shortcode, kml
+Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.5.0
-Stable tag: 1.6.0
+Tested up to: 3.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ Flexible Map allows you to add Google Maps to your WordPress website.
 * simple shortcode for adding maps to pages/posts
 * PHP function `flexmap_show_map()` for theme and plugin developers
 * supports multiple maps on a page/post
+* supports responsive design -- specify width / height in percent
 * map marker doesn't have to be the centre of the map
 * optional description for info window
 * optional directions link for info window
@@ -39,6 +40,16 @@ Click to see [WP Flexible Map in action](http://snippets.webaware.com.au/wordpre
 * directions on KML maps generously sponsored by [Roger Los](http://www.rogerlos.com/)
 
 Thanks for sponsoring new features on WP Flexible Maps!
+
+= Translations =
+
+Many thanks to the generous efforts of these people for human translations:
+
+* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
+* French (fr) -- [mister klucha](http://wordpress.org/support/profile/mister-klucha)
+* Greek (el) -- [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)
+
+The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the [support forum](http://wordpress.org/support/plugin/wp-flexible-map).
 
 == Installation ==
 
@@ -55,8 +66,8 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 
 = Parameters for all maps =
 
-* **width**: width in pixels or valid CSS units, e.g. *width="500"*
-* **height**: height in pixels or valid CSS units, e.g. *height="400"*
+* **width**: width in pixels or valid CSS units, e.g. *width="100%"*
+* **height**: height in pixels or valid CSS units, e.g. *height="400px"*
 * **id**: the CSS id of the container div (instead of a random generated unique ID), e.g. *id="my_map"*
 * **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
 * **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*; default=roadmap
@@ -65,12 +76,18 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **hidezooming**: hide the zoom controls, from [true, false], e.g. *hidezooming="true"*; default=false
 * **hidestreetview**: hide the street view control, from [true, false], e.g. *hidestreetview="true"*; default=true
 * **hidescale**: hide the map scale, from [true, false], e.g. *hidescale="true"*; default=true
+* **zoomstyle**: which zoom control style, from [small, large, default]; default=small
 * **scrollwheel**: enable zoom with mouse scroll wheel, from [true, false], e.g. *scrollwheel="true"*; default=false
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. *directions="true", directions="my-dir-id"*; default=false
+* **dirdraggable**: allow directions to be draggable, from [true, false]; default=false
+* **dirnomarkers**: suppress start and end markers when showing directions, from [true, false]; default=false
+* **dirshowsteps**: show or suppress directions steps when showing directions, from [true, false]; default=true
+* **dirshowssearch**: show or suppress directions search form when showing directions, from [true, false]; default=true
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
+* **visualrefresh**: enable [visual refresh](https://developers.google.com/maps/documentation/javascript/basics#VisualRefresh); NB: affects all maps on the page! from [true, false]; default=false
 
 = Additional parameters for centre coordinates or street address map =
 
@@ -81,14 +98,15 @@ Either the center or the address paramater is required. If you provide both, the
 * **marker**: coordinates of the marker if different from the centre, in latitude,longitude, e.g. *marker="-34.916721,138.828878"*
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
+* **icon**: URL to icon for the marker, e.g. *icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
-* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true	<dt>html</dt>
+* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="true"*; default=true <dt>html</dt>
 * **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
 * **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
 
 *Samples*:
-`[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
+`[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
 [flexiblemap address="116 Beaumont Street Hamilton NSW Australia" region="au" directions="true"]
 [flexiblemap center="-32.891058,151.538042" title="Mount Sugarloaf" directions="true"]
 [flexiblemap center="-32.918827,151.806164" title="Nobby's Head" directions="my-dir-div"]`
@@ -99,7 +117,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **targetfix**: prevent links from opening in new window, from [true, false], e.g. *targetfix="true"*; default=true
 
 *Sample*:
-`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="500" height="400"]`
+`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
 
 = Calling from templates or plugins =
 
@@ -108,7 +126,7 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
 *Sample*:
 `flexmap_show_map(array(
   'center' => '-34.916721,138.828878',
-  'width' => 500,
+  'width' => '100%',
   'height' => 400,
   'zoom' => 12,
   'title' => 'Adelaide Hills',
@@ -130,6 +148,14 @@ There are also some filter hooks that allow you to change the behaviour of the p
 For more information and examples, see [the website](http://snippets.webaware.com.au/wordpress-plugins/wp-flexible-map/).
 
 == Frequently Asked Questions ==
+
+= Why do I get "The Google Maps API server rejected your request"? =
+
+If Google Maps is telling you this:
+
+> The Google Maps API server rejected your request. The "sensor" parameter specified in the request must be set to either "true" or "false".
+
+then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fix it, or remove it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if the theme is the problem.
 
 = Can I add multiple markers to a map? =
 
@@ -157,7 +183,7 @@ Since version 1.1.0, this plugin now uses localised messages for things like the
 
 = You've translated my language badly / it's missing =
 
-The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the support forum.
+The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the [support forum](http://wordpress.org/support/plugin/wp-flexible-map).
 
 = The map is broken in jQuery UI tabs =
 
@@ -166,7 +192,22 @@ When you hide the map in a tab, and then click on the tab to reveal its contents
 `<script>
 jQuery(function($) {
 
-$('div.ui-tabs').bind('tabsshow', function(event, ui) {
+$("body").bind("tabsactivate", function(event, ui) {
+    $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
+        var flxmap = window[this.getAttribute("data-flxmap")];
+        flxmap.redrawOnce();
+    });
+});
+
+});
+</script>`
+
+For jQuery versions 1.8 or older:
+
+`<script>
+jQuery(function($) {
+
+$("body").bind("tabsshow", function(event, ui) {
     $("#" + ui.panel.id + " div.flxmap-container").each(function() {
         var flxmap = window[this.getAttribute("data-flxmap")];
         flxmap.redrawOnce();
@@ -182,8 +223,8 @@ For tabs in jQuery Tools, see [this support topic](http://wordpress.org/support/
 
 If you want to add your own scripting for the map, you can get the map object by identifying the FlexibleMap global variable for your map, and asking it to getMap(). By default, each FlexibleMap is given a randomly generated ID and the global variable name is derived from that. The map's containing div has a data property with this global variable name. Here's some sample jQuery code that gets the map object for the (first) map:
 
-`$(window).load(function() {
-    var flxmapName = $("div.flxmap-container").attr("data-flxmap");
+`jQuery(window).load(function() {
+    var flxmapName = jQuery("div.flxmap-container").attr("data-flxmap");
     var flxmap = window[flxmapName];
     var map = flxmap.getMap();
     // ... use map ...
@@ -195,7 +236,7 @@ Alternatively, you can specify the ID used for a given map, and it will then der
 
 And here's some sample jQuery code:
 
-`$(window).load(function() {
+`jQuery(window).load(function() {
     var map = flxmap_sugarloaf.getMap();
     // ... use map ...
 });`
@@ -205,9 +246,9 @@ And here's some sample jQuery code:
 The plugin only loads the required JavaScript scripts when it knows that they are needed. When your website uses AJAX to load a page, the normal WordPress footer action for that page doesn't happen, and the scripts aren't loaded. You can make the scripts load on every page by adding this snippet to the functions.php file in your theme:
 
 `function my_preload_map_scripts() {
-	if (function_exists('flexmap_load_scripts')) {
-		flexmap_load_scripts();
-	}
+    if (function_exists('flexmap_load_scripts')) {
+        flexmap_load_scripts();
+    }
 }
 add_action('wp_enqueue_scripts', 'my_preload_map_scripts', 20);`
 
@@ -228,6 +269,37 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.7.0 [2013-10-12] =
+* fixed: Greek translation (thanks, [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)!)
+* fixed: Dutch translation (thanks, [Ivan Beemster](http://www.lijndiensten.com/)!)
+* fixed: KML map zoom sometimes doesn't happen on first page visit
+* fixed: some themes (e.g. twentythirteen) mess up Google Maps directions markers
+* fixed: Google link opens maps without marker (NB: <= IE8 not supported)
+* added: `dirshowsteps` parameter, to allow directions steps (i.e. turn-by-turn steps) to be turned off
+* added: `dirshowssearch` parameter, to allow directions search form to be turned off
+* added: `zoomstyle` parameter, to allow large or small zoom controls
+* added: `visualrefresh` parameter, to enable [visual refresh](https://developers.google.com/maps/documentation/javascript/basics#VisualRefresh) for all maps on the page
+* added: default CSS sets info window text color to #333
+* changed: bump version of Google Maps API to 3.13
+
+= 1.6.5 [2013-07-19] =
+* fixed: stop twentythirteen theme stuffing up Google Maps infowindows with its too-promiscuous box-sizing rules
+* added: `dirdraggable` and `dirnomarkers` parameters
+
+= 1.6.4 [2013-06-14] =
+* fixed: can set directions=false and showdirections=true
+* fixed: space before colon in fr translation (thanks, [mister klucha](http://wordpress.org/support/profile/mister-klucha)!)
+* added: load unminified script if SCRIPT_DEBUG is defined / true
+* changed: clicking directions link sets focus on From: address again
+* changed: bump version of Google Maps API to 3.12
+
+= 1.6.3 [2013-03-14] =
+* fixed: HTML description now works for address-based maps (thanks, [John Sundberg](http://profiles.wordpress.org/bhwebworks/)!)
+
+= 1.6.2 [2013-03-04] =
+* fixed: CSS fix for themes that muck up Google Maps images by specifying background colour on images without being selective
+* added: icon parameter to set marker icon on centre / address maps
 
 = 1.6.1 [2013-01-29] =
 * fixed: infowindow auto-pans on load, to prevent the top of the bubble being cropped
