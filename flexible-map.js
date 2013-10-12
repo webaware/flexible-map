@@ -62,17 +62,37 @@ function FlexibleMap() {
 	this.showMap = function(divID, latLng) {
 		centre = new google.maps.LatLng(latLng[0], latLng[1]);
 
+		// style the zoom control
+		var zoomControlStyle, zoomControlStyles = {
+				"small" : google.maps.ZoomControlStyle.SMALL,
+				"large" : google.maps.ZoomControlStyle.LARGE,
+				"default" : google.maps.ZoomControlStyle.DEFAULT
+			};
+
+		if (this.zoomControlStyle in zoomControlStyles) {
+			zoomControlStyle = zoomControlStyles[this.zoomControlStyle];
+		}
+		else {
+			zoomControlStyle = zoomControlStyles.small;
+		}
+
+		// enable visual refresh, if requested
+		// NB: affect all maps on page!
+		if (this.visualRefresh)
+			google.maps.visualRefresh = true;
+
+		// create a map
 		map = new google.maps.Map(document.getElementById(divID), {
 				mapTypeId: this.mapTypeId,
 				mapTypeControl: this.mapTypeControl,
 				scaleControl: this.scaleControl,
 				panControl: this.panControl,
+				streetViewControl: this.streetViewControl,
 				zoomControl: this.zoomControl,
+				zoomControlOptions: { style: zoomControlStyle },
 				draggable: this.draggable,
 				disableDoubleClickZoom: !this.dblclickZoom,
 				scrollwheel: this.scrollwheel,
-				streetViewControl: this.streetViewControl,
-				navigationControlOptions: this.navigationControlOptions,
 				center: centre,
 				zoom: this.zoom
 			});
@@ -87,8 +107,7 @@ function FlexibleMap() {
 	*/
 	this.loadKmlMap = function(kmlFileURL) {
 		// load KML file as a layer and add to map
-		kmlLayer = new google.maps.KmlLayer(kmlFileURL);
-		kmlLayer.setMap(map);
+		kmlLayer = new google.maps.KmlLayer({ map: map, url: kmlFileURL });
 
 		// listen for KML loaded
 		google.maps.event.addListenerOnce(kmlLayer, "defaultviewport_changed", function() {
@@ -105,6 +124,7 @@ function FlexibleMap() {
 	this.scaleControl = false;							// no control for changing scale
 	this.panControl = false;							// no control for panning
 	this.zoomControl = true;							// show control for zooming
+	this.zoomControlStyle = "small";					// from "small", "large", "default"
 	this.streetViewControl = false;						// no control for street view
 	this.scrollwheel = false;							// no scroll wheel zoom
 	this.draggable = true;								// support dragging to pan
@@ -121,19 +141,21 @@ function FlexibleMap() {
 	this.markerDirectionsDefault = '';					// default from: location for directions
 	this.markerAddress = '';							// address of marker, if given
 	this.targetFix = true;								// remove target="_blank" from links on KML map
-	this.navigationControlOptions = { style: google.maps.NavigationControlStyle.SMALL };
 	this.dirService = false;
-	this.dirPanel = false;
-	this.dirDraggable = false;
-	this.dirSuppressMarkers = false;
+	this.dirRenderer = false;
+	this.dirDraggable = false;							// directions route is draggable (for alternate routing)
+	this.dirSuppressMarkers = false;					// suppress A/B markers on directions route
+	this.dirShowSteps = true;							// show the directions steps (turn-by-turn)
+	this.dirShowSearch = true;							// show the directions form for searching directions
 	this.region = '';
 	this.locale = 'en';
 	this.localeActive = 'en';
+	this.visualRefresh = false;
 }
 
 FlexibleMap.prototype = (function() {
 
-	var addEventListener, stopEvent, fireEvent;
+	var addEventListener, stopEvent;
 
 	// detect standard event model
 	if (document.addEventListener) {
@@ -144,12 +166,6 @@ FlexibleMap.prototype = (function() {
 		stopEvent = function(event) {
 			event.stopPropagation();
 			event.preventDefault();
-		};
-
-		fireEvent = function(element, eventName) {
-			var event = document.createEvent("HTMLEvents");
-			event.initEvent(eventName, true, true);
-			element.dispatchEvent(event);
 		};
 	}
 	else
@@ -162,12 +178,6 @@ FlexibleMap.prototype = (function() {
 		stopEvent = function(event) {
 			event.cancelBubble = true;
 			event.returnValue = 0;
-		};
-
-		fireEvent = function(element, eventName) {
-			var event = document.createEventObject();
-			event.eventType = eventName;
-			element.fireEvent("on" + eventName, event);
 		};
 	}
 
@@ -267,6 +277,9 @@ FlexibleMap.prototype = (function() {
 		* @param {Number} zoom [optional] zoom level
 		*/
 		showKML: function(divID, kmlFileURL, zoom) {
+			if (typeof zoom != "undefined")
+				this.zoom = zoom;
+
 			var	self = this,
 				mapDiv = document.getElementById(divID),
 				varName = mapDiv.getAttribute("data-flxmap"),
@@ -275,8 +288,8 @@ FlexibleMap.prototype = (function() {
 
 			// set zoom if specified
 			if (typeof zoom != "undefined") {
-				// listen for KML layer load finished
-				google.maps.event.addListenerOnce(map, "tilesloaded", function() {
+				// listen for zoom changing to fit markers on KML layer, force it back to what we asked for
+				google.maps.event.addListenerOnce(map, "zoom_changed", function() {
 					map.setZoom(zoom);
 					self.zoom = zoom;
 				});
@@ -430,7 +443,13 @@ FlexibleMap.prototype = (function() {
 				google.maps.event.addListener(point, "click", function() {
 					infowin.open(map, point);
 				});
+
+				// find Google link and append marker info, modern browsers only!
+				function googleLink() { self.updateGoogleLink(); }
+				google.maps.event.addListener(map, "idle", googleLink);
+				google.maps.event.addListener(map, "center_changed", googleLink);
 			}
+
 		},
 
 		/**
@@ -460,6 +479,30 @@ FlexibleMap.prototype = (function() {
 		},
 
 		/**
+		* set query parameters on Google link to maps
+		* NB: will only set the query parameters once, won't find links after that
+		*/
+		updateGoogleLink: function() {
+			if ("querySelectorAll" in document) {
+				try {
+					var	flxmap = this.getMap().getDiv(),
+						location = this.getCenter(),
+						googleLinks = flxmap.querySelectorAll("a[href*='maps.google.com/maps']:not([href*='mps_dialog']):not([href*='&q='])"),
+						i = 0, len = googleLinks.length,
+						query = encodeURIComponent((this.markerAddress ? this.markerAddress : this.markerTitle) +
+									" @" + location.lat() + "," + location.lng());
+
+					for (; i < len; i++) {
+						googleLinks[i].href += "&mrt=loc&iwloc=A&q=" + query;
+					}
+				}
+				catch (e) {
+					// we don't care
+				}
+			}
+		},
+
+		/**
 		* tell Google Maps to redraw the map, and centre it back where it started with default zoom
 		*/
 		redraw: function() {
@@ -486,12 +529,13 @@ FlexibleMap.prototype = (function() {
 			if (!this.dirService)
 				this.dirService = new google.maps.DirectionsService();
 
-			if (!this.dirPanel) {
-				this.dirPanel = new google.maps.DirectionsRenderer({
+			// make sure we have a directions renderer
+			if (!this.dirRenderer) {
+				this.dirRenderer = new google.maps.DirectionsRenderer({
 					map: map,
 					draggable: this.dirDraggable,
 					suppressMarkers: this.dirSuppressMarkers,
-					panel: document.getElementById(this.markerDirectionsDiv)
+					panel: this.dirShowSteps ? document.getElementById(this.markerDirectionsDiv) : null
 				});
 			}
 		},
@@ -504,98 +548,123 @@ FlexibleMap.prototype = (function() {
 		* @param {bool} focus [optional]
 		*/
 		showDirections: function(latitude, longitude, title, focus) {
-			var	panel = document.getElementById(this.markerDirectionsDiv),
-				form = document.createElement("form"),
-				self = this,
-				region = this.region || '',
-				input, p, from;
+			var	self = this;
 
-			// remove all from panel
-			while (!!(p = panel.lastChild))
-				panel.removeChild(p);
+			/**
+			* show the directions form to allow directions searches
+			*/
+			function showDirectionsForm() {
+				var panel = document.getElementById(self.markerDirectionsDiv),
+					form = document.createElement("form"),
+					input, p, from;
 
-			// populate form and add to panel
-			p = document.createElement("p");
-			p.appendChild(document.createTextNode(this.gettext("From") + ": "));
-			from = document.createElement("input");
-			from.type = "text";
-			from.name = "from";
-			from.value = this.markerDirectionsDefault;
-			p.appendChild(from);
-			input = document.createElement("input");
-			input.type = "submit";
-			input.value = this.gettext("Get directions");
-			p.appendChild(input);
-			form.appendChild(p);
-			panel.appendChild(form);
+				// remove all from panel
+				while (!!(p = panel.lastChild))
+					panel.removeChild(p);
 
-			// only focus when asked, to prevent problems autofocusing on elements and scrolling the page!
-			if (focus) {
-				from.focus();
-			}
+				// populate form and add to panel
+				p = document.createElement("p");
+				p.appendChild(document.createTextNode(self.gettext("From") + ": "));
+				from = document.createElement("input");
+				from.type = "text";
+				from.name = "from";
+				from.value = self.markerDirectionsDefault;
+				p.appendChild(from);
+				input = document.createElement("input");
+				input.type = "submit";
+				input.value = self.gettext("Get directions");
+				p.appendChild(input);
+				form.appendChild(p);
+				panel.appendChild(form);
 
-			// hack to fix IE<=7 name weirdness for dynamically created form elements;
-			// see http://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready
-			if (typeof form.elements.from == "undefined") {
-				form.elements.from = from;
-			}
-
-			// handle the form submit
-			addEventListener(form, "submit", function(event) {
-				stopEvent(event);
-
-				var from = this.elements.from.value;
-
-				// only process if something was entered to search on
-				if (/\S/.test(from)) {
-					var	dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
-						request = {
-							origin: from,
-							region: region,
-							destination: dest,
-							travelMode: google.maps.DirectionsTravelMode.DRIVING
-						};
-
-					self.dirService.route(request, function(response, status) {
-						var DirectionsStatus = google.maps.DirectionsStatus;
-
-						switch (status) {
-							case DirectionsStatus.OK:
-								self.dirPanel.setDirections(response);
-								break;
-
-							case DirectionsStatus.ZERO_RESULTS:
-								alert("No route could be found between the origin and destination.");
-								break;
-
-							case DirectionsStatus.OVER_QUERY_LIMIT:
-								alert("The webpage has gone over the requests limit in too short a period of time.");
-								break;
-
-							case DirectionsStatus.REQUEST_DENIED:
-								alert("The webpage is not allowed to use the directions service.");
-								break;
-
-							case DirectionsStatus.INVALID_REQUEST:
-								alert("Invalid directions request.");
-								break;
-
-							case DirectionsStatus.NOT_FOUND:
-								alert("Origin or destination was not found.");
-								break;
-
-							default:
-								alert("A directions request could not be processed due to a server error. The request may succeed if you try again.");
-								break;
-						}
-					});
+				// hack to fix IE<=7 name weirdness for dynamically created form elements;
+				// see http://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready
+				if (typeof form.elements.from == "undefined") {
+					form.elements.from = from;
 				}
 
-			});
+				// only focus when asked, to prevent problems autofocusing on elements and scrolling the page!
+				if (focus) {
+					from.focus();
+				}
+
+				// handle the form submit
+				addEventListener(form, "submit", function(event) {
+					stopEvent(event);
+
+					var from = this.elements.from.value;
+
+					// only process if something was entered to search on
+					if (/\S/.test(from)) {
+						requestDirections(from);
+					}
+
+				});
+			}
+
+			/**
+			* request directions
+			* @param {String} from
+			*/
+			function requestDirections(from) {
+				var	dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
+					request = {
+						origin: from,
+						region: self.region || '',
+						destination: dest,
+						travelMode: google.maps.DirectionsTravelMode.DRIVING
+					};
+
+				self.dirService.route(request, dirResponseHander);
+			}
+
+			/**
+			* handle the response for Google directions service
+			* @param {google.maps.DirectionsResult} response
+			* @param {Number} status
+			*/
+			function dirResponseHander(response, status) {
+				var DirectionsStatus = google.maps.DirectionsStatus;
+
+				switch (status) {
+					case DirectionsStatus.OK:
+						self.dirRenderer.setDirections(response);
+						break;
+
+					case DirectionsStatus.ZERO_RESULTS:
+						alert("No route could be found between the origin and destination.");
+						break;
+
+					case DirectionsStatus.OVER_QUERY_LIMIT:
+						alert("The webpage has gone over the requests limit in too short a period of time.");
+						break;
+
+					case DirectionsStatus.REQUEST_DENIED:
+						alert("The webpage is not allowed to use the directions service.");
+						break;
+
+					case DirectionsStatus.INVALID_REQUEST:
+						alert("Invalid directions request.");
+						break;
+
+					case DirectionsStatus.NOT_FOUND:
+						alert("Origin or destination was not found.");
+						break;
+
+					default:
+						alert("A directions request could not be processed due to a server error. The request may succeed if you try again.");
+						break;
+				}
+			}
+
+			// if we have a directions div, show the form for searching it
+			if (this.markerDirectionsDiv && this.dirShowSearch) {
+				showDirectionsForm();
+			}
 
 			// if the from: location is already set, trigger the directions query
-			if (from.value) {
-				fireEvent(form, "submit");
+			if (this.markerDirectionsDefault) {
+				requestDirections(this.markerDirectionsDefault);
 			}
 
 		}

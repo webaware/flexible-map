@@ -6,8 +6,8 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.6
-Stable tag: 1.6.5
+Tested up to: 3.6.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ Flexible Map allows you to add Google Maps to your WordPress website.
 * simple shortcode for adding maps to pages/posts
 * PHP function `flexmap_show_map()` for theme and plugin developers
 * supports multiple maps on a page/post
+* supports responsive design -- specify width / height in percent
 * map marker doesn't have to be the centre of the map
 * optional description for info window
 * optional directions link for info window
@@ -39,6 +40,16 @@ Click to see [WP Flexible Map in action](http://snippets.webaware.com.au/wordpre
 * directions on KML maps generously sponsored by [Roger Los](http://www.rogerlos.com/)
 
 Thanks for sponsoring new features on WP Flexible Maps!
+
+= Translations =
+
+Many thanks to the generous efforts of these people for human translations:
+
+* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
+* French (fr) -- [mister klucha](http://wordpress.org/support/profile/mister-klucha)
+* Greek (el) -- [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)
+
+The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the [support forum](http://wordpress.org/support/plugin/wp-flexible-map).
 
 == Installation ==
 
@@ -55,8 +66,8 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 
 = Parameters for all maps =
 
-* **width**: width in pixels or valid CSS units, e.g. *width="500"*
-* **height**: height in pixels or valid CSS units, e.g. *height="400"*
+* **width**: width in pixels or valid CSS units, e.g. *width="100%"*
+* **height**: height in pixels or valid CSS units, e.g. *height="400px"*
 * **id**: the CSS id of the container div (instead of a random generated unique ID), e.g. *id="my_map"*
 * **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
 * **maptype**: type of map to show, from [roadmap, satellite], e.g. *maptype="roadmap"*; default=roadmap
@@ -65,14 +76,18 @@ To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and giv
 * **hidezooming**: hide the zoom controls, from [true, false], e.g. *hidezooming="true"*; default=false
 * **hidestreetview**: hide the street view control, from [true, false], e.g. *hidestreetview="true"*; default=true
 * **hidescale**: hide the map scale, from [true, false], e.g. *hidescale="true"*; default=true
+* **zoomstyle**: which zoom control style, from [small, large, default]; default=small
 * **scrollwheel**: enable zoom with mouse scroll wheel, from [true, false], e.g. *scrollwheel="true"*; default=false
 * **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
 * **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
 * **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. *directions="true", directions="my-dir-id"*; default=false
 * **dirdraggable**: allow directions to be draggable, from [true, false]; default=false
 * **dirnomarkers**: suppress start and end markers when showing directions, from [true, false]; default=false
+* **dirshowsteps**: show or suppress directions steps when showing directions, from [true, false]; default=true
+* **dirshowssearch**: show or suppress directions search form when showing directions, from [true, false]; default=true
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [ccTLD](http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains) (without the .), e.g. *region="au"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
+* **visualrefresh**: enable [visual refresh](https://developers.google.com/maps/documentation/javascript/basics#VisualRefresh); NB: affects all maps on the page! from [true, false]; default=false
 
 = Additional parameters for centre coordinates or street address map =
 
@@ -91,7 +106,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
 
 *Samples*:
-`[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
+`[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
 [flexiblemap address="116 Beaumont Street Hamilton NSW Australia" region="au" directions="true"]
 [flexiblemap center="-32.891058,151.538042" title="Mount Sugarloaf" directions="true"]
 [flexiblemap center="-32.918827,151.806164" title="Nobby's Head" directions="my-dir-div"]`
@@ -102,7 +117,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **targetfix**: prevent links from opening in new window, from [true, false], e.g. *targetfix="true"*; default=true
 
 *Sample*:
-`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="500" height="400"]`
+`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
 
 = Calling from templates or plugins =
 
@@ -111,7 +126,7 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
 *Sample*:
 `flexmap_show_map(array(
   'center' => '-34.916721,138.828878',
-  'width' => 500,
+  'width' => '100%',
   'height' => 400,
   'zoom' => 12,
   'title' => 'Adelaide Hills',
@@ -168,7 +183,7 @@ Since version 1.1.0, this plugin now uses localised messages for things like the
 
 = You've translated my language badly / it's missing =
 
-The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the support forum.
+The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the [support forum](http://wordpress.org/support/plugin/wp-flexible-map).
 
 = The map is broken in jQuery UI tabs =
 
@@ -208,8 +223,8 @@ For tabs in jQuery Tools, see [this support topic](http://wordpress.org/support/
 
 If you want to add your own scripting for the map, you can get the map object by identifying the FlexibleMap global variable for your map, and asking it to getMap(). By default, each FlexibleMap is given a randomly generated ID and the global variable name is derived from that. The map's containing div has a data property with this global variable name. Here's some sample jQuery code that gets the map object for the (first) map:
 
-`$(window).load(function() {
-    var flxmapName = $("div.flxmap-container").attr("data-flxmap");
+`jQuery(window).load(function() {
+    var flxmapName = jQuery("div.flxmap-container").attr("data-flxmap");
     var flxmap = window[flxmapName];
     var map = flxmap.getMap();
     // ... use map ...
@@ -221,7 +236,7 @@ Alternatively, you can specify the ID used for a given map, and it will then der
 
 And here's some sample jQuery code:
 
-`$(window).load(function() {
+`jQuery(window).load(function() {
     var map = flxmap_sugarloaf.getMap();
     // ... use map ...
 });`
@@ -254,6 +269,19 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.7.0 [2013-10-12] =
+* fixed: Greek translation (thanks, [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)!)
+* fixed: Dutch translation (thanks, [Ivan Beemster](http://www.lijndiensten.com/)!)
+* fixed: KML map zoom sometimes doesn't happen on first page visit
+* fixed: some themes (e.g. twentythirteen) mess up Google Maps directions markers
+* fixed: Google link opens maps without marker (NB: <= IE8 not supported)
+* added: `dirshowsteps` parameter, to allow directions steps (i.e. turn-by-turn steps) to be turned off
+* added: `dirshowssearch` parameter, to allow directions search form to be turned off
+* added: `zoomstyle` parameter, to allow large or small zoom controls
+* added: `visualrefresh` parameter, to enable [visual refresh](https://developers.google.com/maps/documentation/javascript/basics#VisualRefresh) for all maps on the page
+* added: default CSS sets info window text color to #333
+* changed: bump version of Google Maps API to 3.13
 
 = 1.6.5 [2013-07-19] =
 * fixed: stop twentythirteen theme stuffing up Google Maps infowindows with its too-promiscuous box-sizing rules

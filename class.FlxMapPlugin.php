@@ -86,7 +86,7 @@ class FlxMapPlugin {
 	public function actionEnqueueScripts() {
 		// allow others to override the Google Maps API URL
 		$protocol = is_ssl() ? 'https' : 'http';
-		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.12', 'sensor' => 'false'));
+		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.13', 'sensor' => 'false'));
 		$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, "$protocol://maps.google.com/maps/api/js"));
 		if (!empty($apiURL)) {
 			wp_register_script('google-maps', $apiURL, false, null, true);
@@ -213,6 +213,10 @@ HTML;
 				$script .= " f.zoomControl = false;\n";
 			}
 
+			if (!empty($attrs['zoomstyle'])) {
+				$script .= " f.zoomControlStyle = \"{$this->str2js($attrs['zoomstyle'])}\";\n";
+			}
+
 			if (isset($attrs['hidestreetview']) && self::isNo($attrs['hidestreetview'])) {
 				$script .= " f.streetViewControl = true;\n";
 			}
@@ -266,6 +270,14 @@ HTML;
 				$script .= " f.dirSuppressMarkers = true;\n";
 			}
 
+			if (isset($attrs['dirshowsteps']) && self::isNo($attrs['dirshowsteps'])) {
+				$script .= " f.dirShowSteps = false;\n";
+			}
+
+			if (isset($attrs['dirshowssearch']) && self::isNo($attrs['dirshowssearch'])) {
+				$script .= " f.dirShowSearch = false;\n";
+			}
+
 			if (isset($attrs['maptype'])) {
 				$script .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
 			}
@@ -282,6 +294,10 @@ HTML;
 				$locale = self::str2js(str_replace('_', '-', $this->locale));
 				$script .= " f.setlocale(\"$locale\");\n";
 				$this->enqueueLocale($locale);
+			}
+
+			if (isset($attrs['visualrefresh']) && self::isYes($attrs['visualrefresh'])) {
+				$script .= " f.visualRefresh = true;\n";
 			}
 
 			// add map based on coordinates, with optional marker coordinates
