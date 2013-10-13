@@ -33,6 +33,8 @@ many different markers all on the one map.</p>
 	<dd>hide the zoom controls, from [true, false], e.g. <em>hidezooming=&quot;true&quot;</em>; default=false</dd>
 	<dt>hidestreetview</dt>
 	<dd>hide the street view control, from [true, false], e.g. <em>hidestreetview=&quot;true&quot;</em>; default=true</dd>
+	<dt>zoomstyle</dt>
+	<dd>which zoom control style, from [small, large, default]; default=small</dd>
 	<dt>hidescale</dt>
 	<dd>hide the map scale, from [true, false], e.g. <em>hidescale=&quot;true&quot;</em>; default=true</dd>
 	<dt>scrollwheel</dt>
@@ -41,6 +43,22 @@ many different markers all on the one map.</p>
 	<dd>enable dragging to pan, from [true, false], e.g. <em>draggable=&quot;true&quot;</em>; default=true</dd>
 	<dt>dblclickzoom</dt>
 	<dd>enable double-clicking to zoom, from [true, false], e.g. <em>dblclickzoom=&quot;true&quot;</em>; default=true</dd>
+	<dt>directions</dt>
+	<dd>show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. <em>directions=&quot;true&quot;, directions=&quot;my-dir-id&quot;</em>; default=false</dd>
+	<dt>dirdraggable</dt>
+	<dd>allow directions to be draggable, from [true, false]; default=false</dd>
+	<dt>dirnomarkers</dt>
+	<dd>suppress start and end markers when showing directions, from [true, false]; default=false</dd>
+	<dt>dirshowsteps</dt>
+	<dd>show or suppress directions steps when showing directions, from [true, false]; default=true</dd>
+	<dt>dirshowssearch</dt>
+	<dd>show or suppress directions search form when showing directions, from [true, false]; default=true</dd>
+	<dt>region</dt>
+	<dd>specify region to help localise address searches for street address map and directions, taken from the list of <a target="_blank" href="http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains">ccTLD</a> (without the .), e.g. <em>region=&quot;au&quot;</em></dd>
+	<dt>locale</dt>
+	<dd>use a specific locale (language) for messages like the text of the Directions link, e.g. <em>locale=&quot;nl-BE&quot;</em></dd>
+	<dt>visualrefresh</dt>
+	<dd>enable <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/basics#VisualRefresh">visual refresh</a>; NB: affects all maps on the page! from [true, false]; default=false</dd>
 </dl>
 
 <hr />
@@ -57,6 +75,8 @@ many different markers all on the one map.</p>
 	<dd>title of the marker, displayed in a text bubble, e.g. <em>title=&quot;Adelaide Hills&quot;</em></dd>
 	<dt>link</dt>
 	<dd>URL to link from the marker title, e.g. <em>link=&quot;http://example.com/&quot;</em></dd>
+	<dt>icon</dt>
+	<dd>URL to icon for the marker, e.g. <em>icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"</em></dd>
 	<dt>description</dt>
 	<dd>a description of the marker location (can have HTML links), e.g. <em>description=&quot;Lorem ipsum dolor sit amet&quot;</em></dd>
 	<dt>html</dt>
@@ -72,7 +92,7 @@ many different markers all on the one map.</p>
 	<dt>locale</dt>
 	<dd>use a specific locale (language) for messages like the text of the Directions link, e.g. <em>locale=&quot;nl-BE&quot;</em></dd>
 	<dt>region</dt>
-	<dd>specify region to help localise address searches for street address map and directions, taken from the list of <a href="http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains">ccTLD</a> (without the .), e.g. <em>region=&quot;au&quot;</em></dd>
+	<dd>specify region to help localise address searches for street address map and directions, taken from the list of <a target="_blank" href="http://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains">ccTLD</a> (without the .), e.g. <em>region=&quot;au&quot;</em></dd>
 	<dt>Samples:</dt>
 	<dd><code>[flexiblemap center="-34.916721,138.828878" width="500" height="400" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]</code></dd>
 	<dd><code>[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true"]</code></dd>
