@@ -7,7 +7,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: google, map, maps, google maps, shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 3.6.1
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -269,6 +269,9 @@ NB: currently, only AJAX methods that parse script tags will work correctly; thi
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.7.1 [2013-10-13] =
+* fixed: Google link was showing marker at centre, not at marker location when marker != centre
 
 = 1.7.0 [2013-10-12] =
 * fixed: Greek translation (thanks, [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)!)

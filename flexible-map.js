@@ -7,6 +7,7 @@ function FlexibleMap() {
 	// instance-private members with accessors
 	var	map,						// google.maps.Map object
 		centre,						// google.maps.LatLng object for map centre
+		markerLocation,				// google.maps.LatLng object for single marker, when using showMarker()
 		kmlLayer,					// if map has a KML layer, this is the layer object
 		hasRedrawn = false;			// boolean, whether map has been asked to redrawOnce() already
 
@@ -33,6 +34,22 @@ function FlexibleMap() {
 	this.setCenter = function(latLng) {
 		centre = latLng;
 		map.setCenter(centre);
+	};
+
+	/**
+	* record the single marker location
+	* @param {google.maps.LatLng} latLng
+	*/
+	this.setMarkerLocation = function(latLng) {
+		markerLocation = latLng;
+	};
+
+	/**
+	* get the single marker location
+	* @return {google.maps.LatLng}
+	*/
+	this.getMarkerLocation = function() {
+		return markerLocation;
 	};
 
 	/**
@@ -348,11 +365,14 @@ FlexibleMap.prototype = (function() {
 		*/
 		showMarker: function(divID, centre, marker) {
 			var	map = this.showMap(divID, centre),
+				markerLocation = new google.maps.LatLng(marker[0], marker[1]),
 				point = new google.maps.Marker({
 					map: map,
-					position: new google.maps.LatLng(marker[0], marker[1]),
+					position: markerLocation,
 					icon: this.markerIcon
 				});
+
+			this.setMarkerLocation(markerLocation);
 
 			if (!this.markerTitle)
 				this.markerTitle = this.markerAddress;
@@ -445,9 +465,11 @@ FlexibleMap.prototype = (function() {
 				});
 
 				// find Google link and append marker info, modern browsers only!
+				// NB: Google link is set before initial map idle event, and reset each time the map centre changes
 				function googleLink() { self.updateGoogleLink(); }
 				google.maps.event.addListener(map, "idle", googleLink);
 				google.maps.event.addListener(map, "center_changed", googleLink);
+				google.maps.event.addListenerOnce(map, "tilesloaded", googleLink);
 			}
 
 		},
@@ -479,14 +501,15 @@ FlexibleMap.prototype = (function() {
 		},
 
 		/**
-		* set query parameters on Google link to maps
-		* NB: will only set the query parameters once, won't find links after that
+		* set query parameters on Google link to maps -- modern browsers only
+		* NB: will only set the query parameters when Google link doesn't have them already;
+		* Google link is set before initial map idle event, and reset each time the map centre changes
 		*/
 		updateGoogleLink: function() {
 			if ("querySelectorAll" in document) {
 				try {
 					var	flxmap = this.getMap().getDiv(),
-						location = this.getCenter(),
+						location = this.getMarkerLocation(),
 						googleLinks = flxmap.querySelectorAll("a[href*='maps.google.com/maps']:not([href*='mps_dialog']):not([href*='&q='])"),
 						i = 0, len = googleLinks.length,
 						query = encodeURIComponent((this.markerAddress ? this.markerAddress : this.markerTitle) +
@@ -497,7 +520,7 @@ FlexibleMap.prototype = (function() {
 					}
 				}
 				catch (e) {
-					// we don't care
+					// we don't care about IE8 and earlier...
 				}
 			}
 		},
