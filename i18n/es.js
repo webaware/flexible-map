@@ -1,13 +1,13 @@
 // Spanish
-// from Google Translate -- please help improve this translation
+// translation by edurramos http://wordpress.org/support/profile/edurramos -- thanks!
 
 if (typeof FlexibleMap != "undefined") {
 
 	FlexibleMap.prototype.i18n["es"] = {
 		"Click for details" : "Haga clic para más detalles",
-		"Directions" : "Instrucciones",
-		"From" : "Lugar de salida",
-		"Get directions" : "Obtener direcciones"
+		"Directions" : "Cómo llegar",
+		"From" : "Desde",
+		"Get directions" : "Obtener ruta"
 	};
 
 }
