@@ -1,6 +1,6 @@
 /*!
 JavaScript for the WordPress plugin wp-flexible-map
-copyright (c) 2011-2013 WebAware Pty Ltd, released under LGPL v2.1
+copyright (c) 2011-2014 WebAware Pty Ltd, released under LGPL v2.1
 */
 
 function FlexibleMap() {
