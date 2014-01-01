@@ -1,9 +1,11 @@
 /*!
 JavaScript for the WordPress plugin wp-flexible-map
-copyright (c) 2011-2013 WebAware Pty Ltd, released under LGPL v2.1
+copyright (c) 2011-2014 WebAware Pty Ltd, released under LGPL v2.1
 */
 
 function FlexibleMap() {
+	"use strict";
+
 	// instance-private members with accessors
 	var	map,						// google.maps.Map object
 		centre,						// google.maps.LatLng object for map centre
@@ -171,6 +173,7 @@ function FlexibleMap() {
 }
 
 FlexibleMap.prototype = (function() {
+	"use strict";
 
 	var addEventListener, stopEvent;
 
@@ -466,7 +469,7 @@ FlexibleMap.prototype = (function() {
 
 				// find Google link and append marker info, modern browsers only!
 				// NB: Google link is set before initial map idle event, and reset each time the map centre changes
-				function googleLink() { self.updateGoogleLink(); }
+				var googleLink = function() { self.updateGoogleLink(); };
 				google.maps.event.addListener(map, "idle", googleLink);
 				google.maps.event.addListener(map, "center_changed", googleLink);
 				google.maps.event.addListenerOnce(map, "tilesloaded", googleLink);
@@ -495,7 +498,7 @@ FlexibleMap.prototype = (function() {
 					self.showMarker(divID, centre, centre);
 				}
 				else {
-					alert("Map address returns error: " + status);
+					window.alert("Map address returns error: " + status);
 				}
 			});
 		},
@@ -655,27 +658,27 @@ FlexibleMap.prototype = (function() {
 						break;
 
 					case DirectionsStatus.ZERO_RESULTS:
-						alert("No route could be found between the origin and destination.");
+						window.alert("No route could be found between the origin and destination.");
 						break;
 
 					case DirectionsStatus.OVER_QUERY_LIMIT:
-						alert("The webpage has gone over the requests limit in too short a period of time.");
+						window.alert("The webpage has gone over the requests limit in too short a period of time.");
 						break;
 
 					case DirectionsStatus.REQUEST_DENIED:
-						alert("The webpage is not allowed to use the directions service.");
+						window.alert("The webpage is not allowed to use the directions service.");
 						break;
 
 					case DirectionsStatus.INVALID_REQUEST:
-						alert("Invalid directions request.");
+						window.alert("Invalid directions request.");
 						break;
 
 					case DirectionsStatus.NOT_FOUND:
-						alert("Origin or destination was not found.");
+						window.alert("Origin or destination was not found.");
 						break;
 
 					default:
-						alert("A directions request could not be processed due to a server error. The request may succeed if you try again.");
+						window.alert("A directions request could not be processed due to a server error. The request may succeed if you try again.");
 						break;
 				}
 			}

@@ -4,10 +4,10 @@
 if (typeof FlexibleMap != "undefined") {
 
 	FlexibleMap.prototype.i18n["sl"] = {
-		"Click for details" : "Kliknite za podrobnosti",
-		"Directions" : "smeri",
+		"Click for details" : "Klikni za podrobnosti",
+		"Directions" : "Navodila",
 		"From" : "Kraj odhoda",
-		"Get directions" : "Pridobite zemljevid navodila"
+		"Get directions" : "Navodila za pot"
 	};
 
 }
