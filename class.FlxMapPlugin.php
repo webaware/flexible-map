@@ -104,15 +104,11 @@ class FlxMapPlugin {
 	* @param string $locale
 	*/
 	protected function enqueueLocale($locale) {
-		// check for specific locale first, e.g. 'zh-CN'
-		if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
-			wp_enqueue_script('flxmap-' . $locale, $this->urlBase . "i18n/$locale.js", array('flxmap'), FLXMAP_PLUGIN_VERSION, true);
-		}
-		else {
-			// not found, so check for generic locale, e.g. 'zh'
-			$locale = substr($locale, 0, 2);
+		// check first for specific locale first, e.g. 'zh-CN', then for generic locale, e.g. 'zh'
+		foreach (array($locale, substr($locale, 0, 2)) as $locale) {
 			if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
 				wp_enqueue_script('flxmap-' . $locale, $this->urlBase . "i18n/$locale.js", array('flxmap'), FLXMAP_PLUGIN_VERSION, true);
+				break;
 			}
 		}
 	}
