@@ -33,6 +33,7 @@ class FlxMapPlugin {
 
 		if (is_admin()) {
 			// kick off the admin handling
+			require FLXMAP_PLUGIN_ROOT . 'class.FlxMapAdmin.php';
 			new FlxMapAdmin($this);
 		}
 		else {
@@ -86,7 +87,7 @@ class FlxMapPlugin {
 	public function actionEnqueueScripts() {
 		// allow others to override the Google Maps API URL
 		$protocol = is_ssl() ? 'https' : 'http';
-		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.13', 'sensor' => 'false'));
+		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.15', 'sensor' => 'false'));
 		$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, "$protocol://maps.google.com/maps/api/js"));
 		if (!empty($apiURL)) {
 			wp_register_script('google-maps', $apiURL, false, null, true);
@@ -104,7 +105,7 @@ class FlxMapPlugin {
 	* @param string $locale
 	*/
 	protected function enqueueLocale($locale) {
-		// check first for specific locale first, e.g. 'zh-CN', then for generic locale, e.g. 'zh'
+		// check for specific locale first, e.g. 'zh-CN', then for generic locale, e.g. 'zh'
 		foreach (array($locale, substr($locale, 0, 2)) as $locale) {
 			if (file_exists(FLXMAP_PLUGIN_ROOT . "i18n/$locale.js")) {
 				wp_enqueue_script('flxmap-' . $locale, $this->urlBase . "i18n/$locale.js", array('flxmap'), FLXMAP_PLUGIN_VERSION, true);
@@ -292,10 +293,6 @@ HTML;
 				$this->enqueueLocale($locale);
 			}
 
-			if (isset($attrs['visualrefresh']) && self::isYes($attrs['visualrefresh'])) {
-				$script .= " f.visualRefresh = true;\n";
-			}
-
 			// add map based on coordinates, with optional marker coordinates
 			if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
 				$marker = self::str2js($attrs['center']);
@@ -363,6 +360,10 @@ HTML;
 					$script .= " f.targetFix = false;\n";
 				}
 
+				if (isset($attrs['kmlcache']) && preg_match('/^(?:none|\d+\s*minutes?|\d+\s*hours?|\d+\s*days?)$/', $attrs['kmlcache'])) {
+					$script .= " f.kmlcache = \"{$attrs['kmlcache']}\";\n";
+				}
+
 				$kmlfile = self::str2js($attrs['src']);
 				$script .= " f.showKML(\"$divID\", \"$kmlfile\"";
 
@@ -371,6 +372,9 @@ HTML;
 
 				$script .= ");\n";
 			}
+
+			// allow others to change the generated script
+			$script = apply_filters('flexmap_shortcode_script', $script, $attrs);
 
 			if ((defined('DOING_AJAX') && DOING_AJAX) || (isset($attrs['isajax']) && self::isYes($attrs['isajax']))) {
 				// wrap it up for AJAX load, no event trigger
@@ -401,7 +405,6 @@ $script window.$varID = f;
 
 HTML;
 			}
-
 		}
 
 		// allow others to change the generated html
@@ -433,7 +436,7 @@ HTML;
 			}
 			else {
 				// found only digits, so append px
-				$units = $units . 'px';
+				$units .= 'px';
 			}
 		}
 

@@ -1,4 +1,4 @@
-/* stop some themes from messing up Google Maps' styling (e.g. twentyeleven, twentythirteen) */
+/* stop some themes from messing up Google Maps' styling (e.g. twentyeleven, twentytwelve, twentythirteen...) */
 
 .flxmap-container * {
 	-webkit-box-sizing: content-box;
@@ -14,6 +14,7 @@
 	background-color: transparent !important;
 }
 
+.site-content .flxmap-directions img.adp-marker,
 .entry-content .flxmap-directions img.adp-marker {
 	max-width: none;
 	-webkit-box-shadow: none;
@@ -27,17 +28,10 @@
 
 /* some basic styling for info window */
 
-.flxmap-infowin {
-	font-family: Arial,Helvetica,sans-serif;
-	color: #333;
+.gm-style .gm-style-iw .flxmap-infowin {
+	color: #2c2c2c;
 }
 
-.flxmap-marker-title {
+.gm-style .gm-style-iw .flxmap-marker-title {
 	font-weight: bold;
-	font-size: medium;
-}
-
-.flxmap-marker-link, .flxmap-directions-link {
-	font-weight: normal;
-	font-size: small;
 }

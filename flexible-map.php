@@ -3,7 +3,7 @@
 Plugin Name: Flexible Map
 Plugin URI: http://flexible-map.webaware.net.au/
 Description: Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
-Version: 1.7.2.1
+Version: 1.7.3
 Author: WebAware
 Author URI: http://www.webaware.com.au/
 */
@@ -33,32 +33,14 @@ if (!defined('FLXMAP_PLUGIN_ROOT')) {
 	if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)
 		define('FLXMAP_PLUGIN_VERSION', time());
 	else
-		define('FLXMAP_PLUGIN_VERSION', '1.7.2');
+		define('FLXMAP_PLUGIN_VERSION', '1.7.3');
 
 	// shortcode tags
 	define('FLXMAP_PLUGIN_TAG_MAP', 'flexiblemap');
 }
 
-/**
-* autoload classes as/when needed
-*
-* @param string $class_name name of class to attempt to load
-*/
-function flxmap_autoload($class_name) {
-	static $classMap = array (
-		'FlxMapAdmin'						=> 'class.FlxMapAdmin.php',
-		'FlxMapPlugin'						=> 'class.FlxMapPlugin.php',
-	);
-
-	if (isset($classMap[$class_name])) {
-		require FLXMAP_PLUGIN_ROOT . $classMap[$class_name];
-	}
-}
-
-// register a class (static) method for autoloading required classes
-spl_autoload_register('flxmap_autoload');
-
 // instantiate the plug-in
+require FLXMAP_PLUGIN_ROOT . 'class.FlxMapPlugin.php';
 $FlxMapPlugin = FlxMapPlugin::getInstance();
 
 /**

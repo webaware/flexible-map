@@ -95,11 +95,6 @@ function FlexibleMap() {
 			zoomControlStyle = zoomControlStyles.small;
 		}
 
-		// enable visual refresh, if requested
-		// NB: affect all maps on page!
-		if (this.visualRefresh)
-			google.maps.visualRefresh = true;
-
 		// create a map
 		map = new google.maps.Map(document.getElementById(divID), {
 				mapTypeId: this.mapTypeId,
@@ -149,16 +144,16 @@ function FlexibleMap() {
 	this.draggable = true;								// support dragging to pan
 	this.dblclickZoom = true;							// support double-click zoom
 	this.zoom = 16;										// zoom level, smaller is closer
-	this.markerTitle = '';								// title for marker info window
-	this.markerDescription = '';						// description for marker info window
-	this.markerHTML = '';								// HTML for marker info window (overrides title and description)
-	this.markerLink = '';								// link for marker title
-	this.markerIcon = '';								// link for marker icon, leave blank for default
+	this.markerTitle = "";								// title for marker info window
+	this.markerDescription = "";						// description for marker info window
+	this.markerHTML = "";								// HTML for marker info window (overrides title and description)
+	this.markerLink = "";								// link for marker title
+	this.markerIcon = "";								// link for marker icon, leave blank for default
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
 	this.markerDirectionsShow = false;					// show directions as soon as page loads
-	this.markerDirectionsDefault = '';					// default from: location for directions
-	this.markerAddress = '';							// address of marker, if given
+	this.markerDirectionsDefault = "";					// default from: location for directions
+	this.markerAddress = "";							// address of marker, if given
 	this.targetFix = true;								// remove target="_blank" from links on KML map
 	this.dirService = false;
 	this.dirRenderer = false;
@@ -166,10 +161,10 @@ function FlexibleMap() {
 	this.dirSuppressMarkers = false;					// suppress A/B markers on directions route
 	this.dirShowSteps = true;							// show the directions steps (turn-by-turn)
 	this.dirShowSearch = true;							// show the directions form for searching directions
-	this.region = '';
-	this.locale = 'en';
-	this.localeActive = 'en';
-	this.visualRefresh = false;
+	this.region = "";
+	this.locale = "en";
+	this.localeActive = "en";
+	this.kmlcache = "none";
 }
 
 FlexibleMap.prototype = (function() {
@@ -233,6 +228,50 @@ FlexibleMap.prototype = (function() {
 		};
 
 	})();
+
+	/**
+	* add cache buster to KML source link
+	* @param {String} url
+	* @param {String} caching
+	* @return {String}
+	*/
+	function kmlCacheBuster(url, caching) {
+		var milliseconds, buster, multiplier, matches = /^(\d+)\s*(minute|hour|day)s?$/.exec(caching);
+
+		if (matches) {
+			milliseconds = (new Date()).getTime();
+			multiplier = +matches[1];
+
+			switch(matches[2]) {
+				case "minute":
+					// can't be less than 5 minutes
+					if (multiplier < 5) {
+						multiplier = 5;
+					}
+					buster = milliseconds / (60000 * multiplier);
+					break;
+
+				case "hour":
+					buster = milliseconds / (3600000 * multiplier);
+					break;
+
+				case "day":
+					buster = milliseconds / (86400000 * multiplier);
+					break;
+
+				default:
+					buster = false;
+					break;
+			}
+
+			if (buster) {
+				buster = Math.floor(buster);
+				url += (url.indexOf("?") > -1 ? "&" : "?") + "nocache=" + buster;
+			}
+		}
+
+		return url;
+	}
 
 	return {
 		constructor: FlexibleMap,
@@ -304,7 +343,7 @@ FlexibleMap.prototype = (function() {
 				mapDiv = document.getElementById(divID),
 				varName = mapDiv.getAttribute("data-flxmap"),
 				map = this.showMap(divID, [0, 0]),
-				kmlLayer = this.loadKmlMap(kmlFileURL);
+				kmlLayer = this.loadKmlMap(kmlCacheBuster(kmlFileURL, this.kmlcache));
 
 			// set zoom if specified
 			if (typeof zoom != "undefined") {
