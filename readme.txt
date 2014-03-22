@@ -6,8 +6,8 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.8.1
-Stable tag: 1.7.3
+Tested up to: 3.9-beta2
+Stable tag: 1.7.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -296,6 +296,9 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.7.3.1 [2014-03-22] =
+* fixed: infowindow width on some Webkit browsers, and IE10/11
 
 = 1.7.3 [2014-03-16] =
 * fixed: German translation (thanks, [Carib Design](http://www.caribdesign.com//)!)

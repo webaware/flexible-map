@@ -35,3 +35,21 @@
 .gm-style .gm-style-iw .flxmap-marker-title {
 	font-weight: bold;
 }
+
+/* fix info window width on some Webkit browsers */
+.gm-style-iw {
+	min-width: intrinsic;
+	min-width: -webkit-fit-content;
+	min-width: -moz-fit-content;
+	min-width: fit-content;
+}
+
+/* fix info window title width on IE10+ */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+
+	.gm-style .gm-style-iw .flxmap-marker-title {
+		white-space: nowrap;
+		word-wrap: normal;
+	}
+
+}
