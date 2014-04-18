@@ -6,7 +6,7 @@ Author URI: http://www.webaware.com.au/
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.9-beta2
+Tested up to: 3.9
 Stable tag: 1.7.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -48,7 +48,7 @@ Many thanks to the generous efforts of these people for human translations:
 
 * Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
 * French (fr) -- [mister klucha](http://profiles.wordpress.org/mister-klucha/)
-* German (de) -- [Carib Design](http://www.caribdesign.com//)
+* German (de) -- [Carib Design](http://www.caribdesign.com/)
 * Greek (el) -- [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)
 * Spanish (es) -- [edurramos](http://profiles.wordpress.org/edurramos/)
 
@@ -301,7 +301,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * fixed: infowindow width on some Webkit browsers, and IE10/11
 
 = 1.7.3 [2014-03-16] =
-* fixed: German translation (thanks, [Carib Design](http://www.caribdesign.com//)!)
+* fixed: German translation (thanks, [Carib Design](http://www.caribdesign.com/)!)
 * fixed: some themes (e.g. Evolve) mess up Google Maps directions markers
 * fixed: CSS for infowindows with Google Maps Visual Refresh / API v3.15
 * changed: removed instructions page, better handled by new homepage for plugin
