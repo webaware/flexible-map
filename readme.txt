@@ -3,11 +3,11 @@ Contributors: webaware
 Plugin Name: WP Flexible Map
 Plugin URI: http://flexible-map.webaware.net.au/
 Author URI: http://www.webaware.com.au/
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZCY9PST8E4GQ
+Donate link: http://shop.webaware.com.au/downloads/flexible-map/
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 3.9
-Stable tag: 1.7.3.1
+Tested up to: 4.0
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,26 +46,29 @@ Thanks for sponsoring new features on WP Flexible Maps!
 
 Many thanks to the generous efforts of these people for human translations:
 
+* Czech (cs) -- [caslavak](http://profiles.wordpress.org/caslavak/)
 * Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
 * French (fr) -- [mister klucha](http://profiles.wordpress.org/mister-klucha/)
 * German (de) -- [Carib Design](http://www.caribdesign.com/)
 * Greek (el) -- [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)
+* Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
+* Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
 * Spanish (es) -- [edurramos](http://profiles.wordpress.org/edurramos/)
 
-The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the [support forum](http://wordpress.org/support/plugin/wp-flexible-map).
+The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
 
 == Installation ==
 
 1. Upload this plugin to your /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Add the shortcode [flexiblemap] to your pages / posts to embed maps
+3. Add the shortcode `[flexiblemap]` to your pages / posts to embed maps
 
 There are two ways to load maps with this plugin:
 
 * specify the map's coordinates or street address
 * specify the URL to a KML file (e.g. from Google Earth)
 
-To add a Flexible Map to a post or a page, add a shortcode [flexiblemap] and give it some useful attributes. A map can either be specified using centre coordinates or street address, or by loading a KML file.
+To add a Flexible Map to a post or a page, add a shortcode `[flexiblemap]` and give it some useful attributes. A map can either be specified using centre coordinates or street address, or by loading a KML file.
 
 = Attributes for centre coordinates or street address map =
 
@@ -94,7 +97,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **kmlcache**: ask Google Maps to use a new map instead of cached map, specified in minutes (90 minutes), hours (2 hours), days (1 day), or "none"; minimum 5 minutes, default "none"
 
 *Sample*:
-`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
+`[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
 
 = Attributes for all maps =
 
@@ -177,8 +180,8 @@ Google Maps API caches the KML file, so it can take a while for your new changes
 
 If your map is auto-generated or changes frequently, add the `kmlcache` attribute to ask Google to fetch a new copy periodically. You can specify the interval in minutes (e.g. "90 minutes"), hours (e.g. "2 hours"), or days (e.g. "1 day"). The minimum interval is 5 minutes.
 
-`[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml?v=2"]
-[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml" kmlcache="8 hours"]`
+`[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml?v=2"]
+[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" kmlcache="8 hours"]`
 
 = What parts of KML are supported? =
 
@@ -201,43 +204,37 @@ Google Maps will use the locale information from your web browser to help displa
 `add_filter('flexmap_google_maps_api_args', 'force_flexmap_map_language');
 
 function force_flexmap_map_language($args) {
-	$args['language'] = get_locale();
-	return $args;
+    $args['language'] = get_locale();
+    return $args;
 }`
 
 = You've translated my language badly / it's missing =
 
-The initial translations were made using Google Translate, so it's likely that some will be truly awful! Please help by editing the .js file for your language in the i18n folder, and tell me about it in the [support forum](http://wordpress.org/support/plugin/wp-flexible-map).
+The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
 
 = The map is broken in jQuery UI tabs =
 
-When you hide the map in a tab, and then click on the tab to reveal its contents, the map doesn't know how big to draw until it is revealed. You need to give Google Maps a nudge so that it will pick up the correct size and position when you reveal it. Here's some sample jQuery code to do this, which you should add somewhere on the page (e.g. in your theme's footer):
+When you hide the map in a tab, and then click on the tab to reveal its contents, the map doesn't know how big to draw until it is revealed. You need to give Google Maps a nudge so that it will pick up the correct size and position when you reveal it. Download the .php file from [this gist](https://gist.github.com/webaware/05b27e3a99ccb00200f5), and install / activate to fix. If you'd prefer to add the jQuery code yourself, add this somewhere on the page (e.g. in your theme's footer):
 
 `<script>
-jQuery(function($) {
-
-$("body").bind("tabsactivate", function(event, ui) {
-    $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
-        var flxmap = window[this.getAttribute("data-flxmap")];
-        flxmap.redrawOnce();
-    });
-});
-
+jQuery("body").on("tabsactivate", function(event, ui) {
+    if (ui.newPanel.length) {
+        $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
+            var flxmap = window[this.getAttribute("data-flxmap")];
+            flxmap.redrawOnce();
+        });
+    }
 });
 </script>`
 
 For jQuery versions 1.8 or older:
 
 `<script>
-jQuery(function($) {
-
-$("body").bind("tabsshow", function(event, ui) {
-    $("#" + ui.panel.id + " div.flxmap-container").each(function() {
+jQuery("body").bind("tabsshow", function(event, ui) {
+    jQuery("#" + ui.panel.id + " div.flxmap-container").each(function() {
         var flxmap = window[this.getAttribute("data-flxmap")];
         flxmap.redrawOnce();
     });
-});
-
 });
 </script>`
 
@@ -292,10 +289,15 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="500" height="400" directions="true" maptype="satellite"]`
 2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="500" height="400" directions="true"]`
-3. `[flexiblemap src="http://snippets.webaware.com.au/maps/example-toronto.kml?v=2" width="500" height="400" maptype="satellite"]`
+3. `[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml?v=2" width="500" height="400" maptype="satellite"]`
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.8.0 [2014-08-31] =
+* fixed: Czech translation (thanks, [caslavak](http://profiles.wordpress.org/caslavak/)!)
+* fixed: Norwegian translations (thanks, [neonnero](http://www.neonnero.com/)!)
+* changed: localisation uses standard .mo files now; if you'd like to help translate, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
 
 = 1.7.3.1 [2014-03-22] =
 * fixed: infowindow width on some Webkit browsers, and IE10/11

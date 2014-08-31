@@ -3,13 +3,15 @@
 Plugin Name: Flexible Map
 Plugin URI: http://flexible-map.webaware.net.au/
 Description: Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
-Version: 1.7.3.1
+Version: 1.8.0
 Author: WebAware
-Author URI: http://www.webaware.com.au/
+Author URI: http://webaware.com.au/
+Text Domain: flexible-map
+Domain Path: /languages/
 */
 
 /*
-copyright (c) 2011-2014 WebAware Pty Ltd (email : rmckay@webaware.com.au)
+copyright (c) 2011-2014 WebAware Pty Ltd (email : support@webaware.com.au)
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,21 +29,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 if (!defined('FLXMAP_PLUGIN_ROOT')) {
+	define('FLXMAP_PLUGIN_FILE', __FILE__);
 	define('FLXMAP_PLUGIN_ROOT', dirname(__FILE__) . '/');
 	define('FLXMAP_PLUGIN_NAME', basename(dirname(__FILE__)) . '/' . basename(__FILE__));
-
-	// script/style version
-	if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)
-		define('FLXMAP_PLUGIN_VERSION', time());
-	else
-		define('FLXMAP_PLUGIN_VERSION', '1.7.3.1');
+	define('FLXMAP_PLUGIN_VERSION', '1.8.0');
 
 	// shortcode tags
 	define('FLXMAP_PLUGIN_TAG_MAP', 'flexiblemap');
 }
 
 // instantiate the plug-in
-require FLXMAP_PLUGIN_ROOT . 'class.FlxMapPlugin.php';
+require FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapPlugin.php';
 $FlxMapPlugin = FlxMapPlugin::getInstance();
 
 /**
