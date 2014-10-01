@@ -51,7 +51,7 @@ Many thanks to the generous efforts of these people for human translations:
 * French (fr) -- [mister klucha](http://profiles.wordpress.org/mister-klucha/)
 * German (de) -- [Carib Design](http://www.caribdesign.com/)
 * Greek (el) -- [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)
-* Hungarian (hu) -- Kriszitán Vörös
+* Hungarian (hu) -- Krisztián Vörös
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
 * Spanish (es) -- [edurramos](http://profiles.wordpress.org/edurramos/)
@@ -296,7 +296,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 == Changelog ==
 
 = 1.8.1 [soon...] =
-* fixed: Hungarian translation (thanks, Kriszitán Vörös)
+* fixed: Hungarian translation (thanks, Krisztián Vörös)
 
 = 1.8.0 [2014-08-31] =
 * fixed: Czech translation (thanks, [caslavak](http://profiles.wordpress.org/caslavak/)!)
