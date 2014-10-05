@@ -297,6 +297,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 = 1.8.1 [soon...] =
 * fixed: Hungarian translation (thanks, Krisztián Vörös)
+* changed: bump version of Google Maps API to 3.17
 
 = 1.8.0 [2014-08-31] =
 * fixed: Czech translation (thanks, [caslavak](http://profiles.wordpress.org/caslavak/)!)
