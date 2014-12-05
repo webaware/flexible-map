@@ -6,8 +6,8 @@ Author URI: http://www.webaware.com.au/
 Donate link: http://shop.webaware.com.au/downloads/flexible-map/
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 4.0
-Stable tag: 1.8.1
+Tested up to: 4.1
+Stable tag: 1.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,7 +44,7 @@ Thanks for sponsoring new features on WP Flexible Maps!
 
 = Translations =
 
-Many thanks to the generous efforts of these people for human translations:
+Many thanks to the generous efforts of our translators:
 
 * Czech (cs) -- [caslavak](http://profiles.wordpress.org/caslavak/)
 * Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
@@ -55,6 +55,7 @@ Many thanks to the generous efforts of these people for human translations:
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
 * Spanish (es) -- [edurramos](http://profiles.wordpress.org/edurramos/)
+* Welsh (cy) -- ([Dylan](https://profiles.wordpress.org/dtom-ct-wp/))
 
 The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
 
@@ -294,6 +295,9 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.8.2 [2014-12-06] =
+* added: Welsh translation (thanks, [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)!)
 
 = 1.8.1 [2014-10-05] =
 * fixed: Hungarian translation (thanks, Krisztián Vörös)
