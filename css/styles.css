@@ -22,6 +22,11 @@
 	box-shadow: none;
 }
 
+.flxmap-directions table.adp-placemark,
+.flxmap-directions table.adp-directions {
+	table-layout: inherit;
+}
+
 .flxmap-directions td.adp-text {
 	vertical-align: middle;
 }
