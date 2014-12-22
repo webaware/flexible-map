@@ -341,9 +341,9 @@ HTML;
 
 			// add map based on coordinates, with optional marker coordinates
 			if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
-				$marker = self::str2js($attrs['center']);
+				$marker = self::str2js(self::getCoordinates($attrs['center']));
 				if (isset($attrs['marker']) && self::isCoordinates($attrs['marker']))
-					$marker = self::str2js($attrs['marker']);
+					$marker = self::str2js(self::getCoordinates($attrs['marker']));
 
 				if (isset($attrs['zoom']))
 					$script .= " f.zoom = " . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
@@ -513,7 +513,19 @@ HTML;
 	* @return boolean
 	*/
 	public static function isCoordinates($text) {
-		return preg_match('/^-?\\d+(?:\\.\\d+),-?\\d+(?:\\.\\d+)$/', $text);
+		// TODO: handle degrees minutes seconds, degrees minutes.decimal, NSEW
+		return preg_match('/^-?[0-9]+(?:\.[0-9]+),\s*-?[0-9]+(?:\.[0-9]+)$/', $text);
+	}
+
+	/**
+	* return standardised coordinates from text
+	* NB: assumes text passes isCoordinates() above
+	* @param string $text
+	* @return boolean
+	*/
+	protected static function getCoordinates($text) {
+		// TODO: handle degrees minutes seconds, degrees minutes.decimal, NSEW
+		return str_replace(' ', '', $text);
 	}
 
 	/**

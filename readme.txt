@@ -55,7 +55,7 @@ Many thanks to the generous efforts of our translators:
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
 * Spanish (es) -- [edurramos](http://profiles.wordpress.org/edurramos/)
-* Welsh (cy) -- ([Dylan](https://profiles.wordpress.org/dtom-ct-wp/))
+* Welsh (cy) -- [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)
 
 The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
 
@@ -295,6 +295,10 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.9.0 [soon...] =
+* fixed: maps broken when hidden in tabs / accordions (not for IE 10 and earlier; uses MutationObserver)
+* fixed: strip spaces from map coordinates
 
 = 1.8.3 [2014-12-17] =
 * fixed: CSS for directions in twentyfifteen theme and others that toss table-layout:fixed around willy nilly

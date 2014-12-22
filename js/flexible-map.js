@@ -10,6 +10,8 @@ function FlexibleMap() {
 	var	map,						// google.maps.Map object
 		centre,						// google.maps.LatLng object for map centre
 		markerLocation,				// google.maps.LatLng object for single marker, when using showMarker()
+		markerPoint,				// google.maps.Marker object for single marker, when using showMarker()
+		markerInfowin,				// google.maps.InfoWindow object for single marker, when using showMarker()
 		kmlLayer,					// if map has a KML layer, this is the layer object
 		hasRedrawn = false;			// boolean, whether map has been asked to redrawOnce() already
 
@@ -52,6 +54,38 @@ function FlexibleMap() {
 	*/
 	this.getMarkerLocation = function() {
 		return markerLocation;
+	};
+
+	/**
+	* record the single marker point
+	* @param {google.maps.Marker} point
+	*/
+	this.setMarkerPoint = function(point) {
+		markerPoint = point;
+	};
+
+	/**
+	* get the single marker point
+	* @return {google.maps.Marker}
+	*/
+	this.getMarkerPoint = function() {
+		return markerPoint;
+	};
+
+	/**
+	* record the single marker infowindow
+	* @param {google.maps.InfoWindow} infowin
+	*/
+	this.setMarkerInfowin = function(infowin) {
+		markerInfowin = infowin;
+	};
+
+	/**
+	* get the single marker infowindow
+	* @return {google.maps.InfoWindow}
+	*/
+	this.getMarkerInfowin = function() {
+		return markerInfowin;
 	};
 
 	/**
@@ -170,7 +204,7 @@ function FlexibleMap() {
 FlexibleMap.prototype = (function() {
 	"use strict";
 
-	var addEventListener, stopEvent;
+	var addEventListener, stopEvent, handleHiddenMap;
 
 	// detect standard event model
 	if (document.addEventListener) {
@@ -194,6 +228,41 @@ FlexibleMap.prototype = (function() {
 			event.cancelBubble = true;
 			event.returnValue = 0;
 		};
+	}
+
+	// handle hidden maps, trigger a resize on first display
+	if (typeof MutationObserver !== "undefined") {
+		handleHiddenMap = function(flxmap, divID) {
+			var	mapDiv = document.getElementById(divID),
+				container = mapDiv.parentNode,
+				observer;
+
+			function isHidden(element) {
+				var style = window.getComputedStyle(element);
+				return style.display === "none";
+			}
+
+			// only need to watch and act if the parent container is hidden from display
+			if (isHidden(container)) {
+				observer = new MutationObserver(function(mutations, self) {
+					// only proceed if map is visible now
+					if (!isHidden(container)) {
+						flxmap.redrawOnce();
+
+						// stop observing, we're done
+						self.disconnect();
+					}
+				});
+
+				observer.observe(container, {
+					attributes:			true,
+					attributeFilter:	["style"]
+				});
+			}
+		};
+	}
+	else {
+		handleHiddenMap = function() { };
 	}
 
 	/**
@@ -354,6 +423,8 @@ FlexibleMap.prototype = (function() {
 				map = this.showMap(divID, [0, 0]),
 				kmlLayer = this.loadKmlMap(kmlCacheBuster(kmlFileURL, this.kmlcache));
 
+			handleHiddenMap(this, divID);
+
 			// set zoom if specified
 			if (typeof zoom != "undefined") {
 				// listen for zoom changing to fit markers on KML layer, force it back to what we asked for
@@ -423,8 +494,10 @@ FlexibleMap.prototype = (function() {
 					icon: this.markerIcon
 				});
 
+			this.setMarkerPoint(point);
 			this.setMarkerLocation(markerLocation);
 
+			handleHiddenMap(this, divID);
 
 			if (!this.markerTitle) {
 				this.markerTitle = this.markerAddress;
@@ -505,6 +578,7 @@ FlexibleMap.prototype = (function() {
 				}
 
 				infowin = new google.maps.InfoWindow({content: container});
+				this.setMarkerInfowin(infowin);
 
 				if (this.markerShowInfo) {
 					// open after map is loaded, so that infowindow will auto-pan and won't be cropped at top
@@ -594,6 +668,12 @@ FlexibleMap.prototype = (function() {
 			else {
 				map.setCenter(this.getCenter());
 				map.setZoom(this.zoom);
+
+				// redraw the marker's infowindow if it has one
+				var infowin = this.getMarkerInfowin();
+				if (infowin) {
+					infowin.open(map, this.getMarkerPoint());
+				}
 			}
 		},
 
