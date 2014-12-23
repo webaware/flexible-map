@@ -339,6 +339,15 @@ HTML;
 				$this->enqueueLocale($locale);
 			}
 
+			// if have address but not coordinates, attempt to retrieve coordinates for address
+			if (empty($attrs['center']) && !empty($attrs['address'])) {
+				$region = empty($attrs['region']) ? '' : $attrs['region'];
+				$center = self::getAddressCoordinates($attrs['address'], $region);
+				if ($center) {
+					$attrs['center'] = implode(',', $center);
+				}
+			}
+
 			// add map based on coordinates, with optional marker coordinates
 			if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
 				$marker = self::str2js(self::getCoordinates($attrs['center']));
@@ -487,6 +496,63 @@ HTML;
 		}
 
 		return $units;
+	}
+
+	/**
+	* get coordinate for given address
+	* @param string $address
+	* @param string $region
+	* @return array|false
+	*/
+	protected static function getAddressCoordinates($address, $region) {
+		// try to get a cached answer first
+		$cacheKey = 'flxmap_' . md5($address);
+		$coords = get_transient($cacheKey);
+
+		if ($coords === false) {
+			// build Google Maps geocoding query
+			$args = array('address'	=> urlencode($address));
+			if (!empty($region)) {
+				$args['region'] = urlencode($region);
+			}
+			$url = add_query_arg($args, 'https://maps.googleapis.com/maps/api/geocode/json');
+
+			try {
+				// fetch coordinates
+				$response = wp_remote_get($url);
+
+				if (is_wp_error($response)) {
+					throw new Exception('http error = ' . $response->get_error_message());
+				}
+
+				$result = json_decode($response['body']);
+				if (!$result) {
+					throw new Exception("error decoding JSON\n" . $response['body']);
+				}
+
+				if ($result->status != 'OK') {
+					throw new Exception("error retrieving address: " . $result->status);
+				}
+
+				// success, return object with latitude and longitude, and state
+				$location = $result->results[0]->geometry->location;
+				$coords = array($location->lat, $location->lng);
+			}
+			catch (Exception $e) {
+				$coords = "address: $address; " . $e->getMessage();
+				error_log(__METHOD__ . ': ' . $coords);
+			}
+
+			// save coordinates to prevent unnecessary requery
+			set_transient($cacheKey, $coords, WEEK_IN_SECONDS);
+		}
+
+		// handle failure to map address to coordinates by returning false
+		if (!is_array($coords)) {
+			$coords = false;
+		}
+
+		return $coords;
 	}
 
 	/**

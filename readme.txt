@@ -299,6 +299,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 = 1.9.0 [soon...] =
 * fixed: maps broken when hidden in tabs / accordions (not for IE 10 and earlier; uses MutationObserver)
 * fixed: strip spaces from map coordinates
+* added: server-side lookup of address, to reduce the number of Google Maps queries when only an address is given
 
 = 1.8.3 [2014-12-17] =
 * fixed: CSS for directions in twentyfifteen theme and others that toss table-layout:fixed around willy nilly
