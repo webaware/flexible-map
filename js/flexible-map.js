@@ -115,35 +115,49 @@ function FlexibleMap() {
 	this.showMap = function(divID, latLng) {
 		centre = new google.maps.LatLng(latLng[0], latLng[1]);
 
-		// style the zoom control
-		var zoomControlStyle, zoomControlStyles = {
-				"small" : google.maps.ZoomControlStyle.SMALL,
-				"large" : google.maps.ZoomControlStyle.LARGE,
-				"default" : google.maps.ZoomControlStyle.DEFAULT
+		var mapOptions,
+			zoomControlStyle,
+			zoomControlStyles = {
+				"small"		: google.maps.ZoomControlStyle.SMALL,
+				"large"		: google.maps.ZoomControlStyle.LARGE,
+				"default"	: google.maps.ZoomControlStyle.DEFAULT
 			};
 
+		// basic options
+		mapOptions = {
+			mapTypeId:					this.mapTypeId,
+			mapTypeControl:				this.mapTypeControl,
+			scaleControl:				this.scaleControl,
+			panControl:					this.panControl,
+			streetViewControl:			this.streetViewControl,
+			zoomControl:				zoomControlStyles.small,
+			zoomControlOptions:			{ style: zoomControlStyle },
+			draggable:					this.draggable,
+			disableDoubleClickZoom:		!this.dblclickZoom,
+			scrollwheel:				this.scrollwheel,
+			center:						centre,
+			zoom:						this.zoom
+		};
+
+		// style the zoom control
 		if (this.zoomControlStyle in zoomControlStyles) {
-			zoomControlStyle = zoomControlStyles[this.zoomControlStyle];
+			mapOptions.zoomControlStyle = zoomControlStyles[this.zoomControlStyle];
 		}
-		else {
-			zoomControlStyle = zoomControlStyles.small;
+
+		// select which map types for map type control, if specified as comma-separated list of map type IDs
+		if (this.mapTypeIds) {
+			mapOptions.mapTypeControlOptions = {
+				mapTypeIds:	this.mapTypeIds.split(",")
+			};
 		}
 
 		// create a map
-		map = new google.maps.Map(document.getElementById(divID), {
-				mapTypeId: this.mapTypeId,
-				mapTypeControl: this.mapTypeControl,
-				scaleControl: this.scaleControl,
-				panControl: this.panControl,
-				streetViewControl: this.streetViewControl,
-				zoomControl: this.zoomControl,
-				zoomControlOptions: { style: zoomControlStyle },
-				draggable: this.draggable,
-				disableDoubleClickZoom: !this.dblclickZoom,
-				scrollwheel: this.scrollwheel,
-				center: centre,
-				zoom: this.zoom
-			});
+		map = new google.maps.Map(document.getElementById(divID), mapOptions);
+
+		// set custom map type if specified
+		if (this.mapTypeId in this.mapTypes) {
+			map.mapTypes.set(this.mapTypeId, this.mapTypes[this.mapTypeId]._styled_map);
+		}
 
 		return map;
 	};
@@ -165,6 +179,11 @@ function FlexibleMap() {
 
 		return kmlLayer;
 	};
+
+	// load localisations if they haven't already been loaded
+	if (!this.localised && "flxmap" in window) {
+		this.localise();
+	}
 
 	// set map defaults
 	this.mapTypeId = google.maps.MapTypeId.ROADMAP;
@@ -348,15 +367,39 @@ FlexibleMap.prototype = (function() {
 		/**
 		* collection of locale / phrase mapping for internationalisation of messages
 		*/
-		i18n: {
-			"en": {
-				"Click for details" : "Click for details",
-				"Directions" : "Directions",
-				"From" : "From",
-				"Get directions" : "Get directions"
+		i18n: { },
+
+		/**
+		* collection of custom Google Maps map types for styling maps
+		*/
+		mapTypes: { },
+
+		localised: false,		// set to true once localisations have been loaded
+
+		/**
+		* load localisations into class prototype
+		*/
+		localise: function() {
+			var key, mapTypes;
+
+			// load translations
+			if ("i18n" in flxmap) {
+				FlexibleMap.prototype.i18n = flxmap.i18n;
 			}
+
+			// load custom map types
+			if ("mapTypes" in flxmap) {
+				mapTypes = flxmap.mapTypes;
+
+				for (key in mapTypes) {
+					mapTypes[key]._styled_map = new google.maps.StyledMapType(mapTypes[key].styles, mapTypes[key].options);
+				}
+
+				FlexibleMap.prototype.mapTypes = mapTypes;
+			}
+
+			FlexibleMap.prototype.localised = true;
 		},
-		i18n_loaded: false,		// set to true once localisations have been loaded
 
 		/**
 		* set the locale used for i18n phrase lookup, picking the best match
@@ -365,14 +408,6 @@ FlexibleMap.prototype = (function() {
 		*/
 		setlocale: function(localeWanted) {
 			this.locale = localeWanted;
-
-			// load localisations if they haven't already been loaded
-			if (!this.i18n_loaded && "flxmap" in window) {
-				for (var locale in flxmap.i18n) {
-					this.i18n[locale] = flxmap.i18n[locale];
-				}
-				FlexibleMap.prototype.i18n_loaded = true;
-			}
 
 			// attempt to set this locale as active
 			if (localeWanted in this.i18n) {
@@ -385,8 +420,8 @@ FlexibleMap.prototype = (function() {
 					this.localeActive = localeWanted;
 				}
 				else {
-					// still not found, use default (en)
-					this.localeActive = "en";
+					// still not found
+					this.localeActive = false;
 				}
 			}
 
@@ -399,10 +434,11 @@ FlexibleMap.prototype = (function() {
 		* @return {String}
 		*/
 		gettext: function(key) {
-			var phrases = this.i18n[this.localeActive];
+			var locale = this.localeActive;
 
-			if (key in phrases)
-				return phrases[key];
+			if (locale && key in this.i18n[locale]) {
+				return this.i18n[locale][key];
+			}
 
 			return key;
 		},

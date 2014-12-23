@@ -6,7 +6,8 @@ class FlxMapPlugin {
 	public $urlBase;									// string: base URL path to files in plugin
 
 	protected $locale;									// locale of current website
-	protected $locales = array();						// list of locales enqueued for localisation of maps
+	protected $locales		= array();					// list of locales enqueued for localisation of maps
+	protected $mapTypes		= array();					// custom Google Maps map types to be loaded with maps, keyed by mapTypeId
 
 	/**
 	* static method for getting the instance of this singleton object
@@ -103,7 +104,7 @@ class FlxMapPlugin {
 	}
 
 	/**
-	* load any enqueued locales as localisations on the main script
+	* load any enqueued locales and map types as localisations on the main script
 	*/
 	public function justInTimeLocalisation() {
 		if (!empty($this->locales)) {
@@ -144,6 +145,11 @@ class FlxMapPlugin {
 							// TODO: handle plurals (not yet needed, don't have any)
 							$strings = array();
 							foreach ($mo->entries as $original => $translation) {
+								// skip admin-side strings, identified by context
+								if ($translation->context == 'plugin details links') {
+									continue;
+								}
+
 								$strings[$original] = $translation->translations[0];
 							}
 							$i18n[$locale] = $strings;
@@ -153,8 +159,17 @@ class FlxMapPlugin {
 				}
 			}
 
+			// build and enqueue localisations for map script
+			$localise = array();
 			if (!empty($i18n)) {
-				wp_localize_script('flxmap', 'flxmap', array('i18n' => $i18n));
+				$localise['i18n'] = $i18n;
+			}
+			if (!empty($this->mapTypes)) {
+				$localise['mapTypes'] = $this->mapTypes;
+			}
+
+			if (!empty($localise)) {
+				wp_localize_script('flxmap', 'flxmap', $localise);
 			}
 		}
 	}
@@ -178,8 +193,11 @@ class FlxMapPlugin {
 	public function getMap($attrs) {
 		$html = '';
 
-		// allow others to change the shortcode attributes used
+		// allow plugins / themes to change the shortcode attributes used
 		$attrs = apply_filters('flexmap_shortcode_attrs', $attrs);
+
+		// allow plugins / themes to register custom Google Maps map types
+		$this->mapTypes = apply_filters('flexmap_custom_map_types', $this->mapTypes, $attrs);
 
 		if (!empty($attrs['src']) || !empty($attrs['center']) || !empty($attrs['address'])) {
 			$this->loadScripts = true;
@@ -322,6 +340,10 @@ HTML;
 
 			if (isset($attrs['maptype'])) {
 				$script .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
+			}
+
+			if (isset($attrs['maptypes'])) {
+				$script .= " f.mapTypeIds = \"{$this->str2js($attrs['maptypes'])}\";\n";
 			}
 
 			if (isset($attrs['region'])) {

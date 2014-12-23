@@ -34,7 +34,7 @@ Flexible Map allows you to add Google Maps to your WordPress website.
 * directions can be dropped into any div element with an ID
 * minimal dependencies -- just WordPress and the Google Maps API
 
-Click to see [WP Flexible Map in action](http://flexible-map.webaware.net.au/).
+[Try WP Flexible Map online](http://flexible-map.webaware.net.au/).
 
 = Sponsorships =
 
@@ -147,14 +147,15 @@ There is a PHP function `flexmap_show_map()` for theme and plugin developers. Al
 
 There are also some filter hooks that allow you to change the behaviour of the plugin.
 
-* **flexmap_google_maps_api_args**: filter the array of arguments that will be passed to the Google Maps API, e.g. `'v'=>'3.exp'`, `'sensor'=>'false'`
-* **flexmap_google_maps_api_url**: filter the Google Maps API URL, as a string
-* **flexmap_shortcode_attrs**: filter the array of shortcode attributes, e.g. change the width and height
-* **flexmap_shortcode_styles**: filter the array of inline styles applied to the div wrapping the map, e.g. remove width and height so that it can be specified in the theme's stylesheets
-* **flexmap_shortcode_html**: filter the generated HTML, e.g. wrap another div around it, add a link to Google Maps, add some additonal script, etc.
-* **flexmap_shortcode_script**: filter the generated JavaScript
+* `flexmap_google_maps_api_args`: filter the array of arguments that will be passed to the Google Maps API, e.g. `'v'=>'3.exp'`, `'sensor'=>'false'`
+* `flexmap_google_maps_api_url`: filter the Google Maps API URL, as a string
+* `flexmap_shortcode_attrs`: filter the array of shortcode attributes, e.g. change the width and height
+* `flexmap_shortcode_styles`: filter the array of inline styles applied to the div wrapping the map, e.g. remove width and height so that it can be specified in the theme's stylesheets
+* `flexmap_shortcode_html`: filter the generated HTML, e.g. wrap another div around it, add a link to Google Maps, add some additonal script, etc.
+* `flexmap_shortcode_script`: filter the generated JavaScript
+* `flexmap_custom_map_types`: register custom Google Maps map types
 
-For more information and examples, see [the website](http://flexible-map.webaware.net.au/).
+For more information and examples, see [the reference website](http://flexible-map.webaware.net.au/).
 
 == Frequently Asked Questions ==
 
@@ -300,6 +301,9 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * fixed: maps broken when hidden in tabs / accordions (not for IE 10 and earlier; uses MutationObserver)
 * fixed: strip spaces from map coordinates
 * added: server-side lookup of address, to reduce the number of Google Maps queries when only an address is given
+* added: support for custom map types (inc. styled maps)
+* added: `maptypes` attribute for selecting which map types can be picked by visitors
+* changed: refactored JavaScript for localised strings
 
 = 1.8.3 [2014-12-17] =
 * fixed: CSS for directions in twentyfifteen theme and others that toss table-layout:fixed around willy nilly
