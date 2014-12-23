@@ -528,7 +528,7 @@ HTML;
 	*/
 	protected static function getAddressCoordinates($address, $region) {
 		// try to get a cached answer first
-		$cacheKey = 'flxmap_' . md5($address);
+		$cacheKey = 'flxmap_' . md5("$address|$region");
 		$coords = get_transient($cacheKey);
 
 		if ($coords === false) {
@@ -556,7 +556,7 @@ HTML;
 					throw new Exception("error retrieving address: " . $result->status);
 				}
 
-				// success, return object with latitude and longitude, and state
+				// success, return array with latitude and longitude
 				$location = $result->results[0]->geometry->location;
 				$coords = array($location->lat, $location->lng);
 			}

@@ -216,7 +216,7 @@ function FlexibleMap() {
 	this.dirShowSearch = true;							// show the directions form for searching directions
 	this.region = "";
 	this.locale = "en";
-	this.localeActive = "en";
+	this.localeActive = false;
 	this.kmlcache = "none";
 }
 
