@@ -7,7 +7,7 @@ Donate link: http://shop.webaware.com.au/downloads/flexible-map/
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 4.1
-Stable tag: 1.8.3
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -297,9 +297,10 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Changelog ==
 
-= 1.9.0 [soon...] =
+= 1.9.0 [2014-12-24] =
 * fixed: maps broken when hidden in tabs / accordions (not for IE 10 and earlier; uses MutationObserver)
 * fixed: strip spaces from map coordinates
+* fixed: suppress border radius on images within map containers
 * added: server-side lookup of address, to reduce the number of Google Maps queries when only an address is given
 * added: support for custom map types (inc. styled maps)
 * added: `maptypes` attribute for selecting which map types can be picked by visitors

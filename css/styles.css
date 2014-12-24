@@ -12,6 +12,7 @@
 	-moz-box-shadow: none !important;
 	box-shadow: none !important;
 	background-color: transparent !important;
+	border-radius: 0px !important;
 }
 
 .site-content .flxmap-directions img.adp-marker,
