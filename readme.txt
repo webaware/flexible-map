@@ -108,6 +108,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **id**: the CSS id of the container div (instead of a random generated unique ID), e.g. *id="my_map"*
 * **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
 * **maptype**: type of map to show, from [roadmap, satellite, hybrid, terrain], e.g. *maptype="satellite"*; default=roadmap
+* **maptypes**: types of maps in the map type controls, e.g. *maptypes="custom_type,satellite"*
 * **hidemaptype**: hide the map type controls, from [true, false], e.g. *hidemaptype="true"*; default=false
 * **hidepanning**: hide the panning controls, from [true, false], e.g. *hidepanning="true"*; default=true
 * **hidezooming**: hide the zoom controls, from [true, false], e.g. *hidezooming="true"*; default=false
@@ -215,22 +216,30 @@ function force_flexmap_map_language($args) {
 
 The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
 
-= The map is broken in jQuery UI tabs =
+= The map is broken in tabs / accordions =
 
-When you hide the map in a tab, and then click on the tab to reveal its contents, the map doesn't know how big to draw until it is revealed. You need to give Google Maps a nudge so that it will pick up the correct size and position when you reveal it. Download the .php file from [this gist](https://gist.github.com/webaware/05b27e3a99ccb00200f5), and install / activate to fix. If you'd prefer to add the jQuery code yourself, add this somewhere on the page (e.g. in your theme's footer):
+When you hide the map in a tab, and then click on the tab to reveal its contents, sometimes the map doesn't know how big to draw until it is revealed. Since v1.9.0 most such problems are automatically resolved for modern browsers, including Internet Explorer 11 or later. If you need to support earlier versions that don't support [MutationObserver](http://caniuse.com/#feat=mutationobserver), add some script to your website to handle this yourself.
+
+For jQuery UI tabs and accordions, download the .php file from [this gist](https://gist.github.com/webaware/05b27e3a99ccb00200f5), and install / activate it. If you'd prefer to add the jQuery code yourself, add this somewhere on the page (e.g. in your theme's footer):
 
 `<script>
-jQuery("body").on("tabsactivate", function(event, ui) {
-    if (ui.newPanel.length) {
-        $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
-            var flxmap = window[this.getAttribute("data-flxmap")];
-            flxmap.redrawOnce();
-        });
+(function($) {
+
+    function mapRedraw(event, ui) {
+        if (ui.newPanel.length) {
+            $("#" + ui.newPanel[0].id + " div.flxmap-container").each(function() {
+                var flxmap = window[this.getAttribute("data-flxmap")];
+                flxmap.redrawOnce();
+            });
+        }
     }
-});
+
+    $("body").on("accordionactivate", mapRedraw).on("tabsactivate", mapRedraw);
+
+})(jQuery);
 </script>`
 
-For jQuery versions 1.8 or older:
+For jQuery UI tabs versions 1.8 or older:
 
 `<script>
 jQuery("body").bind("tabsshow", function(event, ui) {
