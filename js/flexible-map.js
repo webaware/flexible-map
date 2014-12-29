@@ -116,12 +116,17 @@ function FlexibleMap() {
 		centre = new google.maps.LatLng(latLng[0], latLng[1]);
 
 		var mapOptions,
-			zoomControlStyle,
 			zoomControlStyles = {
 				"small"		: google.maps.ZoomControlStyle.SMALL,
 				"large"		: google.maps.ZoomControlStyle.LARGE,
 				"default"	: google.maps.ZoomControlStyle.DEFAULT
-			};
+			},
+			zoomControlStyle = zoomControlStyles.small;
+
+		// style the zoom control
+		if (this.zoomControlStyle in zoomControlStyles) {
+			zoomControlStyle = zoomControlStyles[this.zoomControlStyle];
+		}
 
 		// basic options
 		mapOptions = {
@@ -130,7 +135,7 @@ function FlexibleMap() {
 			scaleControl:				this.scaleControl,
 			panControl:					this.panControl,
 			streetViewControl:			this.streetViewControl,
-			zoomControl:				zoomControlStyles.small,
+			zoomControl:				this.zoomControl,
 			zoomControlOptions:			{ style: zoomControlStyle },
 			draggable:					this.draggable,
 			disableDoubleClickZoom:		!this.dblclickZoom,
@@ -138,11 +143,6 @@ function FlexibleMap() {
 			center:						centre,
 			zoom:						this.zoom
 		};
-
-		// style the zoom control
-		if (this.zoomControlStyle in zoomControlStyles) {
-			mapOptions.zoomControlStyle = zoomControlStyles[this.zoomControlStyle];
-		}
 
 		// select which map types for map type control, if specified as comma-separated list of map type IDs
 		if (this.mapTypeIds) {

@@ -7,7 +7,7 @@ Donate link: http://shop.webaware.com.au/downloads/flexible-map/
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 4.1
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -306,6 +306,9 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Changelog ==
 
+= 1.9.1 [2014-12-29] =
+* fixed: zoom control styling / hiding was broken in v1.9.0
+
 = 1.9.0 [2014-12-24] =
 * fixed: maps broken when hidden in tabs / accordions (not for IE 10 and earlier; uses MutationObserver)
 * fixed: strip spaces from map coordinates
@@ -322,7 +325,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * added: Welsh translation (thanks, [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)!)
 
 = 1.8.1 [2014-10-05] =
-* fixed: Hungarian translation (thanks, Krisztián Vörös)
+* fixed: Hungarian translation (thanks, Krisztián Vörös!)
 * changed: bump version of Google Maps API to 3.17
 
 = 1.8.0 [2014-08-31] =
