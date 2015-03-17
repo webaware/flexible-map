@@ -308,6 +308,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 = 1.9.2, soon... =
 
+* fixed: sometimes vertical copyright message on IE8 with some themes
 * changed: bump version of Google Maps API to 3.19
 
 = 1.9.1, 2014-12-29 =

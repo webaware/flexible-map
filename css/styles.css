@@ -59,3 +59,8 @@
 	}
 
 }
+
+/* fix vertical copyright message on IE8 in some themes */
+.flxmap-container .gm-style-cc > div {
+	word-wrap: normal;
+}
