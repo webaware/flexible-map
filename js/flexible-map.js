@@ -770,7 +770,7 @@ FlexibleMap.prototype = (function() {
 				panel.appendChild(form);
 
 				// hack to fix IE<=7 name weirdness for dynamically created form elements;
-				// see http://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready
+				// see https://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready
 				if (typeof form.elements.from == "undefined") {
 					form.elements.from = from;
 				}

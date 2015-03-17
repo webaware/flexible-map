@@ -2,7 +2,7 @@
 Contributors: webaware
 Plugin Name: WP Flexible Map
 Plugin URI: http://flexible-map.webaware.net.au/
-Author URI: http://www.webaware.com.au/
+Author URI: http://webaware.com.au/
 Donate link: http://shop.webaware.com.au/downloads/flexible-map/
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
@@ -46,18 +46,18 @@ Thanks for sponsoring new features on WP Flexible Maps!
 
 Many thanks to the generous efforts of our translators:
 
-* Czech (cs) -- [caslavak](http://profiles.wordpress.org/caslavak/)
+* Czech (cs) -- [caslavak](https://profiles.wordpress.org/caslavak/)
 * Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
-* French (fr) -- [mister klucha](http://profiles.wordpress.org/mister-klucha/)
+* French (fr) -- [mister klucha](https://profiles.wordpress.org/mister-klucha/)
 * German (de) -- [Carib Design](http://www.caribdesign.com/)
-* Greek (el) -- [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)
+* Greek (el) -- [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)
 * Hungarian (hu) -- Krisztián Vörös
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
-* Spanish (es) -- [edurramos](http://profiles.wordpress.org/edurramos/)
+* Spanish (es) -- [edurramos](https://profiles.wordpress.org/edurramos/)
 * Welsh (cy) -- [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)
 
-The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
+The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.webaware.com.au/projects/flexible-map).
 
 == Installation ==
 
@@ -172,7 +172,7 @@ then something on your website is stripping the query strings on scripts. It's p
 
 There are none! You just need to add some attributes to your shortcode telling the map what to do.
 
-Of course, in WordPress there is a plugin for everything :) so if you *want* settings, please install the [Flexible Map Options plugin](http://wordpress.org/plugins/wp-flexible-map-options/). That plugin lets you set some defaults so that if you use the same attributes over and over, you can put them all in one place.
+Of course, in WordPress there is a plugin for everything :) so if you *want* settings, please install the [Flexible Map Options plugin](https://wordpress.org/plugins/wp-flexible-map-options/). That plugin lets you set some defaults so that if you use the same attributes over and over, you can put them all in one place.
 
 = Can I add multiple markers to a map? =
 
@@ -214,7 +214,7 @@ function force_flexmap_map_language($args) {
 
 = You've translated my language badly / it's missing =
 
-The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
+The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.webaware.com.au/projects/flexible-map).
 
 = The map is broken in tabs / accordions =
 
@@ -250,7 +250,7 @@ jQuery("body").bind("tabsshow", function(event, ui) {
 });
 </script>`
 
-For tabs in jQuery Tools, see [this support topic](http://wordpress.org/support/topic/tabs-map#post-3784706).
+For tabs in jQuery Tools, see [this support topic](https://wordpress.org/support/topic/tabs-map#post-3784706).
 
 = How can I get access to the map object? =
 
@@ -329,9 +329,9 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * changed: bump version of Google Maps API to 3.17
 
 = 1.8.0 [2014-08-31] =
-* fixed: Czech translation (thanks, [caslavak](http://profiles.wordpress.org/caslavak/)!)
+* fixed: Czech translation (thanks, [caslavak](https://profiles.wordpress.org/caslavak/)!)
 * fixed: Norwegian translations (thanks, [neonnero](http://www.neonnero.com/)!)
-* changed: localisation uses standard .mo files now; if you'd like to help translate, please [sign up for an account and dig in](http://translate.webaware.com.au/projects/flexible-map).
+* changed: localisation uses standard .mo files now; if you'd like to help translate, please [sign up for an account and dig in](https://translate.webaware.com.au/projects/flexible-map).
 
 = 1.7.3.1 [2014-03-22] =
 * fixed: infowindow width on some Webkit browsers, and IE10/11
@@ -347,7 +347,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * removed: `visualrefresh` attribute doesn't do anything any more (Google Maps API has adopted Visual Refresh as standard)
 
 = 1.7.2 [2014-01-01] =
-* fixed: Spanish translation (thanks, [edurramos](http://profiles.wordpress.org/edurramos/)!)
+* fixed: Spanish translation (thanks, [edurramos](https://profiles.wordpress.org/edurramos/)!)
 * fixed: clean up JSHint warnings
 * changed: Slovenian translation refresh from Google Translate (human translators wanted!)
 * changed: plugin homepage, better documentation and examples, will develop as time permits!
@@ -356,7 +356,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * fixed: Google link was showing marker at centre, not at marker location when marker != centre
 
 = 1.7.0 [2013-10-12] =
-* fixed: Greek translation (thanks, [Pantelis Orfanos](http://profiles.wordpress.org/ironwiller/)!)
+* fixed: Greek translation (thanks, [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)!)
 * fixed: Dutch translation (thanks, [Ivan Beemster](http://www.lijndiensten.com/)!)
 * fixed: KML map zoom sometimes doesn't happen on first page visit
 * fixed: some themes (e.g. twentythirteen) mess up Google Maps directions markers
@@ -374,13 +374,13 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 = 1.6.4 [2013-06-14] =
 * fixed: can set directions=false and showdirections=true
-* fixed: space before colon in fr translation (thanks, [mister klucha](http://wordpress.org/support/profile/mister-klucha)!)
+* fixed: space before colon in fr translation (thanks, [mister klucha](https://wordpress.org/support/profile/mister-klucha)!)
 * added: load unminified script if SCRIPT_DEBUG is defined / true
 * changed: clicking directions link sets focus on From: address again
 * changed: bump version of Google Maps API to 3.12
 
 = 1.6.3 [2013-03-14] =
-* fixed: HTML description now works for address-based maps (thanks, [John Sundberg](http://profiles.wordpress.org/bhwebworks/)!)
+* fixed: HTML description now works for address-based maps (thanks, [John Sundberg](https://profiles.wordpress.org/bhwebworks/)!)
 
 = 1.6.2 [2013-03-04] =
 * fixed: CSS fix for themes that muck up Google Maps images by specifying background colour on images without being selective
