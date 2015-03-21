@@ -10,6 +10,7 @@
 	"browser": true,
 	"globals": {
 		"flxmap": false,
-		"google": false
+		"google": false,
+		"module": false
 	}
 }

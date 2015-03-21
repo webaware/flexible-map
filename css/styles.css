@@ -1,4 +1,5 @@
 /* stop some themes from messing up Google Maps' styling (e.g. twentyeleven, twentytwelve, twentythirteen...) */
+/* http://flexible-map.webaware.net.au/ */
 
 .flxmap-container * {
 	-webkit-box-sizing: content-box;

@@ -7,7 +7,7 @@ Donate link: http://shop.webaware.com.au/downloads/flexible-map/
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 4.1.1
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -306,10 +306,10 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Changelog ==
 
-= 1.9.2, soon... =
+= 1.9.2, 2015-03-21 =
 
 * fixed: sometimes vertical copyright message on IE8 with some themes
-* changed: bump version of Google Maps API to 3.19
+* changed: bump version of Google Maps API to 3.19 (resolves some Safari styling issues)
 
 = 1.9.1, 2014-12-29 =
 
