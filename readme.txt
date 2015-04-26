@@ -54,6 +54,7 @@ Many thanks to the generous efforts of our translators:
 * Hungarian (hu) -- Krisztián Vörös
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
+* Portuguese (pt_BR) -- Alexsandro Santos
 * Spanish (es) -- [edurramos](https://profiles.wordpress.org/edurramos/)
 * Welsh (cy) -- [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)
 
@@ -305,6 +306,10 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
 == Changelog ==
+
+= 1.9.3, soon =
+
+* fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos!)
 
 = 1.9.2, 2015-03-21 =
 
