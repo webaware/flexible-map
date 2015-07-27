@@ -9,4 +9,4 @@ Embed Google Maps in pages and posts, either by centre coordinates or street add
 * [Documentation](http://flexible-map.webaware.net.au/)
 * [Support](https://wordpress.org/support/plugin/wp-flexible-map)
 * [Translate](https://translate.webaware.com.au/projects/flexible-map)
-* [Donate](http://shop.webaware.com.au/downloads/flexible-map/)
+* [Donate](http://shop.webaware.com.au/donations/?donation_for=Flexible+Map)

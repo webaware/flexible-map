@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Flexible Map\n"
 "Report-Msgid-Bugs-To: translate@webaware.com.au\n"
-"POT-Creation-Date: 2015-03-21 13:32+1100\n"
-"PO-Revision-Date: 2015-03-21 13:32+1100\n"
+"POT-Creation-Date: 2015-07-27 18:30+1000\n"
+"PO-Revision-Date: 2015-07-27 18:30+1000\n"
 "Last-Translator: Ross McKay <rmckay@webaware.com.au>\n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -17,20 +17,25 @@ msgstr ""
 
 #: includes/class.FlxMapAdmin.php:26
 msgctxt "plugin details links"
-msgid "Get Help"
+msgid "Instructions"
 msgstr ""
 
 #: includes/class.FlxMapAdmin.php:27
 msgctxt "plugin details links"
-msgid "Rating"
+msgid "Get Help"
 msgstr ""
 
 #: includes/class.FlxMapAdmin.php:28
 msgctxt "plugin details links"
-msgid "Translate"
+msgid "Rating"
 msgstr ""
 
 #: includes/class.FlxMapAdmin.php:29
+msgctxt "plugin details links"
+msgid "Translate"
+msgstr ""
+
+#: includes/class.FlxMapAdmin.php:30
 msgctxt "plugin details links"
 msgid "Donate"
 msgstr ""

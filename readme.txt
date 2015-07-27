@@ -3,10 +3,10 @@ Contributors: webaware
 Plugin Name: WP Flexible Map
 Plugin URI: http://flexible-map.webaware.net.au/
 Author URI: http://webaware.com.au/
-Donate link: http://shop.webaware.com.au/downloads/flexible-map/
+Donate link: http://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 4.1.1
+Tested up to: 4.3
 Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
