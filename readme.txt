@@ -310,6 +310,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 = 1.9.3, soon =
 
 * fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos!)
+* changed: bump version of Google Maps API to 3.20
 
 = 1.9.2, 2015-03-21 =
 
