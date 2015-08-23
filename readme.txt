@@ -7,7 +7,7 @@ Donate link: http://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
 Tested up to: 4.3
-Stable tag: 1.9.2
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -311,7 +311,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Changelog ==
 
-= 1.9.3, soon =
+= 1.10.0, 2015-08-23 =
 
 * fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos and Paulo Henrique!)
 * fixed: JavaScript error on KML map marker click when marker has no description
