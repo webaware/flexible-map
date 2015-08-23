@@ -321,6 +321,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * added: `dirunitsystem` attribute for forcing directions units to metric or imperial
 * added: `dirtravelmode` attribute for selecting directions by driving, bicycling, walking, or transit
 * changed: bump version of Google Maps API to 3.20
+* changed: always load Google Maps API on HTTPS
 
 = 1.9.2, 2015-03-21 =
 
