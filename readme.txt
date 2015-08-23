@@ -313,6 +313,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 * fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos and Paulo Henrique!)
 * fixed: JavaScript error on KML map marker click when marker has no description
+* fixed: can show directions without having a marker title (or infowindow)
 * added: `dirunitsystem` attribute for forcing directions units to metric or imperial
 * added: `dirtravelmode` attribute for selecting directions by driving, bicycling, walking, or transit
 * changed: bump version of Google Maps API to 3.20

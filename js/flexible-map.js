@@ -542,20 +542,22 @@ FlexibleMap.prototype = (function() {
 				this.markerTitle = this.markerAddress;
 			}
 
-			if (this.markerTitle) {
+			if (this.markerTitle || this.markerHTML || this.markerDescription || this.markerLink || this.markerDirections) {
 				var i, len, lines, infowin, element, a,
 					self = this,
 					container = document.createElement("DIV");
 
 				container.className = "flxmap-infowin";
 
-				// add tooltip title for marker
-				point.setTitle(this.markerTitle);
-
 				// heading for info window
 				element = document.createElement("DIV");
 				element.className = "flxmap-marker-title";
-				element.appendChild(document.createTextNode(this.markerTitle));
+				if (this.markerTitle) {
+					element.appendChild(document.createTextNode(this.markerTitle));
+
+					// add tooltip title for marker
+					point.setTitle(this.markerTitle);
+				}
 				container.appendChild(element);
 
 				// add precomposed HTML for infowindow
@@ -596,24 +598,13 @@ FlexibleMap.prototype = (function() {
 					a.href = "#";
 					a.dataLatitude = marker[0];
 					a.dataLongitude = marker[1];
-					a.dataTitle = this.markerTitle;
 					addEventListener(a, "click", function(event) {
 						stopEvent(event);
-						self.showDirections(this.dataLatitude, this.dataLongitude, this.dataTitle, true);
+						self.showDirections(this.dataLatitude, this.dataLongitude, true);
 					});
 					a.appendChild(document.createTextNode(this.gettext("Directions")));
 					element.appendChild(a);
 					container.appendChild(element);
-				}
-
-				// add a directions service if needed
-				if (this.markerDirections || this.markerDirectionsShow) {
-					this.startDirService(map);
-
-					// show directions immediately if required
-					if (this.markerDirectionsShow) {
-						this.showDirections(marker[0], marker[1], this.markerTitle, false);
-					}
 				}
 
 				infowin = new google.maps.InfoWindow({content: container});
@@ -638,6 +629,16 @@ FlexibleMap.prototype = (function() {
 				google.maps.event.addListenerOnce(map, "tilesloaded", googleLink);
 			}
 
+			// add a directions service if needed
+			if (this.markerDirections || this.markerDirectionsShow) {
+				this.startDirService(map);
+
+				// show directions immediately if required
+				if (this.markerDirectionsShow) {
+					this.showDirections(marker[0], marker[1], false);
+				}
+			}
+
 		},
 
 		/**
@@ -651,8 +652,9 @@ FlexibleMap.prototype = (function() {
 
 			this.markerAddress = address;
 
-			if (this.markerTitle === "")
+			if (this.markerTitle === "") {
 				this.markerTitle = address;
+			}
 
 			geocoder.geocode({address: address, region: this.region}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
@@ -740,10 +742,9 @@ FlexibleMap.prototype = (function() {
 		* show directions for specified latitude / longitude and title
 		* @param {Number} latitude
 		* @param {Number} longitude
-		* @param {String} title
 		* @param {bool} focus [optional]
 		*/
-		showDirections: function(latitude, longitude, title, focus) {
+		showDirections: function(latitude, longitude, focus) {
 			var	self = this;
 
 			/**
