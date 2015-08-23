@@ -83,6 +83,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
 * **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
 * **linktarget**: where marker link opens, e.g. *linktarget="_blank"*
+* **linktext**: marker link text, overriding the default text
 * **icon**: URL to icon for the marker, e.g. *icon="http://maps.google.com/mapfiles/kml/pal3/icon29.png"*
 * **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
 * **html**: some simple HTML to add to the info window, e.g. *`<img src='http://example.com/logo.img' />`*
@@ -316,6 +317,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 * fixed: JavaScript error on KML map marker click when marker has no description
 * fixed: can show directions without having a marker title (or infowindow)
 * added: `linktarget` attribute for changing where marker links open, e.g. `linktarget="_blank"`
+* added: `linktext` attribute for changing marker link text
 * added: `dirunitsystem` attribute for forcing directions units to metric or imperial
 * added: `dirtravelmode` attribute for selecting directions by driving, bicycling, walking, or transit
 * changed: bump version of Google Maps API to 3.20

@@ -410,6 +410,10 @@ HTML;
 					$script .= " f.markerLinkTarget = \"{$this->str2js($attrs['linktarget'])}\";\n";
 				}
 
+				if (!empty($attrs['linktext'])) {
+					$script .= " f.markerLinkText = \"{$this->unhtml($attrs['linktext'])}\";\n";
+				}
+
 				if (!empty($attrs['icon'])) {
 					$icon = self::str2js($attrs['icon']);
 					$script .= " f.markerIcon = \"$icon\";\n";
