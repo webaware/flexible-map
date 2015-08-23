@@ -338,6 +338,11 @@ HTML;
 				$script .= " f.dirShowSearch = false;\n";
 			}
 
+			if (isset($attrs['dirunitsystem']) && in_array(strtolower($attrs['dirunitsystem']), array('imperial', 'metric'))) {
+				$dirUnitSystem = strtolower($attrs['dirunitsystem']);
+				$script .= " f.dirUnitSystem = \"$dirUnitSystem\";\n";
+			}
+
 			if (isset($attrs['maptype'])) {
 				$script .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
 			}

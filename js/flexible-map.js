@@ -215,6 +215,7 @@ function FlexibleMap() {
 	this.dirSuppressMarkers = false;					// suppress A/B markers on directions route
 	this.dirShowSteps = true;							// show the directions steps (turn-by-turn)
 	this.dirShowSearch = true;							// show the directions form for searching directions
+	this.dirUnitSystem = undefined;						// can be imperial or metric
 	this.region = "";
 	this.locale = "en";
 	this.localeActive = false;
@@ -719,8 +720,9 @@ FlexibleMap.prototype = (function() {
 		*/
 		startDirService: function(map) {
 			// make sure we have a directions service
-			if (!this.dirService)
+			if (!this.dirService) {
 				this.dirService = new google.maps.DirectionsService();
+			}
 
 			// make sure we have a directions renderer
 			if (!this.dirRenderer) {
@@ -807,6 +809,16 @@ FlexibleMap.prototype = (function() {
 						destination: dest,
 						travelMode: google.maps.DirectionsTravelMode.DRIVING
 					};
+
+				switch (self.dirUnitSystem) {
+					case "imperial":
+						request.unitSystem = google.maps.UnitSystem.IMPERIAL;
+						break;
+
+					case "metric":
+						request.unitSystem = google.maps.UnitSystem.METRIC;
+						break;
+				}
 
 				self.dirService.route(request, dirResponseHander);
 			}

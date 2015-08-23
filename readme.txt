@@ -126,6 +126,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **dirshowssearch**: show or suppress directions search form when showing directions, from [true, false]; default=true
 * **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
 * **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
+* **dirunitsystem**: force directions units to metric or imperial, from [metric, imperial, auto]; default=auto
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) e.g. *region="AU"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
@@ -311,6 +312,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 * fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos and Paulo Henrique!)
 * fixed: JavaScript error on KML map marker click when marker has no description
+* added: `dirunitsystem` attribute for forcing directions units to metric or imperial
 * changed: bump version of Google Maps API to 3.20
 
 = 1.9.2, 2015-03-21 =
