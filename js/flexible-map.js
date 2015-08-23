@@ -488,7 +488,7 @@ FlexibleMap.prototype = (function() {
 					featureData._flxmapOnce = true;
 
 					// stop links opening in a new window
-					if (self.targetFix) {
+					if (self.targetFix && featureData.description) {
 						var reTargetFix = / target="_blank"/ig;
 						featureData.description = featureData.description.replace(reTargetFix, "");
 						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(reTargetFix, "");
