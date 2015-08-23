@@ -202,6 +202,7 @@ function FlexibleMap() {
 	this.markerDescription = "";						// description for marker info window
 	this.markerHTML = "";								// HTML for marker info window (overrides title and description)
 	this.markerLink = "";								// link for marker title
+	this.markerLinkTarget = "";							// link target for marker link, e.g. _blank
 	this.markerIcon = "";								// link for marker icon, leave blank for default
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
 	this.markerDirections = false;						// show directions link in info window
@@ -578,12 +579,16 @@ FlexibleMap.prototype = (function() {
 								element.appendChild(document.createElement("BR"));
 							element.appendChild(document.createTextNode(lines[i]));
 						}
-						if (this.markerLink)
+						if (this.markerLink) {
 							element.appendChild(document.createElement("BR"));
+						}
 					}
 					if (this.markerLink) {
 						a = document.createElement("A");
 						a.href = this.markerLink;
+						if (this.markerLinkTarget) {
+							a.target = this.markerLinkTarget;
+						}
 						a.appendChild(document.createTextNode(this.gettext("Click for details")));
 						element.appendChild(a);
 					}
