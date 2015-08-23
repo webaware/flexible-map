@@ -338,6 +338,11 @@ HTML;
 				$script .= " f.dirShowSearch = false;\n";
 			}
 
+			if (isset($attrs['dirtravelmode']) && in_array(strtolower($attrs['dirtravelmode']), array('bicycling', 'driving', 'transit', 'walking'))) {
+				$dirTravelMode = strtolower($attrs['dirtravelmode']);
+				$script .= " f.dirTravelMode = \"$dirTravelMode\";\n";
+			}
+
 			if (isset($attrs['dirunitsystem']) && in_array(strtolower($attrs['dirunitsystem']), array('imperial', 'metric'))) {
 				$dirUnitSystem = strtolower($attrs['dirunitsystem']);
 				$script .= " f.dirUnitSystem = \"$dirUnitSystem\";\n";

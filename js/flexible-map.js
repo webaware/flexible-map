@@ -215,6 +215,7 @@ function FlexibleMap() {
 	this.dirSuppressMarkers = false;					// suppress A/B markers on directions route
 	this.dirShowSteps = true;							// show the directions steps (turn-by-turn)
 	this.dirShowSearch = true;							// show the directions form for searching directions
+	this.dirTravelMode = "driving";						// can be bicycling, driving, transit, walking
 	this.dirUnitSystem = undefined;						// can be imperial or metric
 	this.region = "";
 	this.locale = "en";
@@ -805,10 +806,30 @@ FlexibleMap.prototype = (function() {
 				var	dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
 					request = {
 						origin: from,
-						region: self.region || '',
-						destination: dest,
-						travelMode: google.maps.DirectionsTravelMode.DRIVING
+						destination: dest
 					};
+
+				if (self.region) {
+					request.region = self.region;
+				}
+
+				switch (self.dirTravelMode) {
+					case "bicycling":
+						request.travelMode = google.maps.TravelMode.BICYCLING;
+						break;
+
+					case "driving":
+						request.travelMode = google.maps.TravelMode.DRIVING;
+						break;
+
+					case "transit":
+						request.travelMode = google.maps.TravelMode.TRANSIT;
+						break;
+
+					case "walking":
+						request.travelMode = google.maps.TravelMode.WALKING;
+						break;
+				}
 
 				switch (self.dirUnitSystem) {
 					case "imperial":
