@@ -54,7 +54,7 @@ Many thanks to the generous efforts of our translators:
 * Hungarian (hu) -- Krisztián Vörös
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
-* Portuguese (pt_BR) -- Alexsandro Santos
+* Portuguese (pt_BR) -- Alexsandro Santos and Paulo Henrique
 * Spanish (es) -- [edurramos](https://profiles.wordpress.org/edurramos/)
 * Welsh (cy) -- [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)
 
@@ -309,7 +309,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 = 1.9.3, soon =
 
-* fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos!)
+* fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos and Paulo Henrique!)
 * changed: bump version of Google Maps API to 3.20
 
 = 1.9.2, 2015-03-21 =
