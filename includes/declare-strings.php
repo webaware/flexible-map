@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 /**
 * declare l10n strings used in JavaScript so a gettext scanner can find them
 * NB: never called!
