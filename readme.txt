@@ -58,7 +58,7 @@ Many thanks to the generous efforts of our translators:
 * Spanish (es) -- [edurramos](https://profiles.wordpress.org/edurramos/)
 * Welsh (cy) -- [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)
 
-The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.webaware.com.au/projects/flexible-map).
+The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
 == Installation ==
 
@@ -219,7 +219,7 @@ function force_flexmap_map_language($args) {
 
 = You've translated my language badly / it's missing =
 
-The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.webaware.com.au/projects/flexible-map).
+The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
 = The map is broken in tabs / accordions =
 
@@ -359,7 +359,7 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 * fixed: Czech translation (thanks, [caslavak](https://profiles.wordpress.org/caslavak/)!)
 * fixed: Norwegian translations (thanks, [neonnero](http://www.neonnero.com/)!)
-* changed: localisation uses standard .mo files now; if you'd like to help translate, please [sign up for an account and dig in](https://translate.webaware.com.au/projects/flexible-map).
+* changed: localisation uses standard .mo files now; if you'd like to help translate, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
 = 1.7.3.1, 2014-03-22 =
 

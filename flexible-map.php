@@ -6,7 +6,7 @@ Description: Embed Google Maps in pages and posts, either by centre coodinates o
 Version: 1.10.0
 Author: WebAware
 Author URI: http://webaware.com.au/
-Text Domain: flexible-map
+Text Domain: wp-flexible-map
 Domain Path: /languages/
 */
 

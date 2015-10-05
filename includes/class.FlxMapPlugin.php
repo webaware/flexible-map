@@ -61,7 +61,7 @@ class FlxMapPlugin {
 		$this->locale = get_locale();
 
 		// load translation strings for the admin
-		load_plugin_textdomain('flexible-map', false, basename(dirname(FLXMAP_PLUGIN_FILE)) . '/languages/');
+		load_plugin_textdomain('wp-flexible-map', false, basename(dirname(FLXMAP_PLUGIN_FILE)) . '/languages/');
 	}
 
 	/**
@@ -107,7 +107,7 @@ class FlxMapPlugin {
 	*/
 	public function justInTimeLocalisation() {
 		if (!empty($this->locales)) {
-			$domain = 'flexible-map';
+			$domain = 'wp-flexible-map';
 			$i18n = array();
 
 			// map old two-character language-only locales that now need to target language_country translations
