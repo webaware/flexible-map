@@ -2,7 +2,7 @@
 /*
 Plugin Name: Flexible Map
 Plugin URI: http://flexible-map.webaware.net.au/
-Description: Embed Google Maps in pages and posts, either by centre coodinates or street address, or by URL to a Google Earth KML file.
+Description: Embed Google Maps shortcodes in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file. <a href="http://flexible-map.webaware.net.au/manual/getting-started/">Get started</a> with a simple shortcode. See the <a href="http://flexible-map.webaware.net.au/manual/attribute-reference/">complete attribute reference</a> for more details.
 Version: 1.10.1-dev
 Author: WebAware
 Author URI: http://webaware.com.au/

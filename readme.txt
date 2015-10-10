@@ -6,16 +6,16 @@ Author URI: http://webaware.com.au/
 Donate link: http://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 4.3
+Tested up to: 4.3.1
 Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Embed Google Maps in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.
+Embed Google Maps shortcodes in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.
 
 == Description ==
 
-Flexible Map allows you to add Google Maps to your WordPress website.
+Flexible Map allows you to add Google Maps to your WordPress website with simple shortcodes.
 
 **Features:**
 
@@ -34,7 +34,8 @@ Flexible Map allows you to add Google Maps to your WordPress website.
 * directions can be dropped into any div element with an ID
 * minimal dependencies -- just WordPress and the Google Maps API
 
-[Try WP Flexible Map online](http://flexible-map.webaware.net.au/).
+[Get started with Flexible Map](http://flexible-map.webaware.net.au/manual/getting-started/).
+[Read the manual online](http://flexible-map.webaware.net.au/manual/).
 
 = Sponsorships =
 
