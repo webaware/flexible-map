@@ -46,7 +46,7 @@ class FlxMapPlugin {
 		else {
 			// non-admin actions and filters for this plugin
 			add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
-			add_action('wp_print_footer_scripts', array($this, 'justInTimeLocalisation'), 9);
+			add_action('wp_footer', array($this, 'justInTimeLocalisation'));
 
 			// custom actions and filters for this plugin
 			add_filter('flexmap_getmap', array($this, 'getMap'), 10, 1);
