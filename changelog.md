@@ -7,6 +7,8 @@
 * fixed: NextGEN Gallery breaks localisation of maps by messing with order of `wp_print_footer_scripts` calls
 * changed: translations now accepted on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map)
 * changed: Localisation (l10n) slug changed from `flexible-map` to `wp-flexible-map`, with move to translate.wordpress.org
+* changed: bump version of Google Maps API to 3.22; NB: [control sizes have no effect with API v3.22](https://developers.google.com/maps/articles/v322-controls-diff)
+* changed: removed "sensor" query parameter to Google Maps API; no longer required
 
 ### 1.10.0, 2015-08-23
 
