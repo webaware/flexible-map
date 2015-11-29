@@ -48,9 +48,9 @@ Thanks for sponsoring new features on WP Flexible Maps!
 Many thanks to the generous efforts of our translators:
 
 * Czech (cs) -- [caslavak](https://profiles.wordpress.org/caslavak/)
-* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/)
+* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/), [Chantal Coolsma](http://www.webpressed.nl/), [TacoVerdo](https://profiles.wordpress.org/tacoverdo)
 * French (fr) -- [mister klucha](https://profiles.wordpress.org/mister-klucha/)
-* German (de) -- [Carib Design](http://www.caribdesign.com/)
+* German (de) -- [Carib Design](http://www.caribdesign.com/), [Dominik Schilling](https://dominikschilling.de/)
 * Greek (el) -- [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)
 * Hungarian (hu) -- Krisztián Vörös
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
