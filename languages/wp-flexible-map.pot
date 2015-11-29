@@ -4,10 +4,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Flexible Map\n"
+"Project-Id-Version: wp-flexible-map\n"
 "Report-Msgid-Bugs-To: translate@webaware.com.au\n"
-"POT-Creation-Date: 2015-07-27 18:30+1000\n"
-"PO-Revision-Date: 2015-07-27 18:30+1000\n"
+"POT-Creation-Date: 2015-11-29 19:00+1100\n"
+"PO-Revision-Date: 2015-11-29 19:00+1100\n"
 "Last-Translator: Ross McKay <rmckay@webaware.com.au>\n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -15,43 +15,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class.FlxMapAdmin.php:26
+#: includes/class.FlxMapAdmin.php:30
 msgctxt "plugin details links"
 msgid "Instructions"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:27
+#: includes/class.FlxMapAdmin.php:31
 msgctxt "plugin details links"
 msgid "Get Help"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:28
+#: includes/class.FlxMapAdmin.php:32
 msgctxt "plugin details links"
 msgid "Rating"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:29
+#: includes/class.FlxMapAdmin.php:33
 msgctxt "plugin details links"
 msgid "Translate"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:30
+#: includes/class.FlxMapAdmin.php:34
 msgctxt "plugin details links"
 msgid "Donate"
 msgstr ""
 
-#: includes/declare-strings.php:9
+#: includes/declare-strings.php:13
 msgid "Click for details"
 msgstr ""
 
-#: includes/declare-strings.php:10
+#: includes/declare-strings.php:14
 msgid "Directions"
 msgstr ""
 
-#: includes/declare-strings.php:11
+#: includes/declare-strings.php:15
 msgid "From"
 msgstr ""
 
-#: includes/declare-strings.php:12
+#: includes/declare-strings.php:16
 msgid "Get directions"
 msgstr ""

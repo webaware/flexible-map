@@ -35,8 +35,8 @@ module.exports = function (grunt) {
 
 		pot: {
 			options: {
-				text_domain: "flexible-map",
-				package_name: "flexible-map",
+				text_domain: "wp-flexible-map",
+				package_name: "wp-flexible-map",
 				package_version: "",
 				msgid_bugs_address: "translate@webaware.com.au",
 				encoding: "UTF-8",
