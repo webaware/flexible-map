@@ -310,6 +310,12 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 3. `[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml?v=2" width="500" height="400" maptype="satellite"]`
 4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
 
+== Upgrade Notice ==
+
+= 1.10.1 =
+
+fix NextGEN Gallery breaking localisation of maps; bump version of Google Maps API to 3.22; update translations de_DE, nb_NO, nl_NL
+
 == Changelog ==
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
