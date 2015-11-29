@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### 1.10.1, soon...
+### 1.10.1, 2015-11-29
 
 * fixed: NextGEN Gallery breaks localisation of maps by messing with order of `wp_print_footer_scripts` calls
 * changed: Dutch translation updated / completed (thanks, [Chantal Coolsma](http://www.webpressed.nl/) and [TacoVerdo](https://profiles.wordpress.org/tacoverdo)!)
