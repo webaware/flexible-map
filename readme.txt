@@ -305,10 +305,10 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Screenshots ==
 
-1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="500" height="400" directions="true" maptype="satellite"]`
-2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="500" height="400" directions="true"]`
-3. `[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml?v=2" width="500" height="400" maptype="satellite"]`
-4. `[flexiblemap center="-34.916721,138.828878" width="500" height="400" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide"]`
+1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="100%" height="400px" directions="true" maptype="satellite"]`
+2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="100%" height="400px" directions="true"]`
+3. `[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px" maptype="satellite"]`
+4. `[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide" region="au"]`
 
 == Upgrade Notice ==
 
