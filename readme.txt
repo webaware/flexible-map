@@ -166,14 +166,6 @@ For more information and examples, see [the reference website](http://flexible-m
 
 == Frequently Asked Questions ==
 
-= Why do I get "The Google Maps API server rejected your request"? =
-
-If Google Maps is telling you this:
-
-> The Google Maps API server rejected your request. The "sensor" parameter specified in the request must be set to either "true" or "false".
-
-then something on your website is stripping the query strings on scripts. It's probably a misguided attempt to make your website more secure, and it's a dumb idea. Some so-called "security" plugins do this, and I've heard of a theme doing it too. You need to find out what is doing it and fix it, or remove it. Start by deactivating plugins that pretend to enhance security and retest, then try switching your theme to twentytwelve to see if the theme is the problem.
-
 = Where are the settings? =
 
 There are none! You just need to add some attributes to your shortcode telling the map what to do.
