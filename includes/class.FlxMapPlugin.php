@@ -478,7 +478,7 @@ HTML;
 			if ((defined('DOING_AJAX') && DOING_AJAX) || (isset($attrs['isajax']) && self::isYes($attrs['isajax']))) {
 				// wrap it up for AJAX load, no event trigger
 				$html .= <<<HTML
-<script>
+<script data-noptimize="1">
 /* <![CDATA[ */
 var $varID = (function() {
 $script return f;
@@ -491,7 +491,7 @@ HTML;
 			else {
 				// wrap it up for standard page load, with "content ready" trigger
 				$html .= <<<HTML
-<script>
+<script data-noptimize="1">
 /* <![CDATA[ */
 (function(w, fn) {
  if (w.addEventListener) w.addEventListener("DOMContentLoaded", fn, false);

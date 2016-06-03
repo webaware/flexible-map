@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.10.2, soon...
+
+* added: ask [Autoptimize](https://wordpress.org/plugins/autoptimize/) to leave our inline script alone, to reduce the number of cached script files
+
 ### 1.10.1, 2015-11-29
 
 * fixed: NextGEN Gallery breaks localisation of maps by messing with order of `wp_print_footer_scripts` calls
