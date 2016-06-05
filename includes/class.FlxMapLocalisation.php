@@ -42,7 +42,6 @@ class FlxMapLocalisation {
 					$strings = self::getMoStrings($mofile);
 					if (!empty($strings)) {
 						$i18n[$locale] = $strings;
-						break;
 					}
 				}
 			}
