@@ -1,6 +1,6 @@
 /*!
 JavaScript for the WordPress plugin wp-flexible-map
-copyright (c) 2011-2015 WebAware Pty Ltd, released under LGPL v2.1
+copyright (c) 2011-2016 WebAware Pty Ltd, released under LGPL v2.1
 http://flexible-map.webaware.net.au/
 */
 
@@ -263,7 +263,7 @@ FlexibleMap.prototype = (function() {
 
 			function isHidden(element) {
 				var style = window.getComputedStyle(element);
-				return style.display === "none";
+				return style.display === "none" || style.visibility === "hidden";
 			}
 
 			// only need to watch and act if the parent container is hidden from display
