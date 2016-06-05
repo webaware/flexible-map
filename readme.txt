@@ -48,11 +48,14 @@ Thanks for sponsoring new features on WP Flexible Maps!
 Many thanks to the generous efforts of our translators:
 
 * Czech (cs) -- [caslavak](https://profiles.wordpress.org/caslavak/)
-* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/), [Chantal Coolsma](http://www.webpressed.nl/), [TacoVerdo](https://profiles.wordpress.org/tacoverdo)
-* French (fr) -- [mister klucha](https://profiles.wordpress.org/mister-klucha/)
-* German (de) -- [Carib Design](http://www.caribdesign.com/), [Dominik Schilling](https://dominikschilling.de/)
+* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/) and the [Dutch translation team](https://translate.wordpress.org/locale/nl/default/wp-plugins/wp-flexible-map)
+* French (fr) -- [mister klucha](https://profiles.wordpress.org/mister-klucha/) and the [French translation team](https://translate.wordpress.org/locale/fr/default/wp-plugins/wp-flexible-map)
+* German (de) -- [Carib Design](http://www.caribdesign.com/) and the [German translation team](https://translate.wordpress.org/locale/de/default/wp-plugins/wp-flexible-map)
 * Greek (el) -- [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)
 * Hungarian (hu) -- Krisztián Vörös
+* Italian (it_IT) -- the [Italian translation team](https://translate.wordpress.org/locale/it/default/wp-plugins/wp-flexible-map)
+* Korean (ko_KR) -- the [Korean translation team](https://translate.wordpress.org/locale/ko/default/wp-plugins/wp-flexible-map)
+* Swedish (sv_SE) -- the [Swedish translation team](https://translate.wordpress.org/locale/sv/default/wp-plugins/wp-flexible-map)
 * Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
 * Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
 * Portuguese (pt_BR) -- Alexsandro Santos and Paulo Henrique
