@@ -431,6 +431,11 @@ HTML;
 			$script = apply_filters('flexmap_shortcode_script', $script, $attrs);
 
 			if ((defined('DOING_AJAX') && DOING_AJAX) || (isset($attrs['isajax']) && self::isYes($attrs['isajax']))) {
+				// ensure that the required scripts are on the page already
+				if (!wp_script_is('flxmap', 'done')) {
+					wp_print_scripts('flxmap');
+				}
+
 				// wrap it up for AJAX load, no event trigger
 				$html .= <<<HTML
 <script data-noptimize="1">
