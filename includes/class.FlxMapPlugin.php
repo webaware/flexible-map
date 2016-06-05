@@ -111,70 +111,25 @@ class FlxMapPlugin {
 	* load any enqueued locales and map types as localisations on the main script
 	*/
 	public function justInTimeLocalisation() {
+		$localise = array();
+
 		if (!empty($this->locales)) {
-			$domain = 'wp-flexible-map';
-			$i18n = array();
-
-			// map old two-character language-only locales that now need to target language_country translations
-			$upgradeMap = array(
-				'bg' => 'bg_BG',	'cs' => 'cs_CZ',	'da' => 'da_DK',	'de' => 'de_DE',
-				'es' => 'es_ES',	'fa' => 'fa_IR',	'fr' => 'fr_FR',	'gl' => 'gl_ES',
-				'he' => 'he_IL',	'hi' => 'hi_IN',	'hu' => 'hu_HU',	'id' => 'id_ID',
-				'is' => 'is_IS',	'it' => 'it_IT',	'ko' => 'ko_KR',	'lt' => 'lt_LT',
-				'mk' => 'mk_MK',	'ms' => 'ms_MY',	'mt' => 'mt_MT',	'nb' => 'nb_NO',
-				'nl' => 'nl_NL',	'pl' => 'pl_PL',	'pt' => 'pt_PT',	'ro' => 'ro_RO',
-				'ru' => 'ru_RU',	'sk' => 'sk_SK',	'sl' => 'sl_SL',	'sr' => 'sr_RS',
-				'sv' => 'sv_SE',	'ta' => 'ta_IN',	'tr' => 'tr_TR',	'zh' => 'zh_CN',
-			);
-
-			foreach (array_keys($this->locales) as $locale) {
-				// check for specific locale first, e.g. 'zh-CN', then for generic locale, e.g. 'zh'
-				foreach (array($locale, substr($locale, 0, 2)) as $locale) {
-					if (isset($upgradeMap[$locale])) {
-						// upgrade old two-character language-only locales
-						$moLocale = $upgradeMap[$locale];
-					}
-					else {
-						// revert locale name to WordPress locale name as used in .mo files
-						$moLocale  = strtr($locale, '-', '_');
-					}
-
-					// compose full path to .mo file
-					$mofile = sprintf('%slanguages/%s-%s.mo', FLXMAP_PLUGIN_ROOT, $domain, $moLocale);
-
-					if (is_readable($mofile)) {
-						$mo = new MO();
-						if ($mo->import_from_file($mofile)) {
-							// pull all translation strings into a simplified format for our script
-							// TODO: handle plurals (not yet needed, don't have any)
-							$strings = array();
-							foreach ($mo->entries as $original => $translation) {
-								// skip admin-side strings, identified by context
-								if ($translation->context == 'plugin details links') {
-									continue;
-								}
-
-								$strings[$original] = $translation->translations[0];
-							}
-							$i18n[$locale] = $strings;
-							break;
-						}
-					}
-				}
+			if (!class_exists('FlxMapLocalisation', false)) {
+				require FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapLocalisation.php';
 			}
-
-			// build and enqueue localisations for map script
-			$localise = array();
+			$localisation = new FlxMapLocalisation();
+			$i18n = $localisation->getLocalisations($this->locales);
 			if (!empty($i18n)) {
 				$localise['i18n'] = $i18n;
 			}
-			if (!empty($this->mapTypes)) {
-				$localise['mapTypes'] = $this->mapTypes;
-			}
+		}
 
-			if (!empty($localise)) {
-				wp_localize_script('flxmap', 'flxmap', $localise);
-			}
+		if (!empty($this->mapTypes)) {
+			$localise['mapTypes'] = $this->mapTypes;
+		}
+
+		if (!empty($localise)) {
+			wp_localize_script('flxmap', 'flxmap', $localise);
 		}
 	}
 

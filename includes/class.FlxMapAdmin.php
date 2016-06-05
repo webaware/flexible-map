@@ -19,6 +19,8 @@ class FlxMapAdmin {
 
 		// add action hook for adding plugin meta links
 		add_filter('plugin_row_meta', array($this, 'addPluginDetailsLinks'), 10, 2);
+
+		add_filter('plugins_update_check_locales', array($this, 'updateCheckLocales'));
 	}
 
 	/**
@@ -35,6 +37,23 @@ class FlxMapAdmin {
 		}
 
 		return $links;
+	}
+
+	/**
+	* inject wanted translation locales for plugins, so that we can get up-to-date translations from translate.wordpress.org
+	* @param array $locales
+	* @return array
+	*/
+	public function updateCheckLocales($locales) {
+		if (!class_exists('FlxMapLocalisation', false)) {
+			require FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapLocalisation.php';
+		}
+		$localisation = new FlxMapLocalisation();
+		$langPacks = $localisation->getGlobalMapLocales();
+
+		$combined = array_unique(array_merge($locales, $langPacks));
+
+		return $combined;
 	}
 
 }

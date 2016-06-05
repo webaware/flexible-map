@@ -2,9 +2,10 @@
 
 ## Changelog
 
-### 1.10.2, soon...
+### 1.11.0, soon...
 
 * added: ask [Autoptimize](https://wordpress.org/plugins/autoptimize/) to leave our inline script alone, to reduce the number of cached script files
+* changed: attempt to use localisation from [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map) in preference to local plugin copy
 
 ### 1.10.1, 2015-11-29
 
