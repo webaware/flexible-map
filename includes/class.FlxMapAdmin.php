@@ -9,18 +9,21 @@ if (!defined('ABSPATH')) {
 */
 class FlxMapAdmin {
 
-	protected $plugin;
-
 	/**
 	* @param FlxMapPlugin $plugin
 	*/
-	public function __construct($plugin) {
-		$this->plugin = $plugin;
-
-		// add action hook for adding plugin meta links
-		add_filter('plugin_row_meta', array($this, 'addPluginDetailsLinks'), 10, 2);
-
+	public function __construct() {
+		add_action('admin_init', array($this, 'adminInit'));
 		add_filter('plugins_update_check_locales', array($this, 'updateCheckLocales'));
+	}
+
+	/**
+	* after admin init action
+	*/
+	public function adminInit() {
+		if (current_user_can('manage_options')) {
+			add_filter('plugin_row_meta', array($this, 'addPluginDetailsLinks'), 10, 2);
+		}
 	}
 
 	/**

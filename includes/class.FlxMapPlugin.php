@@ -41,7 +41,7 @@ class FlxMapPlugin {
 		if (is_admin()) {
 			// kick off the admin handling
 			require FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapAdmin.php';
-			new FlxMapAdmin($this);
+			new FlxMapAdmin();
 		}
 		else {
 			// non-admin actions and filters for this plugin
