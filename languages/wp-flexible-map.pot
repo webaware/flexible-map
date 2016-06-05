@@ -1,4 +1,4 @@
-# copyright (c) 2014-2015 WebAware Pty Ltd
+# copyright (c) 2014-2016 WebAware Pty Ltd
 # This file is distributed under the same license as the plugin package.
 #
 #, fuzzy
@@ -6,36 +6,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-flexible-map\n"
 "Report-Msgid-Bugs-To: translate@webaware.com.au\n"
-"POT-Creation-Date: 2015-11-29 19:00+1100\n"
-"PO-Revision-Date: 2015-11-29 19:00+1100\n"
-"Last-Translator: Ross McKay <rmckay@webaware.com.au>\n"
+"POT-Creation-Date: 2016-06-05 19:43+1000\n"
+"PO-Revision-Date: 2016-06-05 19:43+1000\n"
+"Last-Translator: translate@webaware.com.au\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class.FlxMapAdmin.php:30
+#: includes/class.FlxMapAdmin.php:35
 msgctxt "plugin details links"
 msgid "Instructions"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:31
+#: includes/class.FlxMapAdmin.php:36
 msgctxt "plugin details links"
 msgid "Get Help"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:32
+#: includes/class.FlxMapAdmin.php:37
 msgctxt "plugin details links"
 msgid "Rating"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:33
+#: includes/class.FlxMapAdmin.php:38
 msgctxt "plugin details links"
 msgid "Translate"
 msgstr ""
 
-#: includes/class.FlxMapAdmin.php:34
+#: includes/class.FlxMapAdmin.php:39
 msgctxt "plugin details links"
 msgid "Donate"
 msgstr ""
