@@ -6,8 +6,8 @@ Author URI: http://webaware.com.au/
 Donate link: http://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 3.2.1
-Tested up to: 4.4
-Stable tag: 1.10.1
+Tested up to: 4.5.2
+Stable tag: 1.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -307,33 +307,19 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Upgrade Notice ==
 
-= 1.10.1 =
+= 1.11.0 =
 
-fix NextGEN Gallery breaking localisation of maps; bump version of Google Maps API to 3.22; update translations de_DE, nb_NO, nl_NL
+use localisation from translate.wordpress.org in preference to local plugin copy; bump version of Google Maps API to 3.24
 
 == Changelog ==
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.10.1, 2015-11-29
+### 1.11.0, 2016-06-05
 
-* fixed: NextGEN Gallery breaks localisation of maps by messing with order of `wp_print_footer_scripts` calls
-* changed: Dutch translation updated / completed (thanks, [Chantal Coolsma](http://www.webpressed.nl/) and [TacoVerdo](https://profiles.wordpress.org/tacoverdo)!)
-* changed: German translation updated / completed (thanks, [Dominik Schilling](https://dominikschilling.de/)!)
-* changed: Norwegian Bokmål translation updated / completed (thanks, [neonnero](http://www.neonnero.com/)!)
-* changed: translations now accepted on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map)
-* changed: Localisation (l10n) slug changed from `flexible-map` to `wp-flexible-map`, with move to translate.wordpress.org
-* changed: bump version of Google Maps API to 3.22; NB: [control sizes have no effect with API v3.22](https://developers.google.com/maps/articles/v322-controls-diff)
-* changed: removed "sensor" query parameter to Google Maps API; no longer required
-
-### 1.10.0, 2015-08-23
-
-* fixed: Brazilian Portuguese translation (thanks, Alexsandro Santos and Paulo Henrique!)
-* fixed: JavaScript error on KML map marker click when marker has no description
-* fixed: can show directions without having a marker title (or infowindow)
-* added: `linktarget` attribute for changing where marker links open, e.g. `linktarget="_blank"`
-* added: `linktext` attribute for changing marker link text
-* added: `dirunitsystem` attribute for forcing directions units to metric or imperial
-* added: `dirtravelmode` attribute for selecting directions by driving, bicycling, walking, or transit
-* changed: bump version of Google Maps API to 3.20
-* changed: always load Google Maps API on HTTPS
+* fixed: monitor changes to invisible containers, not just non-displayed containers (thanks, [zetoun17](https://profiles.wordpress.org/zetoun17/)!)
+* fixed: "FlexibleMap is not defined" error when `isajax="1"` used without calling `flexmap_load_scripts()` (per the [FAQ](https://en-au.wordpress.org/plugins/wp-flexible-map/faq/))
+* added: ask [Autoptimize](https://wordpress.org/plugins/autoptimize/) to leave our inline script alone, to reduce the number of cached script files
+* changed: use localisation from [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map) in preference to local plugin copy
+* changed: translations updated from translate.wordpress.org
+* changed: bump version of Google Maps API to 3.24
