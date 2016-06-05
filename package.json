@@ -1,6 +1,6 @@
 {
   "name": "wp-flexible-map",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "description": "Embed Google Maps in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.",
   "main": "Gruntfile.js",
   "devDependencies": {
@@ -11,9 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/webaware/flexible-map.git"
+    "url": "https://github.com/webaware/flexible-map"
   },
   "author": "WebAware http://webaware.com.au/",
-  "license": "GPLv2 or later",
+  "license": "GPL-2.0",
   "homepage": "http://flexible-map.webaware.net.au/"
 }
