@@ -84,7 +84,7 @@ class FlxMapPlugin {
 	*/
 	public function enqueueScripts() {
 		// allow others to override the Google Maps API URL
-		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.22'));
+		$args = apply_filters('flexmap_google_maps_api_args', array('v' => '3.24'));
 		$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, 'https://maps.google.com/maps/api/js'));
 		if (!empty($apiURL)) {
 			wp_register_script('google-maps', $apiURL, false, null, true);
