@@ -14,6 +14,7 @@ class FlxMapAdmin {
 	*/
 	public function __construct() {
 		add_action('admin_init', array($this, 'adminInit'));
+		add_action('admin_menu', array($this, 'adminMenu'));
 		add_filter('plugins_update_check_locales', array($this, 'updateCheckLocales'));
 	}
 
@@ -24,6 +25,43 @@ class FlxMapAdmin {
 		if (current_user_can('manage_options')) {
 			add_filter('plugin_row_meta', array($this, 'addPluginDetailsLinks'), 10, 2);
 		}
+
+		add_settings_section(FLXMAP_PLUGIN_OPTIONS, false, false, FLXMAP_PLUGIN_OPTIONS);
+		register_setting(FLXMAP_PLUGIN_OPTIONS, FLXMAP_PLUGIN_OPTIONS, array($this, 'settingsValidate'));
+	}
+
+	/**
+	* admin menu items
+	*/
+	public function adminMenu() {
+		$label = __('Flexible Map', 'wp-flexible-map');
+		add_options_page($label, $label, 'manage_options', 'flexible-map', array($this, 'settingsPage'));
+	}
+
+	/**
+	* settings admin
+	*/
+	public function settingsPage() {
+		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
+
+		$options = wp_parse_args($options, array(
+			'apiKey'	=> '',
+		));
+
+		require FLXMAP_PLUGIN_ROOT . 'views/settings-form.php';
+	}
+
+	/**
+	* validate settings on save
+	* @param array $input
+	* @return array
+	*/
+	public function settingsValidate($input) {
+		$output = array();
+
+		$output['apiKey'] = trim(strip_tags($input['apiKey']));
+
+		return $output;
 	}
 
 	/**

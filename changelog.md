@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.11.1, soon...
+
+* added: support for Google Maps API key
+
 ### 1.11.0, 2016-06-05
 
 * fixed: monitor changes to invisible containers, not just non-displayed containers (thanks, [zetoun17](https://profiles.wordpress.org/zetoun17/)!)
