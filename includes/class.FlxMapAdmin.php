@@ -15,6 +15,7 @@ class FlxMapAdmin {
 	public function __construct() {
 		add_action('admin_init', array($this, 'adminInit'));
 		add_action('admin_menu', array($this, 'adminMenu'));
+		add_filter('plugin_row_meta', array($this, 'addPluginDetailsLinks'), 10, 2);
 		add_filter('plugins_update_check_locales', array($this, 'updateCheckLocales'));
 	}
 
@@ -23,7 +24,7 @@ class FlxMapAdmin {
 	*/
 	public function adminInit() {
 		if (current_user_can('manage_options')) {
-			add_filter('plugin_row_meta', array($this, 'addPluginDetailsLinks'), 10, 2);
+			add_action('plugin_action_links_' . FLXMAP_PLUGIN_NAME, array($this, 'addPluginActionLinks'));
 		}
 
 		add_settings_section(FLXMAP_PLUGIN_OPTIONS, false, false, FLXMAP_PLUGIN_OPTIONS);
@@ -65,7 +66,7 @@ class FlxMapAdmin {
 	}
 
 	/**
-	* action hook for adding plugin details links
+	* add plugin details links
 	*/
 	public function addPluginDetailsLinks($links, $file) {
 		// add settings link
@@ -76,6 +77,18 @@ class FlxMapAdmin {
 			$links[] = sprintf('<a href="https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map" target="_blank">%s</a>', _x('Translate', 'plugin details links', 'wp-flexible-map'));
 			$links[] = sprintf('<a href="http://shop.webaware.com.au/donations/?donation_for=Flexible+Map" target="_blank">%s</a>', _x('Donate', 'plugin details links', 'wp-flexible-map'));
 		}
+
+		return $links;
+	}
+
+	/**
+	* add plugin action links
+	*/
+	public function addPluginActionLinks($links) {
+		// add settings link
+		$url = admin_url('options-general.php?page=flexible-map');
+		$settings_link = sprintf('<a href="%s">%s</a>', $url, _x('Settings', 'plugin details links', 'wp-flexible-map'));
+		array_unshift($links, $settings_link);
 
 		return $links;
 	}
