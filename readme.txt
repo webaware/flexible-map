@@ -23,7 +23,6 @@ Flexible Map allows you to add Google Maps to your WordPress website with simple
  * by centre coordinates
  * by street address
  * by URL to a Google Earth KML file
-* no special Google Maps key is required -- uses the latest stable Google Maps API
 * simple shortcode for adding maps to pages/posts
 * PHP function `flexmap_show_map()` for theme and plugin developers
 * supports multiple maps on a page/post
@@ -68,7 +67,8 @@ The initial translations for all other languages were made using Google Translat
 
 1. Upload this plugin to your /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Add the shortcode `[flexiblemap]` to your pages / posts to embed maps
+3. Get an [API Key from Google](https://developers.google.com/maps/documentation/javascript/) and add it to Settings > Flexible Map
+4. Add the shortcode `[flexiblemap]` to your pages / posts to embed maps
 
 There are two ways to load maps with this plugin:
 
@@ -169,11 +169,19 @@ For more information and examples, see [the reference website](http://flexible-m
 
 == Frequently Asked Questions ==
 
+= Do I need an API key? =
+
+All websites using Google Maps for the first time need an API key. Websites that were using Google Maps before 2016-06-22 are permitted to keep using Google Maps without a key -- for now, at least. Read [this Google blog post](http://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html) for more information.
+
 = Where are the settings? =
 
-There are none! You just need to add some attributes to your shortcode telling the map what to do.
+You can set your [API key](https://developers.google.com/maps/documentation/javascript/) in the WordPress admin:
 
-Of course, in WordPress there is a plugin for everything :) so if you *want* settings, please install the [Flexible Map Options plugin](https://wordpress.org/plugins/wp-flexible-map-options/). That plugin lets you set some defaults so that if you use the same attributes over and over, you can put them all in one place.
+Settings > Flexible Map
+
+For everything else, just add some attributes to your shortcode telling the map what to do.
+
+Of course, in WordPress there is a plugin for everything :) so if you *want* more settings, please install the [Flexible Map Options plugin](https://wordpress.org/plugins/wp-flexible-map-options/). That plugin lets you set some defaults so that if you use the same attributes over and over, you can put them all in one place.
 
 = Can I add multiple markers to a map? =
 
