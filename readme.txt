@@ -5,9 +5,9 @@ Plugin URI: http://flexible-map.webaware.net.au/
 Author URI: http://webaware.com.au/
 Donate link: http://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
-Requires at least: 3.2.1
-Tested up to: 4.5.2
-Stable tag: 1.11.0
+Requires at least: 4.0
+Tested up to: 4.5.3
+Stable tag: 1.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -312,16 +312,21 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="100%" height="400px" directions="true"]`
 3. `[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px" maptype="satellite"]`
 4. `[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide" region="au"]`
+5. Setting screen with API key field
 
 == Upgrade Notice ==
 
-= 1.11.0 =
+= 1.12.0 =
 
-use localisation from translate.wordpress.org in preference to local plugin copy; bump version of Google Maps API to 3.24
+added support for Google Maps API key, required since 2016-06-22 for new websites
 
 == Changelog ==
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
+
+### 1.12.0, 2016-06-27
+
+* added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](http://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
 
 ### 1.11.0, 2016-06-05
 

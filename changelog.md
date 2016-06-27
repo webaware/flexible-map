@@ -2,9 +2,9 @@
 
 ## Changelog
 
-### 1.11.1, soon...
+### 1.12.0, 2016-06-27
 
-* added: support for Google Maps API key
+* added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](http://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
 
 ### 1.11.0, 2016-06-05
 
