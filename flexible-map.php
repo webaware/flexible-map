@@ -37,7 +37,7 @@ define('FLXMAP_PLUGIN_FILE', __FILE__);
 define('FLXMAP_PLUGIN_ROOT', dirname(__FILE__) . '/');
 define('FLXMAP_PLUGIN_NAME', basename(dirname(__FILE__)) . '/' . basename(__FILE__));
 define('FLXMAP_PLUGIN_OPTIONS', 'flexible_map');
-define('FLXMAP_PLUGIN_VERSION', '1.12.0');
+define('FLXMAP_PLUGIN_VERSION', '1.12.1-dev');
 
 // shortcode tags
 define('FLXMAP_PLUGIN_TAG_MAP', 'flexiblemap');

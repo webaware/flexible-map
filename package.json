@@ -1,6 +1,6 @@
 {
   "name": "wp-flexible-map",
-  "version": "1.12.0",
+  "version": "1.12.1-dev",
   "description": "Embed Google Maps in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.",
   "main": "Gruntfile.js",
   "devDependencies": {
