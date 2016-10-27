@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.12.1, soon...
+
+* changed: bump version of Google Maps API to 3.25
+
 ### 1.12.0, 2016-06-27
 
 * added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
