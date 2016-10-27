@@ -4,12 +4,12 @@
 
 ### 1.12.0, 2016-06-27
 
-* added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](http://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
+* added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
 
 ### 1.11.0, 2016-06-05
 
 * fixed: monitor changes to invisible containers, not just non-displayed containers (thanks, [zetoun17](https://profiles.wordpress.org/zetoun17/)!)
-* fixed: "FlexibleMap is not defined" error when `isajax="1"` used without calling `flexmap_load_scripts()` (per the [FAQ](https://en-au.wordpress.org/plugins/wp-flexible-map/faq/))
+* fixed: "FlexibleMap is not defined" error when `isajax="1"` used without calling `flexmap_load_scripts()` (per the [FAQ](https://wordpress.org/plugins/wp-flexible-map/faq/))
 * added: ask [Autoptimize](https://wordpress.org/plugins/autoptimize/) to leave our inline script alone, to reduce the number of cached script files
 * changed: use localisation from [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map) in preference to local plugin copy
 * changed: translations updated from translate.wordpress.org
