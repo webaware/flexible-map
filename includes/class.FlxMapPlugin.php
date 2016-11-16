@@ -85,7 +85,7 @@ class FlxMapPlugin {
 	public function enqueueScripts() {
 		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
 
-		$args   = array('v' => '3.25');
+		$args   = array('v' => '3.26');
 		if (!empty($options['apiKey'])) {
 			$args['key'] = $options['apiKey'];
 		}
