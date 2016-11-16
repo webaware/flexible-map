@@ -96,8 +96,8 @@ class FlxMapPlugin {
 			wp_register_script('google-maps', $apiURL, false, null, true);
 		}
 
-		$min = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-		$ver = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : FLXMAP_PLUGIN_VERSION;
+		$min = SCRIPT_DEBUG ? '' : '.min';
+		$ver = SCRIPT_DEBUG ? time() : FLXMAP_PLUGIN_VERSION;
 		wp_register_script('flxmap', "{$this->urlBase}js/flexible-map$min.js", array('google-maps'), $ver, true);
 
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
