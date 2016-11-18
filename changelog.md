@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### 1.12.1, soon...
+### 1.12.1, 2016-11-18
 
 * changed: bump version of Google Maps API to 3.26
 

@@ -6,8 +6,8 @@ Author URI: https://shop.webaware.com.au/
 Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 4.0
-Tested up to: 4.6.1
-Stable tag: 1.12.0
+Tested up to: 4.7
+Stable tag: 1.12.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -316,23 +316,18 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 == Upgrade Notice ==
 
-= 1.12.0 =
+= 1.12.1 =
 
-added support for Google Maps API key, required since 2016-06-22 for new websites
+bump version of Google Maps API to 3.26
 
 == Changelog ==
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
+### 1.12.1, 2016-11-18
+
+* changed: bump version of Google Maps API to 3.26
+
 ### 1.12.0, 2016-06-27
 
 * added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
-
-### 1.11.0, 2016-06-05
-
-* fixed: monitor changes to invisible containers, not just non-displayed containers (thanks, [zetoun17](https://profiles.wordpress.org/zetoun17/)!)
-* fixed: "FlexibleMap is not defined" error when `isajax="1"` used without calling `flexmap_load_scripts()` (per the [FAQ](https://en-au.wordpress.org/plugins/wp-flexible-map/faq/))
-* added: ask [Autoptimize](https://wordpress.org/plugins/autoptimize/) to leave our inline script alone, to reduce the number of cached script files
-* changed: use localisation from [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map) in preference to local plugin copy
-* changed: translations updated from translate.wordpress.org
-* changed: bump version of Google Maps API to 3.24
