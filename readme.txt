@@ -8,6 +8,7 @@ Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 4.0
 Tested up to: 4.7
 Stable tag: 1.12.1
+Requires PHP: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
