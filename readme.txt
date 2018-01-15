@@ -6,8 +6,8 @@ Author URI: https://shop.webaware.com.au/
 Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
 Requires at least: 4.0
-Tested up to: 4.7
-Stable tag: 1.12.1
+Tested up to: 4.9
+Stable tag: 1.13.0
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,8 +47,9 @@ Thanks for sponsoring new features on WP Flexible Maps!
 
 Many thanks to the generous efforts of our translators:
 
-* Czech (cs) -- [caslavak](https://profiles.wordpress.org/caslavak/)
+* Czech (cs) -- [caslavak](https://profiles.wordpress.org/caslavak/) and the [Czech translation team](https://translate.wordpress.org/locale/cs/default/wp-plugins/wp-flexible-map)
 * Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/) and the [Dutch translation team](https://translate.wordpress.org/locale/nl/default/wp-plugins/wp-flexible-map)
+* English (en_CA) -- [the English (Canadian) translation team](https://translate.wordpress.org/locale/en-ca/default/wp-plugins/wp-flexible-map)
 * French (fr) -- [mister klucha](https://profiles.wordpress.org/mister-klucha/) and the [French translation team](https://translate.wordpress.org/locale/fr/default/wp-plugins/wp-flexible-map)
 * German (de) -- [Carib Design](http://www.caribdesign.com/) and the [German translation team](https://translate.wordpress.org/locale/de/default/wp-plugins/wp-flexible-map)
 * Greek (el) -- [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)
@@ -107,7 +108,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **kmlcache**: ask Google Maps to use a new map instead of cached map, specified in minutes (90 minutes), hours (2 hours), days (1 day), or "none"; minimum 5 minutes, default "none"
 
 *Sample*:
-`[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
+`[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
 
 = Attributes for all maps =
 
@@ -194,8 +195,8 @@ Google Maps API caches the KML file, so it can take a while for your new changes
 
 If your map is auto-generated or changes frequently, add the `kmlcache` attribute to ask Google to fetch a new copy periodically. You can specify the interval in minutes (e.g. "90 minutes"), hours (e.g. "2 hours"), or days (e.g. "1 day"). The minimum interval is 5 minutes.
 
-`[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml?v=2"]
-[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" kmlcache="8 hours"]`
+`[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml?v=2"]
+[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" kmlcache="8 hours"]`
 
 = What parts of KML are supported? =
 
@@ -311,24 +312,20 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="100%" height="400px" directions="true" maptype="satellite"]`
 2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="100%" height="400px" directions="true"]`
-3. `[flexiblemap src="http://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px" maptype="satellite"]`
+3. `[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px" maptype="satellite"]`
 4. `[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide" region="au"]`
 5. Setting screen with API key field
 
 == Upgrade Notice ==
 
-= 1.12.1 =
+= 1.13.0 =
 
-bump version of Google Maps API to 3.26
+bump version of Google Maps API to 3.30
 
 == Changelog ==
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.12.1, 2016-11-18
+### 1.13.0, 2018-01-15
 
-* changed: bump version of Google Maps API to 3.26
-
-### 1.12.0, 2016-06-27
-
-* added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
+* changed: bump version of Google Maps API to 3.30
