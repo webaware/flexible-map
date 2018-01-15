@@ -38,6 +38,7 @@
 	},
 
 	"globals": {
+		"FlexibleMap": false,
 		"flxmap": false,
 		"google": false,
 		"module": false,

@@ -1,9 +1,9 @@
-/*!
+/*
 JavaScript for the WordPress plugin wp-flexible-map
 https://flexible-map.webaware.net.au/
 */
 
-function FlexibleMap() {
+window.FlexibleMap = function() {
 	"use strict";
 
 	// instance-private members with accessors
@@ -316,7 +316,7 @@ FlexibleMap.prototype = (function() {
 
 		return function(text) {
 			// search for JavaScript and HTML special characters, convert to Unicode hex
-			return text.replace(/[\\\/"'&<>\x00-\x1f\x7f-\xa0\u2000-\u200f\u2028-\u202f]/g, toUnicodeHex);
+			return text.replace(/[\\/"'&<>\x00-\x1f\x7f-\xa0\u2000-\u200f\u2028-\u202f]/g, toUnicodeHex);	// eslint-disable-line no-control-regex
 		};
 
 	})();
@@ -358,7 +358,7 @@ FlexibleMap.prototype = (function() {
 
 			if (buster) {
 				buster = Math.floor(buster);
-				url += (url.indexOf("?") > -1 ? "&" : "?") + "nocache=" + buster;
+				url += (url.indexOf("?") > -1 ? "&" : "?") + "nocache=" + buster;	// eslint-disable-line no-param-reassign
 			}
 		}
 
@@ -419,8 +419,7 @@ FlexibleMap.prototype = (function() {
 			}
 			else {
 				// not found, so try simplified locale
-				localeWanted = localeWanted.substr(0, 2);
-				if (localeWanted in this.i18n) {
+				if (localeWanted.substr(0, 2) in this.i18n) {
 					this.localeActive = localeWanted;
 				}
 				else {
@@ -662,7 +661,7 @@ FlexibleMap.prototype = (function() {
 			}
 
 			geocoder.geocode({address: address, region: this.region}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
+				if (status === google.maps.GeocoderStatus.OK) {
 					var	location = results[0].geometry.location,
 						centre = [ location.lat(), location.lng() ];
 					self.showMarker(divID, centre, centre);
@@ -761,8 +760,9 @@ FlexibleMap.prototype = (function() {
 					input, p, from;
 
 				// remove all from panel
-				while (!!(p = panel.lastChild))
+				for (p = panel.lastChild; p; p = panel.lastChild) {
 					panel.removeChild(p);
+				}
 
 				// populate form and add to panel
 				p = document.createElement("p");
