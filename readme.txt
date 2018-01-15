@@ -4,7 +4,7 @@ Plugin Name: Flexible Map
 Plugin URI: https://flexible-map.webaware.net.au/
 Author URI: https://shop.webaware.com.au/
 Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
-Tags: google, map, maps, google maps, shortcode, google maps shortcode, kml
+Tags: google, map, maps, google maps, kml
 Requires at least: 4.0
 Tested up to: 4.9
 Stable tag: 1.13.0
