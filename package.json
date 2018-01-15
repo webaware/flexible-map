@@ -1,21 +1,22 @@
 {
   "name": "wp-flexible-map",
   "version": "1.12.1",
-  "description": "Embed Google Maps in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.",
+  "description": "Flexible Map",
   "main": "Gruntfile.js",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-compress": "^1.2.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-uglify": "^0.8.0"
-  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/webaware/flexible-map"
   },
   "author": "WebAware https://shop.webaware.com.au/",
+  "homepage": "https://flexible-map.webaware.net.au/",
   "license": "GPL-2.0",
-  "homepage": "https://flexible-map.webaware.net.au/"
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-compress": "^1.4.3",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-eslint": "^20.1.0"
+  }
 }

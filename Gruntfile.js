@@ -30,22 +30,19 @@ module.exports = function (grunt) {
 			}
 		},
 
-		jshint: {
+		eslint: {
 			all: [
 				"Gruntfile.js",
 				"js/*.js",
 				"!js/*.min.js"
-			],
-			options: {
-				jshintrc: ".jshintrc",
-				force: true
-			}
+			]
 		},
 
 		uglify: {
 			build: {
 				options: {
-					preserveComments: "some"
+					ASCIIOnly: true,
+					banner: "// <%= pkg.description %>\n// <%= pkg.homepage %>\n"
 				},
 				files: [{
 					expand: true,
@@ -65,8 +62,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks("grunt-contrib-compress");
 	grunt.loadNpmTasks("grunt-contrib-copy");
-	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-eslint");
 
 	grunt.registerTask("release", ["clean","copy","compress"]);
 	grunt.registerTask("default", [ "jshint" ]);
