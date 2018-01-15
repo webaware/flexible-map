@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.13.0, 2018-01-15
+
+* changed: bump version of Google Maps API to 3.30
+
 ### 1.12.1, 2016-11-18
 
 * changed: bump version of Google Maps API to 3.26
