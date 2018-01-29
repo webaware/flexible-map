@@ -30,9 +30,15 @@ class FlxMapPlugin {
 	}
 
 	/**
-	* hook the plug-in's initialise event to handle all post-activation initialisation
+	* hide the constructor
 	*/
 	private function __construct() {
+	}
+
+	/**
+	* hook into WordPress actions and filters
+	*/
+	public function addHooks() {
 		// record plugin URL base
 		$this->urlBase = plugin_dir_url(FLXMAP_PLUGIN_FILE);
 
