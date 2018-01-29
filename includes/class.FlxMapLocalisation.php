@@ -12,22 +12,20 @@ class FlxMapLocalisation {
 	const TEXT_DOMAIN				= 'wp-flexible-map';
 	const TRANSIENT_LANGPACKS		= 'flexible_map_langpacks';
 
-	static $script_strings			= null;
+	protected $script_strings;
 
 	/**
 	* initialise the class if it hasn't been
 	*/
 	public function __construct() {
-		if (self::$script_strings === null) {
-			// declare l10n strings used in JavaScript so a gettext scanner can find them
-			// and record for use in filtering localisations
-			self::$script_strings = array(
-				'Click for details'		=> __('Click for details', 'wp-flexible-map'),
-				'Directions'			=> __('Directions', 'wp-flexible-map'),
-				'From'					=> __('From', 'wp-flexible-map'),
-				'Get directions'		=> __('Get directions', 'wp-flexible-map'),
-			);
-		}
+		// declare l10n strings used in JavaScript so a gettext scanner can find them
+		// and record for use in filtering localisations
+		$this->script_strings = array(
+			'Click for details'		=> __('Click for details', 'wp-flexible-map'),
+			'Directions'			=> __('Directions', 'wp-flexible-map'),
+			'From'					=> __('From', 'wp-flexible-map'),
+			'Get directions'		=> __('Get directions', 'wp-flexible-map'),
+		);
 	}
 
 	/**
@@ -60,7 +58,7 @@ class FlxMapLocalisation {
 					$strings = self::getMoStrings($mofile);
 					if (!empty($strings)) {
 						// filter to only contain strings we need in JavaScript
-						$strings = array_intersect_key($strings, self::$script_strings);
+						$strings = array_intersect_key($strings, $this->script_strings);
 						$i18n[$locale] = $strings;
 					}
 				}
@@ -152,7 +150,7 @@ class FlxMapLocalisation {
 	* for global language updates from translate.wordpress.org
 	* @return array
 	*/
-	public function getGlobalMapLocales() {
+	public static function getGlobalMapLocales() {
 		$langPacks = get_site_transient(self::TRANSIENT_LANGPACKS);
 
 		if (!is_array($langPacks)) {
@@ -168,7 +166,7 @@ class FlxMapLocalisation {
 	* @param array $locales
 	*/
 	protected function updateGlobalMapLocales($locales) {
-		$langPacks = $this->getGlobalMapLocales();
+		$langPacks = self::getGlobalMapLocales();
 		$diff = array_diff($locales, $langPacks);
 
 		if (!empty($diff)) {

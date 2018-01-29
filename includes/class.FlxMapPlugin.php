@@ -126,9 +126,7 @@ class FlxMapPlugin {
 		$localise = array();
 
 		if (!empty($this->locales)) {
-			if (!class_exists('FlxMapLocalisation', false)) {
-				require FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapLocalisation.php';
-			}
+			require_once FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapLocalisation.php';
 			$localisation = new FlxMapLocalisation();
 			$i18n = $localisation->getLocalisations($this->locales);
 			if (!empty($i18n)) {

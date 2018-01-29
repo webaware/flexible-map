@@ -99,11 +99,8 @@ class FlxMapAdmin {
 	* @return array
 	*/
 	public function updateCheckLocales($locales) {
-		if (!class_exists('FlxMapLocalisation', false)) {
-			require FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapLocalisation.php';
-		}
-		$localisation = new FlxMapLocalisation();
-		$langPacks = $localisation->getGlobalMapLocales();
+		require_once FLXMAP_PLUGIN_ROOT . 'includes/class.FlxMapLocalisation.php';
+		$langPacks = FlxMapLocalisation::getGlobalMapLocales();
 
 		$combined = array_unique(array_merge($locales, $langPacks));
 
