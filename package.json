@@ -3,7 +3,6 @@
   "version": "1.14.0-dev",
   "description": "Flexible Map",
   "main": "Gruntfile.js",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/webaware/flexible-map"
@@ -11,8 +10,8 @@
   "author": "WebAware https://shop.webaware.com.au/",
   "homepage": "https://flexible-map.webaware.net.au/",
   "license": "GPL-2.0",
-  "dependencies": {
-    "grunt": "^1.0.1",
+  "devDependencies": {
+    "grunt": "^1.0.2",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-compress": "^1.4.3",
     "grunt-contrib-copy": "^1.0.0",
