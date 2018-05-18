@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 ?>
 
 <div class="wrap">
-	<h2><?php esc_html_e('Flexible Map', 'wp-flexible-map'); ?></h2>
+	<h1><?php esc_html_e('Flexible Map', 'wp-flexible-map'); ?></h1>
 
 	<form action="<?php echo admin_url('options.php'); ?>" method="POST">
 		<?php settings_fields(FLXMAP_PLUGIN_OPTIONS); ?>
