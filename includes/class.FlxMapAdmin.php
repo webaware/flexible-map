@@ -46,7 +46,8 @@ class FlxMapAdmin {
 		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
 
 		$options = wp_parse_args($options, array(
-			'apiKey'	=> '',
+			'apiKey'		=> '',
+			'apiServerKey'	=> '',
 		));
 
 		require FLXMAP_PLUGIN_ROOT . 'views/settings-form.php';
@@ -60,7 +61,8 @@ class FlxMapAdmin {
 	public function settingsValidate($input) {
 		$output = array();
 
-		$output['apiKey'] = trim(strip_tags($input['apiKey']));
+		$output['apiKey']		= trim(strip_tags($input['apiKey']));
+		$output['apiServerKey']	= trim(strip_tags($input['apiServerKey']));
 
 		return $output;
 	}

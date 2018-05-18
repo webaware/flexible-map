@@ -514,18 +514,28 @@ HTML;
 
 	/**
 	* get coordinate for given address
+	* @link https://developers.google.com/maps/documentation/geocoding/intro
 	* @param string $address
 	* @param string $region
 	* @return array|false
 	*/
 	protected static function getAddressCoordinates($address, $region) {
+		// only if we have an API key for server requests
+		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
+		if (empty($options['apiServerKey'])) {
+			return false;
+		}
+
 		// try to get a cached answer first
 		$cacheKey = 'flxmap_' . md5("$address|$region");
 		$coords = get_transient($cacheKey);
 
 		if ($coords === false) {
 			// build Google Maps geocoding query
-			$args = array('address'	=> urlencode($address));
+			$args = array(
+				'address'	=> urlencode($address),
+				'key'		=> $options['apiServerKey'],
+			);
 			if (!empty($region)) {
 				$args['region'] = urlencode($region);
 			}
@@ -545,7 +555,7 @@ HTML;
 				}
 
 				if ($result->status != 'OK') {
-					throw new Exception("error retrieving address: " . $result->status);
+					throw new Exception(sprintf("error retrieving address: %s; %s", $result->status, $result->error_message));
 				}
 
 				// success, return array with latitude and longitude

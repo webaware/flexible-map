@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.14.0, soon...
+
+* added: server API key to reduce `REQUEST_DENIED` errors from server side address resolution requests
+
 ### 1.13.0, 2018-01-15
 
 * changed: bump version of Google Maps API to 3.30

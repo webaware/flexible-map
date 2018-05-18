@@ -15,11 +15,19 @@ if (!defined('ABSPATH')) {
 		<table class="form-table">
 
 			<tr valign="top">
-				<th scope="row"><?php echo esc_html_x('API key', 'settings', 'wp-flexible-map'); ?></th>
+				<th scope="row"><?php echo esc_html_x('JavaScript API key', 'settings', 'wp-flexible-map'); ?></th>
 				<td>
 					<input type="text" class="regular-text" name="flexible_map[apiKey]" value="<?php echo esc_attr($options['apiKey']); ?>" />
-					<br />
-					<em><?php printf(wp_kses_data(_x('Get your API key from the <a target="_blank" href="%s">Google Maps API website</a>.', 'settings', 'wp-flexible-map')), 'https://developers.google.com/maps/documentation/javascript/'); ?></em>
+					<p><?php printf(wp_kses_data(_x('Get your API key from the <a rel="noopener" target="_blank" href="%s">Google Maps API website</a>.', 'settings', 'wp-flexible-map')), 'https://developers.google.com/maps/documentation/javascript/'); ?></p>
+				</td>
+			</tr>
+
+			<tr valign="top">
+				<th scope="row"><?php echo esc_html_x('Server API key', 'settings', 'wp-flexible-map'); ?></th>
+				<td>
+					<input type="text" class="regular-text" name="flexible_map[apiServerKey]" value="<?php echo esc_attr($options['apiServerKey']); ?>" />
+					<p><?php echo esc_html_x('This key helps reduce the number of queries your server makes for maps with an address.', 'settings', 'wp-flexible-map'); ?></p>
+					<p><?php echo esc_html_x('It can be the same as the JavaScript key, but it must not be restricted by HTTP referrer. If you have restricted your JavaScript key by referrer, please create another key for the server.', 'settings', 'wp-flexible-map'); ?></p>
 				</td>
 			</tr>
 
