@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 				<th scope="row"><?php echo esc_html_x('JavaScript API key', 'settings', 'wp-flexible-map'); ?></th>
 				<td>
 					<input type="text" class="regular-text" name="flexible_map[apiKey]" value="<?php echo esc_attr($options['apiKey']); ?>" />
-					<p><?php printf(wp_kses_data(_x('Get your API key from the <a rel="noopener" target="_blank" href="%s">Google Maps API website</a>.', 'settings', 'wp-flexible-map')), 'https://developers.google.com/maps/documentation/javascript/'); ?></p>
+					<p><?php echo $this->addExternalLink(esc_html_x('Get your API key from the {{a}}Google Maps API website{{/a}}.', 'settings', 'wp-flexible-map'), 'https://developers.google.com/maps/documentation/javascript/'); ?></p>
 				</td>
 			</tr>
 

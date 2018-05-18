@@ -73,11 +73,11 @@ class FlxMapAdmin {
 	public function addPluginDetailsLinks($links, $file) {
 		// add settings link
 		if ($file == FLXMAP_PLUGIN_NAME) {
-			$links[] = sprintf('<a href="https://flexible-map.webaware.net.au/manual/getting-started/" target="_blank">%s</a>', _x('Instructions', 'plugin details links', 'wp-flexible-map'));
-			$links[] = sprintf('<a href="https://wordpress.org/support/plugin/wp-flexible-map" target="_blank">%s</a>', _x('Get Help', 'plugin details links', 'wp-flexible-map'));
-			$links[] = sprintf('<a href="https://wordpress.org/plugins/wp-flexible-map/" target="_blank">%s</a>', _x('Rating', 'plugin details links', 'wp-flexible-map'));
-			$links[] = sprintf('<a href="https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map" target="_blank">%s</a>', _x('Translate', 'plugin details links', 'wp-flexible-map'));
-			$links[] = sprintf('<a href="https://shop.webaware.com.au/donations/?donation_for=Flexible+Map" target="_blank">%s</a>', _x('Donate', 'plugin details links', 'wp-flexible-map'));
+			$links[] = sprintf('<a href="https://flexible-map.webaware.net.au/manual/getting-started/" rel="noopener" target="_blank">%s</a>', _x('Instructions', 'plugin details links', 'wp-flexible-map'));
+			$links[] = sprintf('<a href="https://wordpress.org/support/plugin/wp-flexible-map" rel="noopener" target="_blank">%s</a>', _x('Get Help', 'plugin details links', 'wp-flexible-map'));
+			$links[] = sprintf('<a href="https://wordpress.org/plugins/wp-flexible-map/" rel="noopener" target="_blank">%s</a>', _x('Rating', 'plugin details links', 'wp-flexible-map'));
+			$links[] = sprintf('<a href="https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map" rel="noopener" target="_blank">%s</a>', _x('Translate', 'plugin details links', 'wp-flexible-map'));
+			$links[] = sprintf('<a href="https://shop.webaware.com.au/donations/?donation_for=Flexible+Map" rel="noopener" target="_blank">%s</a>', _x('Donate', 'plugin details links', 'wp-flexible-map'));
 		}
 
 		return $links;
@@ -107,6 +107,24 @@ class FlxMapAdmin {
 		$combined = array_unique(array_merge($locales, $langPacks));
 
 		return $combined;
+	}
+
+	/**
+	* replace link placeholders with an external link
+	* @param string $template
+	* @param string $url
+	* @return string
+	*/
+	protected function addExternalLink($template, $url) {
+		$search = array(
+			'{{a}}',
+			'{{/a}}',
+		);
+		$replace = array(
+			sprintf('<a rel="noopener" target="_blank" href="%s">', $url),
+			'</a>',
+		);
+		return str_replace($search, $replace, $template);
 	}
 
 }
