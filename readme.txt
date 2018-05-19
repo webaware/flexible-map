@@ -1,4 +1,4 @@
-=== Flexible Map ===
+# Flexible Map
 Contributors: webaware
 Plugin Name: Flexible Map
 Plugin URI: https://flexible-map.webaware.net.au/
@@ -14,11 +14,11 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Embed Google Maps shortcodes in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.
 
-== Description ==
+## Description
 
 Flexible Map allows you to add Google Maps to your WordPress website with simple shortcodes.
 
-**Features:**
+### Features
 
 * three ways to load a map:
  * by centre coordinates
@@ -37,13 +37,13 @@ Flexible Map allows you to add Google Maps to your WordPress website with simple
 [Get started with Flexible Map](https://flexible-map.webaware.net.au/manual/getting-started/).
 [Read the manual online](https://flexible-map.webaware.net.au/manual/).
 
-= Sponsorships =
+### Sponsorships
 
 * directions on KML maps generously sponsored by [Roger Los](http://www.rogerlos.com/)
 
 Thanks for sponsoring new features on WP Flexible Maps!
 
-= Translations =
+### Translations
 
 Many thanks to the generous efforts of our translators:
 
@@ -65,13 +65,13 @@ Many thanks to the generous efforts of our translators:
 
 The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
-### Privacy ###
+### Privacy
 
 Flexible Map embeds Google Maps into your web pages. Please review Google's [Privacy and Personal Information](https://developers.google.com/maps/terms#3-privacy-and-personal-information) for information about how that affects your website's privacy policy. By using this plugin, you are agreeing to the terms of use for Google Maps.
 
 The Flexible Map plugin itself does not collect any personally identifying information, and does not set any cookies itself.
 
-## Installation ##
+## Installation
 
 1. Upload this plugin to your /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
@@ -85,7 +85,7 @@ There are two ways to load maps with this plugin:
 
 To add a Flexible Map to a post or a page, add a shortcode `[flexiblemap]` and give it some useful attributes. A map can either be specified using centre coordinates or street address, or by loading a KML file.
 
-= Attributes for centre coordinates or street address map =
+### Attributes for centre coordinates or street address map
 
 Either the center or the address paramater is required. If you provide both, the centre coordinates will be used for the map centre, but directions will use the street address. (This will prevent directions from telling people how to get to the destination opposite yours!)
 
@@ -107,7 +107,7 @@ Either the center or the address paramater is required. If you provide both, the
 [flexiblemap center="-32.891058,151.538042" title="Mount Sugarloaf" directions="true"]
 [flexiblemap center="-32.918827,151.806164" title="Nobby's Head" directions="my-dir-div"]`
 
-= Attributes for KML map =
+### Attributes for KML map
 
 * **src**: the URL for a KML file to load map details from, e.g. *src="http://example.com/map.kml"*
 * **targetfix**: prevent links from opening in new window, from [true, false], e.g. *targetfix="true"*; default=true
@@ -116,7 +116,7 @@ Either the center or the address paramater is required. If you provide both, the
 *Sample*:
 `[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
 
-= Attributes for all maps =
+### Attributes for all maps
 
 * **width**: width in pixels or valid CSS units, e.g. *width="100%"*
 * **height**: height in pixels or valid CSS units, e.g. *height="400px"*
@@ -145,7 +145,7 @@ Either the center or the address paramater is required. If you provide both, the
 * **region**: specify region to help localise address searches for street address map and directions, taken from the list of [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) e.g. *region="AU"*
 * **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
 
-= Calling from templates or plugins =
+### Calling from templates or plugins
 
 There is a PHP function `flexmap_show_map()` for theme and plugin developers. All of the same attributes for the shortcode can be passed to the function in an associative array. If you want it to return the map as a string without output to screen, add "echo"=>"false" to array of attributes.
 
@@ -175,13 +175,13 @@ There are also some filter hooks that allow you to change the behaviour of the p
 
 For more information and examples, see [the reference website](https://flexible-map.webaware.net.au/).
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions
 
-= Do I need an API key? =
+### Do I need an API key?
 
 All websites using Google Maps for the first time need an API key. Websites that were using Google Maps before 2016-06-22 are permitted to keep using Google Maps without a key -- for now, at least. Read [this Google blog post](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html) for more information.
 
-= Where are the settings? =
+### Where are the settings?
 
 You can set your [API key](https://developers.google.com/maps/documentation/javascript/) in the WordPress admin:
 
@@ -191,11 +191,11 @@ For everything else, just add some attributes to your shortcode telling the map 
 
 Of course, in WordPress there is a plugin for everything :) so if you *want* more settings, please install the [Flexible Map Options plugin](https://wordpress.org/plugins/wp-flexible-map-options/). That plugin lets you set some defaults so that if you use the same attributes over and over, you can put them all in one place.
 
-= Can I add multiple markers to a map? =
+### Can I add multiple markers to a map?
 
 Using a KML file, you can have as many markers on a map as you like, with as much detail in the info windows. With KML you can also change marker icons and add other nice features. You can generate your KML file from an application like Google Earth, or you can create it yourself (in a text editor or with your own programming). [Learn more about KML](https://developers.google.com/kml/).
 
-= Why won't my KML map update when I edit the KML file? =
+### Why won't my KML map update when I edit the KML file?
 
 Google Maps API caches the KML file, so it can take a while for your new changes to appear. To force a change, append a URL query parameter with a number (known as a cache buster) and increment the number each time you change the KML file. A nice simple and commonly used parameter name is v (for version), like this: http://example.com/my-map.kml?v=2
 
@@ -204,19 +204,19 @@ If your map is auto-generated or changes frequently, add the `kmlcache` attribut
 `[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml?v=2"]
 [flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" kmlcache="8 hours"]`
 
-= What parts of KML are supported? =
+### What parts of KML are supported?
 
 The Google Maps API supports many commonly used KML elements, but has some restrictions. Read about [Google Maps support for KML](https://developers.google.com/kml/documentation/mapsSupport) in the developers' guide, and also see the list of [KML elements supported in Google Maps](https://developers.google.com/kml/documentation/kmlelementsinmaps).
 
-= Why won't the map show my place when I use the address attribute? =
+### Why won't the map show my place when I use the address attribute?
 
 When you use a street address instead of centre coordinates, you are effectively searching Google Maps for your location. Try being very specific about your address, including your town / city, state / province, and country to make sure Google can find where you mean. You can also specify your region with the `region` attribute to help Google Maps refine its search. If the marker is still in the wrong place, you might need to specify the location using centre coordinates instead.
 
-= How can I use centre coordinates for the map and have directions to my address? =
+### How can I use centre coordinates for the map and have directions to my address?
 
 When you use just centre coordinates for your map, the directions may send people to the location *opposite* your location! Yes, I know... anyway, if you specify both the centre coordinates and the street address, the map will be centred correctly and the directions will be to your address.
 
-= How do I get the maps to use my language? =
+### How do I get the maps to use my language?
 
 The plugin uses localised messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](https://codex.wordpress.org/WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` attribute, e.g. `locale="ru"` or `locale="zh-TW"`.
 
@@ -229,11 +229,11 @@ function force_flexmap_map_language($args) {
     return $args;
 }`
 
-= You've translated my language badly / it's missing =
+### You've translated my language badly / it's missing
 
 The initial translations were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
-= The map is broken in tabs / accordions =
+### The map is broken in tabs / accordions
 
 When you hide the map in a tab, and then click on the tab to reveal its contents, sometimes the map doesn't know how big to draw until it is revealed. Since v1.9.0 most such problems are automatically resolved for modern browsers, including Internet Explorer 11 or later. If you need to support earlier versions that don't support [MutationObserver](http://caniuse.com/#feat=mutationobserver), add some script to your website to handle this yourself.
 
@@ -269,7 +269,7 @@ jQuery("body").bind("tabsshow", function(event, ui) {
 
 For tabs in jQuery Tools, see [this support topic](https://wordpress.org/support/topic/tabs-map#post-3784706).
 
-= How can I get access to the map object? =
+### How can I get access to the map object?
 
 If you want to add your own scripting for the map, you can get the map object by identifying the FlexibleMap global variable for your map, and asking it to getMap(). By default, each FlexibleMap is given a randomly generated ID and the global variable name is derived from that. The map's containing div has a data property with this global variable name. Here's some sample jQuery code that gets the map object for the (first) map:
 
@@ -291,7 +291,7 @@ And here's some sample jQuery code:
     // ... use map ...
 });`
 
-= Why won't the map load on my AJAX single-page website? =
+### Why won't the map load on my AJAX single-page website?
 
 The plugin only loads the required JavaScript scripts when it knows that they are needed. When your website uses AJAX to load a page, the normal WordPress footer action for that page doesn't happen, and the scripts aren't loaded. You can make the scripts load on every page by adding this snippet to the functions.php file in your theme:
 
@@ -310,11 +310,11 @@ The plugin will detect when AJAX is being used via the [WordPress standard metho
 
 NB: currently, only AJAX methods that parse script tags will work correctly; this includes some [jQuery methods](http://stackoverflow.com/q/2203762/911083) (but [not all](http://stackoverflow.com/a/2699905/911083)). A future version of the plugin will be more AJAX friendly.
 
-= I have CloudFlare Rocketscript turned on and the map doesn't work =
+### I have CloudFlare Rocketscript turned on and the map doesn't work
 
 Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscript](https://gist.github.com/webaware/8949605) plugin by loading that file into your website's wp-content/plugins folder and activating through the plugins admin page. Use the plugin if you still want Rocketscript to manage all of your other scripts but leave the Flexible Map scripts alone.
 
-== Screenshots ==
+## Screenshots
 
 1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="100%" height="400px" directions="true" maptype="satellite"]`
 2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="100%" height="400px" directions="true"]`
@@ -322,13 +322,13 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 4. `[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide" region="au"]`
 5. Setting screen with API key field
 
-== Upgrade Notice ==
+## Upgrade Notice
 
-= 1.13.0 =
+### 1.13.0
 
 bump version of Google Maps API to 3.30
 
-== Changelog ==
+## Changelog
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
