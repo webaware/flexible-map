@@ -65,7 +65,13 @@ Many thanks to the generous efforts of our translators:
 
 The initial translations for all other languages were made using Google Translate, so it's likely that some will be truly awful! If you'd like to help out by translating this plugin, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
-== Installation ==
+### Privacy ###
+
+Flexible Map embeds Google Maps into your web pages. Please review Google's [Privacy and Personal Information](https://developers.google.com/maps/terms#3-privacy-and-personal-information) for information about how that affects your website's privacy policy. By using this plugin, you are agreeing to the terms of use for Google Maps.
+
+The Flexible Map plugin itself does not collect any personally identifying information, and does not set any cookies itself.
+
+## Installation ##
 
 1. Upload this plugin to your /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
