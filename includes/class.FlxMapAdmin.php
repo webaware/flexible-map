@@ -89,7 +89,7 @@ class FlxMapAdmin {
 	public function addPluginActionLinks($links) {
 		// add settings link
 		$url = admin_url('options-general.php?page=flexible-map');
-		$settings_link = sprintf('<a href="%s">%s</a>', $url, _x('Settings', 'plugin details links', 'wp-flexible-map'));
+		$settings_link = sprintf('<a href="%s">%s</a>', esc_url($url), _x('Settings', 'plugin details links', 'wp-flexible-map'));
 		array_unshift($links, $settings_link);
 
 		return $links;
@@ -121,7 +121,7 @@ class FlxMapAdmin {
 			'{{/a}}',
 		);
 		$replace = array(
-			sprintf('<a rel="noopener" target="_blank" href="%s">', $url),
+			sprintf('<a rel="noopener" target="_blank" href="%s">', esc_url($url)),
 			'</a>',
 		);
 		return str_replace($search, $replace, $template);

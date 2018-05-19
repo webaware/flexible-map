@@ -8,8 +8,6 @@ if (!defined('ABSPATH')) {
 * class for managing the plugin
 */
 class FlxMapPlugin {
-	public $urlBase;									// string: base URL path to files in plugin
-
 	protected $locale;									// locale of current website
 	protected $locales		= array();					// list of locales enqueued for localisation of maps
 	protected $mapTypes		= array();					// custom Google Maps map types to be loaded with maps, keyed by mapTypeId
@@ -39,9 +37,6 @@ class FlxMapPlugin {
 	* hook into WordPress actions and filters
 	*/
 	public function addHooks() {
-		// record plugin URL base
-		$this->urlBase = plugin_dir_url(FLXMAP_PLUGIN_FILE);
-
 		add_action('init', array($this, 'init'));
 
 		if (is_admin()) {
@@ -104,10 +99,10 @@ class FlxMapPlugin {
 
 		$min = SCRIPT_DEBUG ? '' : '.min';
 		$ver = SCRIPT_DEBUG ? time() : FLXMAP_PLUGIN_VERSION;
-		wp_register_script('flxmap', "{$this->urlBase}js/flexible-map$min.js", array('google-maps'), $ver, true);
+		wp_register_script('flxmap', plugins_url("js/flexible-map$min.js", FLXMAP_PLUGIN_FILE), array('google-maps'), $ver, true);
 
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
-		wp_enqueue_style('flxmap', $this->urlBase . 'css/styles.css', false, $ver);
+		wp_enqueue_style('flxmap', plugins_url('css/styles.css', FLXMAP_PLUGIN_FILE), false, $ver);
 	}
 
 	/**
