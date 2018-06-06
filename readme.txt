@@ -7,7 +7,7 @@ Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, kml
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.13.0
+Stable tag: 1.14.0
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -313,14 +313,15 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 ## Upgrade Notice
 
-### 1.13.0
+### 1.14.0
 
-bump version of Google Maps API to 3.30
+bump version of Google Maps API to 3.32; add server API key for server side address resolution
 
 ## Changelog
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.13.0, 2018-01-15
+### 1.14.0, 2018-06-07
 
-* changed: bump version of Google Maps API to 3.30
+* added: server API key to reduce `REQUEST_DENIED` errors from server side address resolution requests
+* changed: bump version of Google Maps API to 3.32
