@@ -17,7 +17,7 @@
 
 ### 1.12.0, 2016-06-27
 
-* added: support for [Google Maps API key](https://developers.google.com/maps/documentation/javascript/), required [since 2016-06-22 for new websites](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
+* added: support for [Google Maps API key](https://cloud.google.com/maps-platform/#get-started), required [since 2016-06-22 for new websites](https://googlegeodevelopers.blogspot.com.au/2016/06/building-for-scale-updates-to-google.html).
 
 ### 1.11.0, 2016-06-05
 
@@ -31,9 +31,9 @@
 ### 1.10.1, 2015-11-29
 
 * fixed: NextGEN Gallery breaks localisation of maps by messing with order of `wp_print_footer_scripts` calls
-* changed: Dutch translation updated / completed (thanks, [Chantal Coolsma](http://www.webpressed.nl/) and [TacoVerdo](https://profiles.wordpress.org/tacoverdo)!)
+* changed: Dutch translation updated / completed (thanks, [Chantal Coolsma](https://webpressed.nl/) and [TacoVerdo](https://profiles.wordpress.org/tacoverdo)!)
 * changed: German translation updated / completed (thanks, [Dominik Schilling](https://dominikschilling.de/)!)
-* changed: Norwegian Bokmål translation updated / completed (thanks, [neonnero](http://www.neonnero.com/)!)
+* changed: Norwegian Bokmål translation updated / completed (thanks, [neonnero](https://www.neonnero.com/)!)
 * changed: translations now accepted on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map)
 * changed: Localisation (l10n) slug changed from `flexible-map` to `wp-flexible-map`, with move to translate.wordpress.org
 * changed: bump version of Google Maps API to 3.22; NB: [control sizes have no effect with API v3.22](https://developers.google.com/maps/articles/v322-controls-diff)
@@ -86,7 +86,7 @@
 ### 1.8.0, 2014-08-31
 
 * fixed: Czech translation (thanks, [caslavak](https://profiles.wordpress.org/caslavak/)!)
-* fixed: Norwegian translations (thanks, [neonnero](http://www.neonnero.com/)!)
+* fixed: Norwegian translations (thanks, [neonnero](https://www.neonnero.com/)!)
 * changed: localisation uses standard .mo files now; if you'd like to help translate, please [sign up for an account and dig in](https://translate.wordpress.org/projects/wp-plugins/wp-flexible-map).
 
 ### 1.7.3.1, 2014-03-22
@@ -95,7 +95,7 @@
 
 ### 1.7.3, 2014-03-16
 
-* fixed: German translation (thanks, [Carib Design](http://www.caribdesign.com/)!)
+* fixed: German translation (thanks, [Carib Design](https://www.caribdesign.com/)!)
 * fixed: some themes (e.g. Evolve) mess up Google Maps directions markers
 * fixed: CSS for infowindows with Google Maps Visual Refresh / API v3.15
 * changed: removed instructions page, better handled by new homepage for plugin
@@ -118,7 +118,7 @@
 ### 1.7.0, 2013-10-12
 
 * fixed: Greek translation (thanks, [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)!)
-* fixed: Dutch translation (thanks, [Ivan Beemster](http://www.lijndiensten.com/)!)
+* fixed: Dutch translation (thanks, [Ivan Beemster](https://lijndiensten.com/)!)
 * fixed: KML map zoom sometimes doesn't happen on first page visit
 * fixed: some themes (e.g. twentythirteen) mess up Google Maps directions markers
 * fixed: Google link opens maps without marker (NB: <= IE8 not supported)
@@ -156,7 +156,7 @@
 * fixed: infowindow auto-pans on load, to prevent the top of the bubble being cropped
 * added: WordPress filter `flexmap_google_maps_api_args` for filtering array of arguments before building Google Maps API URL
 * added: function flexmap_show_map() accepts an attribute "echo", and returns a string without output to screen when "echo"=>"false"
-* changed: all scripts now loaded through wp_enqueue_scripts, including language scripts (thanks to a [tip from toscho](http://wordpress.stackexchange.com/a/38335/24260))
+* changed: all scripts now loaded through wp_enqueue_scripts, including language scripts (thanks to a [tip from toscho](https://wordpress.stackexchange.com/a/38335/24260))
 * changed: bump version of Google Maps API to 3.11
 
 ### 1.6.0, 2012-12-30

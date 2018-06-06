@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 					<input type="text" class="regular-text" name="flexible_map[apiKey]" value="<?php echo esc_attr($options['apiKey']); ?>" />
 					<p><?php
 						/* translators: {{a}} and {{/a}} will be replaced by HTML tags for a website link */
-						echo $this->addExternalLink(esc_html_x('Get your API key from the {{a}}Google Maps API website{{/a}}.', 'settings', 'wp-flexible-map'), 'https://developers.google.com/maps/documentation/javascript/');
+						echo $this->addExternalLink(esc_html_x('Get your API key from the {{a}}Google Maps API website{{/a}}.', 'settings', 'wp-flexible-map'), 'https://cloud.google.com/maps-platform/#get-started');
 					?></p>
 				</td>
 			</tr>

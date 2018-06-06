@@ -48,17 +48,17 @@ Thanks for sponsoring new features on WP Flexible Maps!
 Many thanks to the generous efforts of our translators:
 
 * Czech (cs) -- [caslavak](https://profiles.wordpress.org/caslavak/) and the [Czech translation team](https://translate.wordpress.org/locale/cs/default/wp-plugins/wp-flexible-map)
-* Dutch (nl) -- [Ivan Beemster](http://www.lijndiensten.com/) and the [Dutch translation team](https://translate.wordpress.org/locale/nl/default/wp-plugins/wp-flexible-map)
+* Dutch (nl) -- [Ivan Beemster](https://lijndiensten.com/) and the [Dutch translation team](https://translate.wordpress.org/locale/nl/default/wp-plugins/wp-flexible-map)
 * English (en_CA) -- [the English (Canadian) translation team](https://translate.wordpress.org/locale/en-ca/default/wp-plugins/wp-flexible-map)
 * French (fr) -- [mister klucha](https://profiles.wordpress.org/mister-klucha/) and the [French translation team](https://translate.wordpress.org/locale/fr/default/wp-plugins/wp-flexible-map)
-* German (de) -- [Carib Design](http://www.caribdesign.com/) and the [German translation team](https://translate.wordpress.org/locale/de/default/wp-plugins/wp-flexible-map)
+* German (de) -- [Carib Design](https://www.caribdesign.com/) and the [German translation team](https://translate.wordpress.org/locale/de/default/wp-plugins/wp-flexible-map)
 * Greek (el) -- [Pantelis Orfanos](https://profiles.wordpress.org/ironwiller/)
 * Hungarian (hu) -- Krisztián Vörös
 * Italian (it_IT) -- the [Italian translation team](https://translate.wordpress.org/locale/it/default/wp-plugins/wp-flexible-map)
 * Korean (ko_KR) -- the [Korean translation team](https://translate.wordpress.org/locale/ko/default/wp-plugins/wp-flexible-map)
 * Swedish (sv_SE) -- the [Swedish translation team](https://translate.wordpress.org/locale/sv/default/wp-plugins/wp-flexible-map)
-* Norwegian: Bokmål (nb_NO) -- [neonnero](http://www.neonnero.com/)
-* Norwegian: Nynorsk (nn_NO) -- [neonnero](http://www.neonnero.com/)
+* Norwegian: Bokmål (nb_NO) -- [neonnero](https://www.neonnero.com/)
+* Norwegian: Nynorsk (nn_NO) -- [neonnero](https://www.neonnero.com/)
 * Portuguese (pt_BR) -- Alexsandro Santos and Paulo Henrique
 * Spanish (es) -- [edurramos](https://profiles.wordpress.org/edurramos/)
 * Welsh (cy) -- [Dylan](https://profiles.wordpress.org/dtom-ct-wp/)
@@ -75,7 +75,7 @@ The Flexible Map plugin itself does not collect any personally identifying infor
 
 1. Upload this plugin to your /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Get an [API Key from Google](https://developers.google.com/maps/documentation/javascript/) and add it to Settings > Flexible Map
+3. Get an [API Key from Google](https://cloud.google.com/maps-platform/#get-started) and add it to Settings > Flexible Map
 4. Add the shortcode `[flexiblemap]` to your pages / posts to embed maps
 
 There are two ways to load maps with this plugin:
@@ -181,11 +181,11 @@ For more information and examples, see [the reference website](https://flexible-
 
 Yes. You will need at minimum an API key for Maps, so that the Maps JavaScript API will work. If you want to add maps by address (not just coordinates or KML file), you will also need to select Places. If you want to use directions features of this plugin, you will also need to select Routes.
 
-[Get your API keys from the Google Maps Platform](https://cloud.google.com/maps-platform/)
+[Get your API keys from the Google Maps Platform](https://cloud.google.com/maps-platform/#get-started)
 
 ### Where are the settings?
 
-You can set your [API keys](https://developers.google.com/maps/documentation/javascript/) in the WordPress admin:
+You can set your [API keys](https://cloud.google.com/maps-platform/#get-started) in the WordPress admin:
 
 Settings > Flexible Map
 
@@ -237,7 +237,7 @@ The initial translations were made using Google Translate, so it's likely that s
 
 ### The map is broken in tabs / accordions
 
-When you hide the map in a tab, and then click on the tab to reveal its contents, sometimes the map doesn't know how big to draw until it is revealed. Since v1.9.0 most such problems are automatically resolved for modern browsers, including Internet Explorer 11 or later. If you need to support earlier versions that don't support [MutationObserver](http://caniuse.com/#feat=mutationobserver), add some script to your website to handle this yourself.
+When you hide the map in a tab, and then click on the tab to reveal its contents, sometimes the map doesn't know how big to draw until it is revealed. Since v1.9.0 most such problems are automatically resolved for modern browsers, including Internet Explorer 11 or later. If you need to support earlier versions that don't support [MutationObserver](https://caniuse.com/#feat=mutationobserver), add some script to your website to handle this yourself.
 
 For jQuery UI tabs and accordions, download the .php file from [this gist](https://gist.github.com/webaware/05b27e3a99ccb00200f5), and install / activate it. If you'd prefer to add the jQuery code yourself, add this somewhere on the page (e.g. in your theme's footer):
 
@@ -297,7 +297,7 @@ To make it load locale scripts as well, e.g. for French and Chinese language tex
 
 The plugin will detect when AJAX is being used via the [WordPress standard method](https://codex.wordpress.org/AJAX_in_Plugins), and adjust accordingly (but you still need to load the scripts as above). If another method is used, add `isajax='true'` to the shortcode attributes.
 
-NB: currently, only AJAX methods that parse script tags will work correctly; this includes some [jQuery methods](http://stackoverflow.com/q/2203762/911083) (but [not all](http://stackoverflow.com/a/2699905/911083)). A future version of the plugin will be more AJAX friendly.
+NB: currently, only AJAX methods that parse script tags will work correctly; this includes some [jQuery methods](https://stackoverflow.com/q/2203762/911083) (but [not all](https://stackoverflow.com/a/2699905/911083)). A future version of the plugin will be more AJAX friendly.
 
 ### I have CloudFlare Rocketscript turned on and the map doesn't work
 
