@@ -3,7 +3,7 @@
 Plugin Name: Flexible Map
 Plugin URI: https://flexible-map.webaware.net.au/
 Description: Embed Google Maps shortcodes in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file. <a href="https://flexible-map.webaware.net.au/manual/getting-started/">Get started</a> with a simple shortcode. See the <a href="https://flexible-map.webaware.net.au/manual/attribute-reference/">complete attribute reference</a> for more details.
-Version: 1.14.0
+Version: 1.15.0-dev
 Author: WebAware
 Author URI: https://shop.webaware.com.au/
 Text Domain: wp-flexible-map
@@ -37,7 +37,7 @@ define('FLXMAP_PLUGIN_FILE', __FILE__);
 define('FLXMAP_PLUGIN_ROOT', dirname(__FILE__) . '/');
 define('FLXMAP_PLUGIN_NAME', basename(dirname(__FILE__)) . '/' . basename(__FILE__));
 define('FLXMAP_PLUGIN_OPTIONS', 'flexible_map');
-define('FLXMAP_PLUGIN_VERSION', '1.14.0');
+define('FLXMAP_PLUGIN_VERSION', '1.15.0-dev');
 
 // shortcode tags
 define('FLXMAP_PLUGIN_TAG_MAP', 'flexiblemap');
