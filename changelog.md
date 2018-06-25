@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.15.0, soon...
+
+* added: attribute `hidefullscreen` for hiding the full-screen control
+
 ### 1.14.0, 2018-06-07
 
 * added: server API key to reduce `REQUEST_DENIED` errors from server side address resolution requests
