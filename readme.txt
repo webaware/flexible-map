@@ -96,6 +96,7 @@ To add a Flexible Map to a post or a page, add a shortcode `[flexiblemap]` and g
 Yes. You will need at minimum an API key for Maps, so that the Maps JavaScript API will work. If you want to add maps by address (not just coordinates or KML file), you will also need to select Places. If you want to use directions features of this plugin, you will also need to select Routes.
 
 [Get your API keys from the Google Maps Platform](https://cloud.google.com/maps-platform/#get-started)
+[Read more about API keys for Google Maps](https://flexible-map.webaware.net.au/manual/api-keys/)
 
 ### Where are the settings?
 
