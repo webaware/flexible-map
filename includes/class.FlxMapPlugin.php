@@ -237,6 +237,10 @@ HTML;
 				$script .= " f.zoomControl = false;\n";
 			}
 
+			if (isset($attrs['hidefullscreen']) && self::isYes($attrs['hidefullscreen'])) {
+				$script .= " f.fullscreen = false;\n";
+			}
+
 			if (!empty($attrs['zoomstyle'])) {
 				$script .= " f.zoomControlStyle = \"{$this->str2js($attrs['zoomstyle'])}\";\n";
 			}

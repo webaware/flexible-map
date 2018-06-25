@@ -137,6 +137,7 @@ window.FlexibleMap = function() {
 			streetViewControl:			this.streetViewControl,
 			zoomControl:				this.zoomControl,
 			zoomControlOptions:			{ style: zoomControlStyle },
+			fullscreenControl:			this.fullscreen,
 			draggable:					this.draggable,
 			disableDoubleClickZoom:		!this.dblclickZoom,
 			scrollwheel:				this.scrollwheel,
@@ -193,6 +194,7 @@ window.FlexibleMap = function() {
 	this.zoomControl = true;							// show control for zooming
 	this.zoomControlStyle = "small";					// from "small", "large", "default"
 	this.streetViewControl = false;						// no control for street view
+	this.fullscreen = true;								// show control for full-screen view
 	this.scrollwheel = false;							// no scroll wheel zoom
 	this.draggable = true;								// support dragging to pan
 	this.dblclickZoom = true;							// support double-click zoom
