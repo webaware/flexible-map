@@ -85,95 +85,9 @@ There are two ways to load maps with this plugin:
 
 To add a Flexible Map to a post or a page, add a shortcode `[flexiblemap]` and give it some useful attributes. A map can either be specified using centre coordinates or street address, or by loading a KML file.
 
-### Attributes for centre coordinates or street address map
-
-Either the center or the address paramater is required. If you provide both, the centre coordinates will be used for the map centre, but directions will use the street address. (This will prevent directions from telling people how to get to the destination opposite yours!)
-
-* **center**: coordinates of centre in latitude,longitude, e.g. *center="-34.916721,138.828878"*
-* **address**: street address of map centre, e.g. *address="116 Beaumont Street Hamilton NSW Australia"*
-* **marker**: coordinates of the marker if different from the centre, in latitude,longitude, e.g. *marker="-34.916721,138.828878"*
-* **title**: title of the marker, displayed in a text bubble, e.g. *title="Adelaide Hills"*
-* **link**: URL to link from the marker title, e.g. *link="http://example.com/"*
-* **linktarget**: where marker link opens, e.g. *linktarget="_blank"*
-* **linktext**: marker link text, overriding the default text
-* **icon**: URL to icon for the marker, e.g. *icon="https://maps.google.com/mapfiles/kml/pal3/icon29.png"*
-* **description**: a description of the marker location (can have HTML links), e.g. *description="Lorem ipsum dolor sit amet"*
-* **html**: some simple HTML to add to the info window, e.g. *`<img src='https://example.com/logo.img' />`*
-* **showinfo**: show the marker's info window when the map loads, from [true, false], e.g. *showinfo="false"*; default=true
-
-*Samples*:
-`[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" zoom="9" title="Adelaide Hills" description="The Adelaide Hills are repleat with wineries."]
-[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" region="au" directions="true"]
-[flexiblemap center="-32.891058,151.538042" title="Mount Sugarloaf" directions="true"]
-[flexiblemap center="-32.918827,151.806164" title="Nobby's Head" directions="my-dir-div"]`
-
-### Attributes for KML map
-
-* **src**: the URL for a KML file to load map details from, e.g. *src="http://example.com/map.kml"*
-* **targetfix**: prevent links from opening in new window, from [true, false], e.g. *targetfix="true"*; default=true
-* **kmlcache**: ask Google Maps to use a new map instead of cached map, specified in minutes (90 minutes), hours (2 hours), days (1 day), or "none"; minimum 5 minutes, default "none"
-
-*Sample*:
-`[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px"]`
-
-### Attributes for all maps
-
-* **width**: width in pixels or valid CSS units, e.g. *width="100%"*
-* **height**: height in pixels or valid CSS units, e.g. *height="400px"*
-* **id**: the CSS id of the container div (instead of a random generated unique ID), e.g. *id="my_map"*
-* **zoom**: zoom level as an integer, larger is closer, e.g. *zoom="16"*
-* **maptype**: type of map to show, from [roadmap, satellite, hybrid, terrain], e.g. *maptype="satellite"*; default=roadmap
-* **maptypes**: types of maps in the map type controls, e.g. *maptypes="custom_type,satellite"*
-* **hidemaptype**: hide the map type controls, from [true, false], e.g. *hidemaptype="true"*; default=false
-* **hidepanning**: hide the panning controls, from [true, false], e.g. *hidepanning="true"*; default=true
-* **hidezooming**: hide the zoom controls, from [true, false], e.g. *hidezooming="true"*; default=false
-* **hidestreetview**: hide the street view control, from [true, false], e.g. *hidestreetview="true"*; default=true
-* **hidescale**: hide the map scale, from [true, false], e.g. *hidescale="true"*; default=true
-* **zoomstyle**: which zoom control style, from [small, large, default]; default=small
-* **scrollwheel**: enable zoom with mouse scroll wheel, from [true, false], e.g. *scrollwheel="true"*; default=false
-* **draggable**: enable dragging to pan, from [true, false], e.g. *draggable="true"*; default=true
-* **dblclickzoom**: enable double-clicking to zoom, from [true, false], e.g. *dblclickzoom="true"*; default=true
-* **directions**: show directions link in text bubble; by default, directions will be displayed underneath map, but you can specify the element ID for directions here, e.g. *directions="true", directions="my-dir-id"*; default=false
-* **dirdraggable**: allow directions to be draggable, from [true, false]; default=false
-* **dirnomarkers**: suppress start and end markers when showing directions, from [true, false]; default=false
-* **dirshowsteps**: show or suppress directions steps when showing directions, from [true, false]; default=true
-* **dirshowssearch**: show or suppress directions search form when showing directions, from [true, false]; default=true
-* **showdirections**: show directions when the map loads, e.g. *showdirections="true"*; default=false
-* **directionsfrom**: initial from: location for directions, e.g. *directionsfrom="Sydney"*
-* **dirunitsystem**: force directions units to metric or imperial, from [metric, imperial, auto]; default=auto
-* **dirtravelmode**: select directions mode, from [driving, bicycling, walking, transit]; default=driving
-* **region**: specify region to help localise address searches for street address map and directions, taken from the list of [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) e.g. *region="AU"*
-* **locale**: use a specific locale (language) for messages like the text of the Directions link, e.g. *locale="nl-BE"*
-
-### Calling from templates or plugins
-
-There is a PHP function `flexmap_show_map()` for theme and plugin developers. All of the same attributes for the shortcode can be passed to the function in an associative array. If you want it to return the map as a string without output to screen, add "echo"=>"false" to array of attributes.
-
-*Sample*:
-`flexmap_show_map(array(
-  'center' => '-34.916721,138.828878',
-  'width' => '100%',
-  'height' => 400,
-  'zoom' => 12,
-  'title' => 'Adelaide Hills',
-  'description' => 'The Adelaide Hills are repleat with wineries.',
-  'directions' => 'my-dir-div',
-  'hidepanning' => 'false',
-  'hidescale' => 'false',
-  'maptype' => 'satellite',
-));`
-
-There are also some filter hooks that allow you to change the behaviour of the plugin.
-
-* `flexmap_google_maps_api_args`: filter the array of arguments that will be passed to the Google Maps API, e.g. `'v'=>'3.exp'`, `'sensor'=>'false'`
-* `flexmap_google_maps_api_url`: filter the Google Maps API URL, as a string
-* `flexmap_shortcode_attrs`: filter the array of shortcode attributes, e.g. change the width and height
-* `flexmap_shortcode_styles`: filter the array of inline styles applied to the div wrapping the map, e.g. remove width and height so that it can be specified in the theme's stylesheets
-* `flexmap_shortcode_html`: filter the generated HTML, e.g. wrap another div around it, add a link to Google Maps, add some additonal script, etc.
-* `flexmap_shortcode_script`: filter the generated JavaScript
-* `flexmap_custom_map_types`: register custom Google Maps map types
-
-For more information and examples, see [the reference website](https://flexible-map.webaware.net.au/).
+[Get started with Flexible Map](https://flexible-map.webaware.net.au/manual/getting-started/).
+[Read the manual online](https://flexible-map.webaware.net.au/manual/).
+[Refer to the attribute reference](https://flexible-map.webaware.net.au/manual/attribute-reference/) for detailed information.
 
 ## Frequently Asked Questions
 
