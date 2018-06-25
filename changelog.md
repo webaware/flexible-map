@@ -4,6 +4,7 @@
 
 ### 1.15.0, soon...
 
+* fixed: KML maps can now use the `center` attribute to set the map center
 * added: attribute `hidefullscreen` for hiding the full-screen control
 
 ### 1.14.0, 2018-06-07

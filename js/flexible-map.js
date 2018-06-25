@@ -170,13 +170,36 @@ window.FlexibleMap = function() {
 	*/
 	this.loadKmlMap = function(kmlFileURL) {
 		// load KML file as a layer and add to map
-		kmlLayer = new google.maps.KmlLayer({ map: map, url: kmlFileURL });
+		var self = this;
+		var options = {
+			map:	map,
+			url:	kmlFileURL,
+		};
 
-		// listen for KML loaded
-		google.maps.event.addListenerOnce(kmlLayer, "defaultviewport_changed", function() {
-			// update centre of map from bounds on KML layer
+		/**
+		* reset the map back to the recorded centre coordinates -- only used when centre is set for map
+		*/
+		function resetCentre() {
+			self.setCenter(new google.maps.LatLng(self.kmlCentre[0], self.kmlCentre[1]));
+		}
+
+		/**
+		* update centre of map from bounds on KML layer -- not called when centre is set for map
+		*/
+		function recordKmlCentre() {
 			centre = kmlLayer.getDefaultViewport().getCenter();
-		});
+		}
+
+		// if a centre has been set, stop the viewport from changing and add the centre to map options
+		if (this.kmlCentre) {
+			options.preserveViewport = true;
+			options.center = new google.maps.LatLng(this.kmlCentre[0], this.kmlCentre[1]);
+		}
+
+		kmlLayer = new google.maps.KmlLayer(options);
+
+		// listen for KML layer loaded event
+		google.maps.event.addListenerOnce(kmlLayer, "defaultviewport_changed", this.kmlCentre ? resetCentre : recordKmlCentre);
 
 		return kmlLayer;
 	};
@@ -223,6 +246,7 @@ window.FlexibleMap = function() {
 	this.region = "";
 	this.locale = "en";
 	this.localeActive = false;
+	this.kmlCentre = false;
 	this.kmlcache = "none";
 }
 

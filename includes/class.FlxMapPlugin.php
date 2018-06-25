@@ -348,8 +348,8 @@ HTML;
 				}
 			}
 
-			// add map based on coordinates, with optional marker coordinates
-			if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
+			// add map based on coordinates, with optional marker coordinates -- but not if KML source file is set
+			if (isset($attrs['center']) && self::isCoordinates($attrs['center']) && empty($attrs['src'])) {
 				$marker = self::str2js(self::getCoordinates($attrs['center']));
 				if (isset($attrs['marker']) && self::isCoordinates($attrs['marker']))
 					$marker = self::str2js(self::getCoordinates($attrs['marker']));
@@ -427,11 +427,16 @@ HTML;
 					$script .= " f.kmlcache = \"{$attrs['kmlcache']}\";\n";
 				}
 
+				if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
+					$script .= sprintf(" f.kmlCentre = [%s];\n", self::str2js(self::getCoordinates($attrs['center'])));
+				}
+
 				$kmlfile = self::str2js($attrs['src']);
 				$script .= " f.showKML(\"$divID\", \"$kmlfile\"";
 
-				if (isset($attrs['zoom']))
+				if (isset($attrs['zoom'])) {
 					$script .= ', ' . preg_replace('/\D/', '', $attrs['zoom']);
+				}
 
 				$script .= ");\n";
 			}
