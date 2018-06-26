@@ -290,6 +290,10 @@ HTML;
 				$script .= " f.markerDirectionsInfo = false;\n";
 			}
 
+			if (isset($attrs['markeranimation']) && self::isMarkerAnimation($attrs['markeranimation'])) {
+				$script .= sprintf(" f.markerAnimation = '%s';\n", strtolower($attrs['markeranimation']));
+			}
+
 			if (isset($attrs['dirdraggable']) && self::isYes($attrs['dirdraggable'])) {
 				$script .= " f.dirDraggable = true;\n";
 			}
@@ -609,6 +613,15 @@ HTML;
 	public static function isCoordinates($text) {
 		// TODO: handle degrees minutes seconds, degrees minutes.decimal, NSEW
 		return preg_match('/^-?[0-9]+(?:\.[0-9]+),\s*-?[0-9]+(?:\.[0-9]+)$/', $text);
+	}
+
+	/**
+	* test string to see if contents equate to a marker animation constant
+	* @param string $text
+	* @return boolean
+	*/
+	public static function isMarkerAnimation($text) {
+		return preg_match('/^(?:drop|bounce|none)$/i', $text);
 	}
 
 	/**

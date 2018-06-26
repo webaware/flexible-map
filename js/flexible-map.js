@@ -230,6 +230,7 @@ window.FlexibleMap = function() {
 	this.markerLinkText = false;						// link text for marker link, overriding default text
 	this.markerIcon = "";								// link for marker icon, leave blank for default
 	this.markerShowInfo = true;							// if have infowin for marker, show it immediately
+	this.markerAnimation = "drop";						// marker animation - bounce, drop, none
 	this.markerDirections = false;						// show directions link in info window
 	this.markerDirectionsShow = false;					// show directions as soon as page loads
 	this.markerDirectionsDefault = "";					// default from: location for directions
@@ -551,13 +552,28 @@ FlexibleMap.prototype = (function() {
 		* @param {Array} marker an array of two integers: [ latitude, longitude ]
 		*/
 		showMarker: function(divID, centre, marker) {
-			var	map = this.showMap(divID, centre),
-				markerLocation = new google.maps.LatLng(marker[0], marker[1]),
-				point = new google.maps.Marker({
+			var map = this.showMap(divID, centre);
+			var markerLocation = new google.maps.LatLng(marker[0], marker[1]);
+			var options = {
 					map: map,
 					position: markerLocation,
 					icon: this.markerIcon
-				});
+				};
+			var Animation = google.maps.Animation;
+
+			switch (this.markerAnimation) {
+
+				case "drop":
+					options.animation = Animation.DROP;
+					break;
+
+				case "bounce":
+					options.animation = Animation.BOUNCE;
+					break;
+
+			}
+
+			var point = new google.maps.Marker(options);
 
 			this.setMarkerPoint(point);
 			this.setMarkerLocation(markerLocation);
