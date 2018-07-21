@@ -7,7 +7,7 @@ Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, kml
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.14.0
+Stable tag: 1.15.0
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -67,7 +67,7 @@ The initial translations for all other languages were made using Google Translat
 
 ### Privacy
 
-Flexible Map embeds Google Maps into your web pages. Please review Google's [Privacy and Personal Information](https://developers.google.com/maps/terms#3-privacy-and-personal-information) for information about how that affects your website's privacy policy. By using this plugin, you are agreeing to the terms of use for Google Maps.
+Flexible Map embeds Google Maps into your web pages. Please review Google's [Privacy and Personal Information](https://cloud.google.com/maps-platform/terms/maps-controller-terms/) for information about how that affects your website's privacy policy. By using this plugin, you are agreeing to the terms of use for Google Maps.
 
 The Flexible Map plugin itself does not collect any personally identifying information, and does not set any cookies itself.
 
@@ -228,15 +228,19 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 ## Upgrade Notice
 
-### 1.14.0
+### 1.15.0
 
-bump version of Google Maps API to 3.32; add server API key for server side address resolution
+KML maps can now set the map center; server-side address lookups are remembered for up to one month; add attributes hidefullscreen and markeranimation
 
 ## Changelog
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.14.0, 2018-06-07
+### 1.15.0
 
-* added: server API key to reduce `REQUEST_DENIED` errors from server side address resolution requests
-* changed: bump version of Google Maps API to 3.32
+Released 2018-07-21
+
+* fixed: KML maps can now use the `center` attribute to set the map center
+* changed: remember server-side address lookups for up to one month
+* added: attribute `hidefullscreen` for hiding the full-screen control
+* added: attribute `markeranimation` for setting how a single marker is added to the map - drop, bounce, none; defaults to drop

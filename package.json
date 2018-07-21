@@ -1,6 +1,6 @@
 {
   "name": "wp-flexible-map",
-  "version": "1.15.0-dev",
+  "version": "1.15.0",
   "description": "Flexible Map",
   "main": "Gruntfile.js",
   "repository": {
