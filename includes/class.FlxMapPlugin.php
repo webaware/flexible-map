@@ -569,14 +569,17 @@ HTML;
 				// success, return array with latitude and longitude
 				$location = $result->results[0]->geometry->location;
 				$coords = array($location->lat, $location->lng);
+
+				// save coordinates to prevent unnecessary requery
+				set_transient($cacheKey, $coords, MONTH_IN_SECONDS);
 			}
 			catch (Exception $e) {
 				$coords = "address: $address; " . $e->getMessage();
 				error_log(__METHOD__ . ': ' . $coords);
-			}
 
-			// save coordinates to prevent unnecessary requery
-			set_transient($cacheKey, $coords, WEEK_IN_SECONDS);
+				// save error to prevent unnecessary requery
+				set_transient($cacheKey, $coords, WEEK_IN_SECONDS);
+			}
 		}
 
 		// handle failure to map address to coordinates by returning false

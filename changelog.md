@@ -5,6 +5,7 @@
 ### 1.15.0, soon...
 
 * fixed: KML maps can now use the `center` attribute to set the map center
+* changed: remember server-side address lookups for up to one month
 * added: attribute `hidefullscreen` for hiding the full-screen control
 * added: attribute `markeranimation` for setting how a single marker is added to the map - drop, bounce, none; defaults to drop
 
