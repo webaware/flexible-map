@@ -12,7 +12,7 @@ Requires PHP: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Embed Google Maps shortcodes in pages and posts, either by centre coordinates or street address, or by URL to a Google Earth KML file.
+Embed Google Maps shortcodes in pages and posts, either by center coordinates or street address, or by URL to a Google Earth KML file.
 
 ## Description
 
@@ -21,14 +21,14 @@ Flexible Map allows you to add Google Maps to your WordPress website with simple
 ### Features
 
 * three ways to load a map:
- * by centre coordinates
+ * by center coordinates
  * by street address
  * by URL to a Google Earth KML file
 * simple shortcode for adding maps to pages/posts
 * PHP function `flexmap_show_map()` for theme and plugin developers
 * supports multiple maps on a page/post
 * supports responsive design -- specify width / height in percent
-* map marker doesn't have to be the centre of the map
+* map marker doesn't have to be the center of the map
 * optional description for info window
 * optional directions link for info window
 * directions can be dropped into any div element with an ID
@@ -67,7 +67,7 @@ The initial translations for all other languages were made using Google Translat
 
 ### Privacy
 
-Flexible Map embeds Google Maps into your web pages. Please review Google's [Privacy and Personal Information](https://cloud.google.com/maps-platform/terms/maps-controller-terms/) for information about how that affects your website's privacy policy. By using this plugin, you are agreeing to the terms of use for Google Maps.
+Flexible Map embeds Google Maps into your web pages. Please review Google's [Privacy and Personal Information](https://cloud.google.com/maps-platform/terms/maps-controller-terms/) for information about how that affects your website's Privacy Policy. By using this plugin, you are agreeing to the terms of use for Google Maps.
 
 The Flexible Map plugin itself does not collect any personally identifying information, and does not set any cookies itself.
 
@@ -83,7 +83,7 @@ There are two ways to load maps with this plugin:
 * specify the map's coordinates or street address
 * specify the URL to a KML file (e.g. from Google Earth)
 
-To add a Flexible Map to a post or a page, add a shortcode `[flexiblemap]` and give it some useful attributes. A map can either be specified using centre coordinates or street address, or by loading a KML file.
+To add a Flexible Map to a post or a page, add a shortcode `[flexiblemap]` and give it some useful attributes. A map can either be specified using center coordinates or street address, or by loading a KML file.
 
 [Get started with Flexible Map](https://flexible-map.webaware.net.au/manual/getting-started/).
 [Read the manual online](https://flexible-map.webaware.net.au/manual/).
@@ -127,15 +127,15 @@ The Google Maps API supports many commonly used KML elements, but has some restr
 
 ### Why won't the map show my place when I use the address attribute?
 
-When you use a street address instead of centre coordinates, you are effectively searching Google Maps for your location. Try being very specific about your address, including your town / city, state / province, and country to make sure Google can find where you mean. You can also specify your region with the `region` attribute to help Google Maps refine its search. If the marker is still in the wrong place, you might need to specify the location using centre coordinates instead.
+When you use a street address instead of center coordinates, you are effectively searching Google Maps for your location. Try being very specific about your address, including your town / city, state / province, and country to make sure Google can find where you mean. You can also specify your region with the `region` attribute to help Google Maps refine its search. If the marker is still in the wrong place, you might need to specify the location using center coordinates instead.
 
-### How can I use centre coordinates for the map and have directions to my address?
+### How can I use center coordinates for the map and have directions to my address?
 
-When you use just centre coordinates for your map, the directions may send people to the location *opposite* your location! Yes, I know... anyway, if you specify both the centre coordinates and the street address, the map will be centred correctly and the directions will be to your address.
+When you use just center coordinates for your map, the directions may send people to the location *opposite* your location! Yes, I know... anyway, if you specify both the center coordinates and the street address, the map will be centered correctly and the directions will be to your address.
 
 ### How do I get the maps to use my language?
 
-The plugin uses localised messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](https://codex.wordpress.org/Installing_WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` attribute, e.g. `locale="ru"` or `locale="zh-TW"`.
+The plugin uses localized messages for things like the Directions link and the default message on links in info windows. If you have your [WordPress installation set to use your language](https://codex.wordpress.org/Installing_WordPress_in_Your_Language), the plugin should automatically pick it up. If you need to force it to pick up your language (or want to offer a different language), use the `locale` attribute, e.g. `locale="ru"` or `locale="zh-TW"`.
 
 Google Maps will use the locale information from your web browser to help display maps and directions in your language (see your browser's language settings). If you want to force the Google Maps language for every map on a page, you can use a filter hook. For example, here's how to force the Google Maps language to match the language of the page / post its on (e.g. when using WPML translated content):
 
