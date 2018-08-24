@@ -253,16 +253,21 @@ HTML;
 				$script .= " f.markerShowInfo = false;\n";
 			}
 
-			if (isset($attrs['scrollwheel']) && self::isYes($attrs['scrollwheel'])) {
-				$script .= " f.scrollwheel = true;\n";
+			if (isset($attrs['gesturehandling']) && preg_match('/cooperative|greedy|none|auto/i', $attrs['gesturehandling'])) {
+				$script .= sprintf(" f.gestureHandling = '%s';\n", strtolower(trim($attrs['gesturehandling'])));
 			}
+			else {
+				if (isset($attrs['scrollwheel']) && self::isYes($attrs['scrollwheel'])) {
+					$script .= " f.scrollwheel = true;\n";
+				}
 
-			if (isset($attrs['draggable']) && self::isNo($attrs['draggable'])) {
-				$script .= " f.draggable = false;\n";
-			}
+				if (isset($attrs['draggable']) && self::isNo($attrs['draggable'])) {
+					$script .= " f.draggable = false;\n";
+				}
 
-			if (isset($attrs['dblclickzoom']) && self::isNo($attrs['dblclickzoom'])) {
-				$script .= " f.dblclickZoom = false;\n";
+				if (isset($attrs['dblclickzoom']) && self::isNo($attrs['dblclickzoom'])) {
+					$script .= " f.dblclickZoom = false;\n";
+				}
 			}
 
 			if (isset($attrs['directions'])) {

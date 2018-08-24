@@ -2,6 +2,13 @@
 
 ## Changelog
 
+### 1.16.0
+
+Released soon...
+
+* added: attribute `gesturehandling` for smarter handling of the scroll wheel, drag to pan, double-click to zoom
+* deprecated: attributes `scrollwheel`, `draggable`, `dblclickzoom` are supported but not recommended; please use `gesturehandling` instead
+
 ### 1.15.0
 
 Released 2018-07-21

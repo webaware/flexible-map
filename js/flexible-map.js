@@ -16,6 +16,49 @@ window.FlexibleMap = function() {
 		hasRedrawn = false;			// boolean, whether map has been asked to redrawOnce() already
 
 	/**
+	* set gesture handling options, with legacy support for draggable, dblclickZoom, scrollwheel
+	* only need to set if any of the affected settings have been set, otherwise allow default of "auto" to be used
+	* @link https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions.gestureHandling
+	* @param {Object} mapOptions
+	* @param {FlexibleMap} flexibleMap
+	* @return {Object}
+	*/
+	function getGestureHandling(mapOptions, flexibleMap) {
+		if (flexibleMap.gestureHandling !== undefined) {
+			mapOptions.gestureHandling = flexibleMap.gestureHandling;
+		}
+		else if (flexibleMap.draggable !== undefined || flexibleMap.dblclickZoom !== undefined || flexibleMap.scrollwheel !== undefined) {
+			// legacy support; deprecated
+			var draggable			= (flexibleMap.draggable === undefined)    ? true  : flexibleMap.draggable;		// default true, i.e. enable draggable
+			var disableDblclickZoom	= (flexibleMap.dblclickZoom === undefined) ? false : !flexibleMap.draggable;	// default true, i.e. enable double-click zoom
+			var scrollwheel			= (flexibleMap.scrollwheel === undefined)  ? false  : flexibleMap.scrollwheel;	// default false, i.e. dinable scrollwheel
+
+			// ----------------+-----------+------------------------+------------
+			// gestureHandling | draggable | disableDoubleClickZoom | scrollwheel
+			// ----------------+-----------+------------------------+------------
+			// cooperative     |   true    |         false          |   ctrl+   |
+			// greedy          |   true    |         false          |   true    |
+			// auto            |   ????    |         false          |   ????    |
+			// none            |   false   |         true           |   false   |
+			// ----------------+-----------+------------------------+------------
+
+			if (!draggable && disableDblclickZoom && !scrollwheel) {
+				mapOptions.gestureHandling = "none";
+			}
+			else if (draggable && !disableDblclickZoom && scrollwheel) {
+				mapOptions.gestureHandling = "greedy";
+			}
+			else {
+				mapOptions.draggable				= draggable;
+				mapOptions.disableDoubleClickZoom	= disableDblclickZoom;
+				mapOptions.scrollwheel				= scrollwheel;
+			}
+		}
+
+		return mapOptions;
+	}
+
+	/**
 	* get the Google Maps API Map object
 	* @return {google.maps.Map}
 	*/
@@ -138,12 +181,10 @@ window.FlexibleMap = function() {
 			zoomControl:				this.zoomControl,
 			zoomControlOptions:			{ style: zoomControlStyle },
 			fullscreenControl:			this.fullscreen,
-			draggable:					this.draggable,
-			disableDoubleClickZoom:		!this.dblclickZoom,
-			scrollwheel:				this.scrollwheel,
 			center:						centre,
 			zoom:						this.zoom
 		};
+		mapOptions = getGestureHandling(mapOptions, this);
 
 		// select which map types for map type control, if specified as comma-separated list of map type IDs
 		if (this.mapTypeIds) {
@@ -218,9 +259,10 @@ window.FlexibleMap = function() {
 	this.zoomControlStyle = "small";					// from "small", "large", "default"
 	this.streetViewControl = false;						// no control for street view
 	this.fullscreen = true;								// show control for full-screen view
-	this.scrollwheel = false;							// no scroll wheel zoom
-	this.draggable = true;								// support dragging to pan
-	this.dblclickZoom = true;							// support double-click zoom
+	this.gestureHandling = undefined;					// defaults to cooperative
+	this.scrollwheel = undefined;						// deprecated; use gestureHandling instead
+	this.draggable = undefined;							// deprecated; use gestureHandling instead
+	this.dblclickZoom = undefined;						// deprecated; use gestureHandling instead
 	this.zoom = 16;										// zoom level, smaller is closer
 	this.markerTitle = "";								// title for marker info window
 	this.markerDescription = "";						// description for marker info window
