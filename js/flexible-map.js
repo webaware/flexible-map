@@ -17,7 +17,7 @@ window.FlexibleMap = function() {
 
 	/**
 	* set gesture handling options, with legacy support for draggable, dblclickZoom, scrollwheel
-	* only need to set if any of the affected settings have been set, otherwise allow default of "auto" to be used
+	* set to "cooperative" if none of the settings are given
 	* @link https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions.gestureHandling
 	* @param {Object} mapOptions
 	* @param {FlexibleMap} flexibleMap
@@ -27,7 +27,10 @@ window.FlexibleMap = function() {
 		if (flexibleMap.gestureHandling !== undefined) {
 			mapOptions.gestureHandling = flexibleMap.gestureHandling;
 		}
-		else if (flexibleMap.draggable !== undefined || flexibleMap.dblclickZoom !== undefined || flexibleMap.scrollwheel !== undefined) {
+		else if (flexibleMap.draggable === undefined && flexibleMap.dblclickZoom === undefined && flexibleMap.scrollwheel === undefined) {
+			mapOptions.gestureHandling = "cooperative";
+		}
+		else {
 			// legacy support; deprecated
 			var draggable			= (flexibleMap.draggable === undefined)    ? true  : flexibleMap.draggable;		// default true, i.e. enable draggable
 			var disableDblclickZoom	= (flexibleMap.dblclickZoom === undefined) ? false : !flexibleMap.draggable;	// default true, i.e. enable double-click zoom

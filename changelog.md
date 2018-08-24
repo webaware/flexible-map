@@ -6,7 +6,7 @@
 
 Released soon...
 
-* added: attribute `gesturehandling` for smarter handling of the scroll wheel, drag to pan, double-click to zoom
+* added: attribute `gesturehandling` for smarter handling of the scroll wheel, drag to pan, double-click to zoom; default = cooperative
 * deprecated: attributes `scrollwheel`, `draggable`, `dblclickzoom` are supported but not recommended; please use `gesturehandling` instead
 
 ### 1.15.0
