@@ -86,20 +86,22 @@ class FlxMapPlugin {
 	public function enqueueScripts() {
 		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
 
-		$args   = array('v' => '3.32');
-		if (!empty($options['apiKey'])) {
-			$args['key'] = $options['apiKey'];
-		}
-		$args   = apply_filters('flexmap_google_maps_api_args', $args);
+		if (empty($options['noAPI'])) {
+			$args   = array('v' => '3.32');
+			if (!empty($options['apiKey'])) {
+				$args['key'] = $options['apiKey'];
+			}
+			$args   = apply_filters('flexmap_google_maps_api_args', $args);
 
-		$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, 'https://maps.google.com/maps/api/js'));
-		if (!empty($apiURL)) {
-			wp_register_script('google-maps', $apiURL, false, null, true);
+			$apiURL = apply_filters('flexmap_google_maps_api_url', add_query_arg($args, 'https://maps.google.com/maps/api/js'));
+			if (!empty($apiURL)) {
+				wp_register_script('google-maps', $apiURL, false, null, true);
+			}
 		}
 
 		$min = SCRIPT_DEBUG ? '' : '.min';
 		$ver = SCRIPT_DEBUG ? time() : FLXMAP_PLUGIN_VERSION;
-		wp_register_script('flxmap', plugins_url("js/flexible-map$min.js", FLXMAP_PLUGIN_FILE), array('google-maps'), $ver, true);
+		wp_register_script('flxmap', plugins_url("js/flexible-map$min.js", FLXMAP_PLUGIN_FILE), array(), $ver, true);
 
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
 		wp_enqueue_style('flxmap', plugins_url('css/styles.css', FLXMAP_PLUGIN_FILE), false, $ver);
@@ -493,6 +495,10 @@ HTML;
 		$html = apply_filters('flexmap_shortcode_html', $html, $attrs);
 
 		// enqueue scripts
+		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
+		if (empty($options['noAPI'])) {
+			wp_enqueue_script('google-maps');
+		}
 		wp_enqueue_script('flxmap');
 		if ($this->locale != '' && $this->locale != 'en_US') {
 			$this->enqueueLocale($this->locale);

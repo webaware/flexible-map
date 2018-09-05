@@ -48,6 +48,7 @@ class FlxMapAdmin {
 		$options = wp_parse_args($options, array(
 			'apiKey'		=> '',
 			'apiServerKey'	=> '',
+			'noAPI'			=> 0,
 		));
 
 		require FLXMAP_PLUGIN_ROOT . 'views/settings-form.php';
@@ -63,6 +64,7 @@ class FlxMapAdmin {
 
 		$output['apiKey']		= trim(strip_tags($input['apiKey']));
 		$output['apiServerKey']	= trim(strip_tags($input['apiServerKey']));
+		$output['noAPI']		= !empty($input['noAPI']);
 
 		return $output;
 	}

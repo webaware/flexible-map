@@ -34,6 +34,15 @@ if (!defined('ABSPATH')) {
 				</td>
 			</tr>
 
+			<tr valign="top">
+				<th scope="row"><?php echo esc_html_x("Don't Load API", 'settings', 'wp-flexible-map'); ?></th>
+				<td>
+					<input type="checkbox" name="flexible_map[noAPI]" id="flexible_map_noAPI"<?php checked(!empty($options['noAPI'])); ?> />
+					<label for="flexible_map_noAPI"><?php echo esc_html_x("don't load the Google Maps API script", 'settings', 'wp-flexible-map'); ?></label>
+					<p><?php echo esc_html_x('Tick this when your theme or another plugin is already loading the Google Maps API, causing a conflict.', 'settings', 'wp-flexible-map'); ?></p>
+				</td>
+			</tr>
+
 		</table>
 
 		<?php submit_button(); ?>
