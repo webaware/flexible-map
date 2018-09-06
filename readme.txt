@@ -228,19 +228,18 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 ## Upgrade Notice
 
-### 1.15.0
+### 1.16.0
 
-KML maps can now set the map center; server-side address lookups are remembered for up to one month; add attributes hidefullscreen and markeranimation
+added setting that prevents the plugin from loading the Google Maps API; deprecated attributes `scrollwheel`, `draggable`, `dblclickzoom`, please use `gesturehandling` instead
 
 ## Changelog
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.15.0
+### 1.16.0
 
-Released 2018-07-21
+Released 2018-09-07
 
-* fixed: KML maps can now use the `center` attribute to set the map center
-* changed: remember server-side address lookups for up to one month
-* added: attribute `hidefullscreen` for hiding the full-screen control
-* added: attribute `markeranimation` for setting how a single marker is added to the map - drop, bounce, none; defaults to drop
+* added: setting that prevents the plugin from loading the Google Maps API; useful for preventing conflicts
+* added: attribute `gesturehandling` for smarter handling of the scroll wheel, drag to pan, double-click to zoom; default = cooperative
+* deprecated: attributes `scrollwheel`, `draggable`, `dblclickzoom` are supported but not recommended; please use `gesturehandling` instead
