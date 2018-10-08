@@ -525,8 +525,7 @@ FlexibleMap.prototype = (function() {
 		* @param {Number} zoom [optional] zoom level
 		*/
 		showKML: function(divID, kmlFileURL, zoom) {
-			if (typeof zoom != "undefined")
-				this.zoom = zoom;
+			this.zoom = zoom;	// will be falsey if zoom argument is undefined
 
 			var	self = this,
 				mapDiv = document.getElementById(divID),
@@ -796,6 +795,9 @@ FlexibleMap.prototype = (function() {
 			// if map is KML, must refit to computed bounds, else use centre and zoom setting
 			if (kmlLayer) {
 				map.fitBounds(kmlLayer.getDefaultViewport());
+				if (this.zoom) {
+					map.setZoom(this.zoom);
+				}
 			}
 			else {
 				map.setCenter(this.getCenter());
