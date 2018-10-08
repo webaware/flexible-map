@@ -2,6 +2,12 @@
 
 ## Changelog
 
+### 1.16.1
+
+Released soon...
+
+* fixed: map tiles don't redraw for KML maps with zoom when hidden in a tab / accordion
+
 ### 1.16.0
 
 Released 2018-09-07
