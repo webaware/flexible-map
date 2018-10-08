@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 				files: [{
 					expand: true,
 					cwd: "./dist/",
-					date: Date.now(),
+					date: new Date(),
 					src: [ "<%= pkg.name %>/**" ]
 				}]
 			}
@@ -42,7 +42,9 @@ module.exports = function (grunt) {
 		uglify: {
 			build: {
 				options: {
-					ASCIIOnly: true,
+					output: {
+						ascii_only: true,
+					},
 					banner: "// <%= pkg.description %>\n// <%= pkg.homepage %>\n"
 				},
 				files: [{
@@ -63,7 +65,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks("grunt-contrib-compress");
 	grunt.loadNpmTasks("grunt-contrib-copy");
-	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-contrib-uglify-es");
 	grunt.loadNpmTasks("grunt-eslint");
 
 	grunt.registerTask("release", ["clean","copy","compress"]);

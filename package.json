@@ -1,6 +1,6 @@
 {
   "name": "wp-flexible-map",
-  "version": "1.16.0",
+  "version": "1.16.1-dev",
   "description": "Flexible Map",
   "main": "Gruntfile.js",
   "repository": {
@@ -12,10 +12,10 @@
   "license": "GPL-2.0",
   "devDependencies": {
     "grunt": "^1.0.3",
-    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^1.4.3",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^3.4.0",
+    "grunt-contrib-uglify-es": "^3.3.0",
     "grunt-eslint": "^21.0.0"
   }
 }
