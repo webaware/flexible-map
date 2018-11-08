@@ -573,8 +573,11 @@ HTML;
 					throw new Exception("error decoding JSON\n" . $response['body']);
 				}
 
-				if ($result->status != 'OK') {
-					throw new Exception(sprintf("error retrieving address: %s; %s", $result->status, $result->error_message));
+				if ($result->status !== 'OK') {
+					if (!empty($result->error_message)) {
+						throw new Exception(sprintf("error retrieving address: %s; %s", $result->status, $result->error_message));
+					}
+					throw new Exception(sprintf("error retrieving address: %s", $result->status));
 				}
 
 				// success, return array with latitude and longitude
