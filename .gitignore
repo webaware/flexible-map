@@ -3,3 +3,4 @@
 dist
 languages/flexible-map.mo
 node_modules
+vendor
