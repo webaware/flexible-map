@@ -10,8 +10,17 @@
   "author": "WebAware https://shop.webaware.com.au/",
   "homepage": "https://flexible-map.webaware.net.au/",
   "license": "GPL-2.0",
+  "browserslist": [
+    "> 0.5%",
+    "ios >= 9.3.5",
+    "not dead"
+  ],
   "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
     "grunt": "^1.0.3",
+    "grunt-babel": "^8.0.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^1.4.3",
     "grunt-contrib-copy": "^1.0.0",

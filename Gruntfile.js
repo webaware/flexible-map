@@ -9,7 +9,16 @@ module.exports = function (grunt) {
 			main: {
 				files: [
 					{
-						src: ["./**", "!./node_modules/**", "!./Gruntfile.js", "!./package*.json"],
+						src: [
+							"./**",
+							"!./es6/**",
+							"!./node_modules/**",
+							"!./vendor/**",
+							"!./composer.*",
+							"!./Gruntfile.js",
+							"!./package*.json",
+							"!./phpcs*.xml",
+						],
 						dest: "dist/<%= pkg.name %>/"
 					}
 				]
@@ -34,9 +43,25 @@ module.exports = function (grunt) {
 		eslint: {
 			all: [
 				"Gruntfile.js",
-				"js/*.js",
-				"!js/*.min.js"
+				"es6/*.js"
 			]
+		},
+
+		babel: {
+			options: {
+				presets: [
+					'@babel/preset-env',
+				]
+			},
+			dist: {
+				files: [{
+					"expand": true,
+					"cwd": "es6",
+					"src": ["**/*.js"],
+					"dest": "js/",
+					"ext": ".js",
+				}]
+			}
 		},
 
 		uglify: {
@@ -62,6 +87,7 @@ module.exports = function (grunt) {
 
 	});
 
+	grunt.loadNpmTasks("grunt-babel");
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks("grunt-contrib-compress");
 	grunt.loadNpmTasks("grunt-contrib-copy");
@@ -69,5 +95,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-eslint");
 
 	grunt.registerTask("release", ["clean","copy","compress"]);
+	grunt.registerTask("es6", ["babel","uglify"]);
 
 };
