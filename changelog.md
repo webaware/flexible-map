@@ -8,6 +8,7 @@ Released soon...
 
 * fixed: map tiles don't redraw for KML maps with zoom when hidden in a tab / accordion
 * changed: use the [current quarterly (stable) version of the Google Maps API](https://developers.google.com/maps/documentation/javascript/versions)
+* changed: remove support for ancient browsers (Opera 12, IE < 11)
 
 ### 1.16.0
 

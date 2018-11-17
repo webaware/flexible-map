@@ -7,13 +7,13 @@ window.FlexibleMap = function() {
 	"use strict";
 
 	// instance-private members with accessors
-	var	map,						// google.maps.Map object
-		centre,						// google.maps.LatLng object for map centre
-		markerLocation,				// google.maps.LatLng object for single marker, when using showMarker()
-		markerPoint,				// google.maps.Marker object for single marker, when using showMarker()
-		markerInfowin,				// google.maps.InfoWindow object for single marker, when using showMarker()
-		kmlLayer,					// if map has a KML layer, this is the layer object
-		hasRedrawn = false;			// boolean, whether map has been asked to redrawOnce() already
+	let map;						// google.maps.Map object
+	let centre;						// google.maps.LatLng object for map centre
+	let markerLocation;				// google.maps.LatLng object for single marker, when using showMarker()
+	let markerPoint;				// google.maps.Marker object for single marker, when using showMarker()
+	let markerInfowin;				// google.maps.InfoWindow object for single marker, when using showMarker()
+	let kmlLayer;					// if map has a KML layer, this is the layer object
+	let hasRedrawn = false;			// boolean, whether map has been asked to redrawOnce() already
 
 	/**
 	* set gesture handling options, with legacy support for draggable, dblclickZoom, scrollwheel
@@ -32,9 +32,9 @@ window.FlexibleMap = function() {
 		}
 		else {
 			// legacy support; deprecated
-			var draggable			= (flexibleMap.draggable === undefined)    ? true  : flexibleMap.draggable;		// default true, i.e. enable draggable
-			var disableDblclickZoom	= (flexibleMap.dblclickZoom === undefined) ? false : !flexibleMap.draggable;	// default true, i.e. enable double-click zoom
-			var scrollwheel			= (flexibleMap.scrollwheel === undefined)  ? false  : flexibleMap.scrollwheel;	// default false, i.e. dinable scrollwheel
+			const draggable				= (flexibleMap.draggable === undefined)    ? true  : flexibleMap.draggable;		// default true, i.e. enable draggable
+			const disableDblclickZoom	= (flexibleMap.dblclickZoom === undefined) ? false : !flexibleMap.draggable;	// default true, i.e. enable double-click zoom
+			const scrollwheel			= (flexibleMap.scrollwheel === undefined)  ? false  : flexibleMap.scrollwheel;	// default false, i.e. dinable scrollwheel
 
 			// ----------------+-----------+------------------------+------------
 			// gestureHandling | draggable | disableDoubleClickZoom | scrollwheel
@@ -161,13 +161,13 @@ window.FlexibleMap = function() {
 	this.showMap = function(divID, latLng) {
 		centre = new google.maps.LatLng(latLng[0], latLng[1]);
 
-		var mapOptions,
-			zoomControlStyles = {
-				"small"		: google.maps.ZoomControlStyle.SMALL,
-				"large"		: google.maps.ZoomControlStyle.LARGE,
-				"default"	: google.maps.ZoomControlStyle.DEFAULT
-			},
-			zoomControlStyle = zoomControlStyles.small;
+		const zoomControlStyles = {
+			"small"		: google.maps.ZoomControlStyle.SMALL,
+			"large"		: google.maps.ZoomControlStyle.LARGE,
+			"default"	: google.maps.ZoomControlStyle.DEFAULT
+		};
+
+		let zoomControlStyle = zoomControlStyles.small;
 
 		// style the zoom control
 		if (this.zoomControlStyle in zoomControlStyles) {
@@ -175,7 +175,7 @@ window.FlexibleMap = function() {
 		}
 
 		// basic options
-		mapOptions = {
+		let mapOptions = {
 			mapTypeId:					this.mapTypeId,
 			mapTypeControl:				this.mapTypeControl,
 			scaleControl:				this.scaleControl,
@@ -214,8 +214,8 @@ window.FlexibleMap = function() {
 	*/
 	this.loadKmlMap = function(kmlFileURL) {
 		// load KML file as a layer and add to map
-		var self = this;
-		var options = {
+		const self = this;
+		const options = {
 			map:	map,
 			url:	kmlFileURL,
 		};
@@ -299,47 +299,28 @@ window.FlexibleMap = function() {
 FlexibleMap.prototype = (function() {
 	"use strict";
 
-	var addEventListener, stopEvent, handleHiddenMap;
-
-	// detect standard event model
-	if (document.addEventListener) {
-		addEventListener = function(element, eventName, hook) {
-			element.addEventListener(eventName, hook, false);
-		};
-
-		stopEvent = function(event) {
-			event.stopPropagation();
-			event.preventDefault();
-		};
-	}
-	else
-	// detect IE event model
-	if (document.attachEvent) {
-		addEventListener = function(element, event, hook) {
-			element.attachEvent("on" + event, function() { hook.call(element, window.event); });
-		};
-
-		stopEvent = function(event) {
-			event.cancelBubble = true;
-			event.returnValue = 0;
-		};
+	function stopEvent(event) {
+		event.stopPropagation();
+		event.preventDefault();
 	}
 
 	// handle hidden maps, trigger a resize on first display
-	if (typeof MutationObserver !== "undefined") {
-		handleHiddenMap = function(flxmap, divID) {
-			var	mapDiv = document.getElementById(divID),
-				container = mapDiv.parentNode,
-				observer;
+	const handleHiddenMap = (function() {
+		if (typeof MutationObserver === "undefined") {
+			return () => {};
+		}
+
+		return (flxmap, divID) => {
+			const container = document.getElementById(divID).parentNode;
 
 			function isHidden(element) {
-				var style = window.getComputedStyle(element);
+				const style = window.getComputedStyle(element);
 				return style.display === "none" || style.visibility === "hidden";
 			}
 
 			// only need to watch and act if the parent container is hidden from display
 			if (isHidden(container)) {
-				observer = new MutationObserver(function(mutations, self) {
+				const observer = new MutationObserver(function(mutations, self) {
 					// only proceed if map is visible now
 					if (!isHidden(container)) {
 						flxmap.redrawOnce();
@@ -355,10 +336,7 @@ FlexibleMap.prototype = (function() {
 				});
 			}
 		};
-	}
-	else {
-		handleHiddenMap = function() { };
-	}
+	})();
 
 	/**
 	* encode special JavaScript characters, so text is safe when building JavaScript/HTML dynamically
@@ -366,7 +344,7 @@ FlexibleMap.prototype = (function() {
 	* @param {String} text
 	* @return {String}
 	*/
-	var encodeJS = (function() {
+	function encodeJS() {
 
 		/**
 		* encode character as Unicode hexadecimal escape sequence
@@ -374,8 +352,8 @@ FlexibleMap.prototype = (function() {
 		* @return {String}
 		*/
 		function toUnicodeHex(ch) {
-			var	c = ch.charCodeAt(0),
-				s = c.toString(16);
+			const c = ch.charCodeAt(0);
+			const s = c.toString(16);
 
 			// see if we can use 2-digit hex code
 			if (c < 0x100) {
@@ -391,7 +369,7 @@ FlexibleMap.prototype = (function() {
 			return text.replace(/[\\/"'&<>\x00-\x1f\x7f-\xa0\u2000-\u200f\u2028-\u202f]/g, toUnicodeHex);	// eslint-disable-line no-control-regex
 		};
 
-	})();
+	}
 
 	/**
 	* add cache buster to KML source link
@@ -400,11 +378,12 @@ FlexibleMap.prototype = (function() {
 	* @return {String}
 	*/
 	function kmlCacheBuster(url, caching) {
-		var milliseconds, buster, multiplier, matches = /^(\d+)\s*(minute|hour|day)s?$/.exec(caching);
+		const matches = /^(\d+)\s*(minute|hour|day)s?$/.exec(caching);
+		let buster;
 
 		if (matches) {
-			milliseconds = (new Date()).getTime();
-			multiplier = +matches[1];
+			const milliseconds = (new Date()).getTime();
+			let multiplier = +matches[1];
 
 			switch(matches[2]) {
 				case "minute":
@@ -456,8 +435,6 @@ FlexibleMap.prototype = (function() {
 		* load localisations into class prototype
 		*/
 		localise: function() {
-			var key, mapTypes;
-
 			// load translations
 			if ("i18n" in flxmap) {
 				FlexibleMap.prototype.i18n = flxmap.i18n;
@@ -465,9 +442,9 @@ FlexibleMap.prototype = (function() {
 
 			// load custom map types
 			if ("mapTypes" in flxmap) {
-				mapTypes = flxmap.mapTypes;
+				const mapTypes = flxmap.mapTypes;
 
-				for (key in mapTypes) {
+				for (let key in mapTypes) {
 					mapTypes[key]._styled_map = new google.maps.StyledMapType(mapTypes[key].styles, mapTypes[key].options);
 				}
 
@@ -509,7 +486,7 @@ FlexibleMap.prototype = (function() {
 		* @return {String}
 		*/
 		gettext: function(key) {
-			var locale = this.localeActive;
+			const locale = this.localeActive;
 
 			if (locale && key in this.i18n[locale]) {
 				return this.i18n[locale][key];
@@ -527,11 +504,10 @@ FlexibleMap.prototype = (function() {
 		showKML: function(divID, kmlFileURL, zoom) {
 			this.zoom = zoom;	// will be falsey if zoom argument is undefined
 
-			var	self = this,
-				mapDiv = document.getElementById(divID),
-				varName = mapDiv.getAttribute("data-flxmap"),
-				map = this.showMap(divID, [0, 0]),
-				kmlLayer = this.loadKmlMap(kmlCacheBuster(kmlFileURL, this.kmlcache));
+			const self = this;
+			const varName = document.getElementById(divID).getAttribute("data-flxmap");
+			const map = this.showMap(divID, [0, 0]);
+			const kmlLayer = this.loadKmlMap(kmlCacheBuster(kmlFileURL, this.kmlcache));
 
 			handleHiddenMap(this, divID);
 
@@ -551,7 +527,7 @@ FlexibleMap.prototype = (function() {
 
 			// customise the infowindow as required; can do this on click event on KML layer (thanks, Stack Overflow!)
 			google.maps.event.addListener(kmlLayer, 'click', function(kmlEvent) {
-				var	featureData = kmlEvent.featureData;
+				const featureData = kmlEvent.featureData;
 
 				// NB: since Google Maps API v3.9 the info window HTML is precomposed before this event occurs,
 				// so just changing the description won't change infowindow
@@ -562,30 +538,21 @@ FlexibleMap.prototype = (function() {
 
 					// stop links opening in a new window
 					if (self.targetFix && featureData.description) {
-						var reTargetFix = / target="_blank"/ig;
+						const reTargetFix = / target="_blank"/ig;
 						featureData.description = featureData.description.replace(reTargetFix, "");
 						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(reTargetFix, "");
 					}
 
 					// if we're showing directions, add directions link to marker description
 					if (self.markerDirections) {
-						var	latLng = kmlEvent.latLng,
-							params = latLng.lat() + ',' + latLng.lng() + ",'" + encodeJS(featureData.name) + "',true",
-							a = '<br /><a href="#" data-flxmap-fix-opera="1" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
+						const latLng = kmlEvent.latLng;
+						const params = latLng.lat() + ',' + latLng.lng() + ",'" + encodeJS(featureData.name) + "',true";
+						const a = '<br /><a href="#" onclick="' + varName + '.showDirections(' + params + '); return false;">' + self.gettext("Directions") + '</a>';
 
 						featureData.infoWindowHtml = featureData.infoWindowHtml.replace(/<\/div><\/div>$/i, a + "</div></div>");
 					}
 				}
 			});
-
-			// hack for directions links on Opera, which fails to ignore events when onclick returns false
-			if (window.opera && this.markerDirections) {
-				addEventListener(mapDiv, "click", function(event) {
-					if (event.target.getAttribute("data-flxmap-fix-opera")) {
-						stopEvent(event);
-					}
-				});
-			}
 
 		},
 
@@ -596,14 +563,14 @@ FlexibleMap.prototype = (function() {
 		* @param {Array} marker an array of two integers: [ latitude, longitude ]
 		*/
 		showMarker: function(divID, centre, marker) {
-			var map = this.showMap(divID, centre);
-			var markerLocation = new google.maps.LatLng(marker[0], marker[1]);
-			var options = {
+			const map = this.showMap(divID, centre);
+			const markerLocation = new google.maps.LatLng(marker[0], marker[1]);
+			const options = {
 					map: map,
 					position: markerLocation,
 					icon: this.markerIcon
 				};
-			var Animation = google.maps.Animation;
+			const Animation = google.maps.Animation;
 
 			switch (this.markerAnimation) {
 
@@ -617,7 +584,7 @@ FlexibleMap.prototype = (function() {
 
 			}
 
-			var point = new google.maps.Marker(options);
+			const point = new google.maps.Marker(options);
 
 			this.setMarkerPoint(point);
 			this.setMarkerLocation(markerLocation);
@@ -629,9 +596,9 @@ FlexibleMap.prototype = (function() {
 			}
 
 			if (this.markerTitle || this.markerHTML || this.markerDescription || this.markerLink || this.markerDirections) {
-				var i, len, lines, infowin, element, a,
-					self = this,
-					container = document.createElement("DIV");
+				const self = this;
+				const container = document.createElement("DIV");
+				let element, a;
 
 				container.className = "flxmap-infowin";
 
@@ -658,10 +625,11 @@ FlexibleMap.prototype = (function() {
 					element = document.createElement("DIV");
 					element.className = "flxmap-marker-link";
 					if (this.markerDescription) {
-						lines = this.markerDescription.split("\n");
-						for (i = 0, len = lines.length; i < len; i++) {
-							if (i > 0)
+						const lines = this.markerDescription.split("\n");
+						for (let i = 0, len = lines.length; i < len; i++) {
+							if (i > 0) {
 								element.appendChild(document.createElement("BR"));
+							}
 							element.appendChild(document.createTextNode(lines[i]));
 						}
 						if (this.markerLink) {
@@ -688,7 +656,7 @@ FlexibleMap.prototype = (function() {
 					a.href = "#";
 					a.dataLatitude = marker[0];
 					a.dataLongitude = marker[1];
-					addEventListener(a, "click", function(event) {
+					a.addEventListener("click", function(event) {
 						stopEvent(event);
 						self.showDirections(this.dataLatitude, this.dataLongitude, true);
 					});
@@ -697,7 +665,7 @@ FlexibleMap.prototype = (function() {
 					container.appendChild(element);
 				}
 
-				infowin = new google.maps.InfoWindow({content: container});
+				const infowin = new google.maps.InfoWindow({content: container});
 				this.setMarkerInfowin(infowin);
 
 				if (this.markerShowInfo) {
@@ -713,7 +681,7 @@ FlexibleMap.prototype = (function() {
 
 				// find Google link and append marker info, modern browsers only!
 				// NB: Google link is set before initial map idle event, and reset each time the map centre changes
-				var googleLink = function() { self.updateGoogleLink(); };
+				const googleLink = function() { self.updateGoogleLink(); };
 				google.maps.event.addListener(map, "idle", googleLink);
 				google.maps.event.addListener(map, "center_changed", googleLink);
 				google.maps.event.addListenerOnce(map, "tilesloaded", googleLink);
@@ -737,8 +705,8 @@ FlexibleMap.prototype = (function() {
 		* @param {String} address the address (should return a unique location in Google Maps!)
 		*/
 		showAddress: function(divID, address) {
-			var	self = this,
-				geocoder = new google.maps.Geocoder();
+			const self = this;
+			const geocoder = new google.maps.Geocoder();
 
 			this.markerAddress = address;
 
@@ -748,8 +716,8 @@ FlexibleMap.prototype = (function() {
 
 			geocoder.geocode({address: address, region: this.region}, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {
-					var	location = results[0].geometry.location,
-						centre = [ location.lat(), location.lng() ];
+					const location = results[0].geometry.location;
+					const centre = [ location.lat(), location.lng() ];
 					self.showMarker(divID, centre, centre);
 				}
 				else {
@@ -766,14 +734,13 @@ FlexibleMap.prototype = (function() {
 		updateGoogleLink: function() {
 			if ("querySelectorAll" in document) {
 				try {
-					var	flxmap = this.getMap().getDiv(),
-						location = this.getMarkerLocation(),
-						googleLinks = flxmap.querySelectorAll("a[href*='maps.google.com/maps']:not([href*='mps_dialog']):not([href*='&q='])"),
-						i = 0, len = googleLinks.length,
-						query = encodeURIComponent((this.markerAddress ? this.markerAddress : this.markerTitle) +
+					const flxmap = this.getMap().getDiv();
+					const location = this.getMarkerLocation();
+					const googleLinks = flxmap.querySelectorAll("a[href*='maps.google.com/maps']:not([href*='mps_dialog']):not([href*='&q='])");
+					const query = encodeURIComponent((this.markerAddress ? this.markerAddress : this.markerTitle) +
 									" @" + location.lat() + "," + location.lng());
 
-					for (; i < len; i++) {
+					for (let i = 0, len = googleLinks.length; i < len; i++) {
 						googleLinks[i].href += "&mrt=loc&iwloc=A&q=" + query;
 					}
 				}
@@ -787,8 +754,8 @@ FlexibleMap.prototype = (function() {
 		* tell Google Maps to redraw the map, and centre it back where it started with default zoom
 		*/
 		redraw: function() {
-			var map = this.getMap(),
-				kmlLayer = this.getKmlLayer();
+			const map = this.getMap();
+			const kmlLayer = this.getKmlLayer();
 
 			google.maps.event.trigger(map, "resize");
 
@@ -804,7 +771,7 @@ FlexibleMap.prototype = (function() {
 				map.setZoom(this.zoom);
 
 				// redraw the marker's infowindow if it has one
-				var infowin = this.getMarkerInfowin();
+				const infowin = this.getMarkerInfowin();
 				if (infowin) {
 					infowin.open(map, this.getMarkerPoint());
 				}
@@ -838,15 +805,15 @@ FlexibleMap.prototype = (function() {
 		* @param {bool} focus [optional]
 		*/
 		showDirections: function(latitude, longitude, focus) {
-			var	self = this;
+			const self = this;
 
 			/**
 			* show the directions form to allow directions searches
 			*/
 			function showDirectionsForm() {
-				var panel = document.getElementById(self.markerDirectionsDiv),
-					form = document.createElement("form"),
-					input, p, from;
+				const panel = document.getElementById(self.markerDirectionsDiv);
+				const form = document.createElement("form");
+				let p, from;
 
 				// remove all from panel
 				for (p = panel.lastChild; p; p = panel.lastChild) {
@@ -861,18 +828,13 @@ FlexibleMap.prototype = (function() {
 				from.name = "from";
 				from.value = self.markerDirectionsDefault;
 				p.appendChild(from);
-				input = document.createElement("input");
+
+				const input = document.createElement("input");
 				input.type = "submit";
 				input.value = self.gettext("Get directions");
 				p.appendChild(input);
 				form.appendChild(p);
 				panel.appendChild(form);
-
-				// hack to fix IE<=7 name weirdness for dynamically created form elements;
-				// see https://msdn.microsoft.com/en-us/library/ms534184.aspx but have a hanky ready
-				if (typeof form.elements.from == "undefined") {
-					form.elements.from = from;
-				}
 
 				// only focus when asked, to prevent problems autofocusing on elements and scrolling the page!
 				if (focus) {
@@ -880,10 +842,10 @@ FlexibleMap.prototype = (function() {
 				}
 
 				// handle the form submit
-				addEventListener(form, "submit", function(event) {
+				form.addEventListener("submit", function(event) {
 					stopEvent(event);
 
-					var from = this.elements.from.value;
+					const from = this.elements.from.value;
 
 					// only process if something was entered to search on
 					if (/\S/.test(from)) {
@@ -898,8 +860,8 @@ FlexibleMap.prototype = (function() {
 			* @param {String} from
 			*/
 			function requestDirections(from) {
-				var	dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress,
-					request = {
+				const dest = (self.markerAddress === "") ? new google.maps.LatLng(latitude, longitude) : self.markerAddress;
+				const request = {
 						origin: from,
 						destination: dest
 					};
@@ -945,7 +907,7 @@ FlexibleMap.prototype = (function() {
 			* @param {Number} status
 			*/
 			function dirResponseHander(response, status) {
-				var DirectionsStatus = google.maps.DirectionsStatus;
+				const DirectionsStatus = google.maps.DirectionsStatus;
 
 				switch (status) {
 					case DirectionsStatus.OK:
