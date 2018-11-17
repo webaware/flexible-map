@@ -87,7 +87,7 @@ class FlxMapPlugin {
 		$options = get_option(FLXMAP_PLUGIN_OPTIONS, array());
 
 		if (empty($options['noAPI'])) {
-			$args   = array('v' => '3.32');
+			$args   = array('v' => 'quarterly');
 			if (!empty($options['apiKey'])) {
 				$args['key'] = $options['apiKey'];
 			}
