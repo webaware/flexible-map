@@ -2,13 +2,14 @@
 
 ## Changelog
 
-### 1.16.1
+### 1.17.0
 
-Released soon...
+Released 2018-11-19
 
 * fixed: map tiles don't redraw for KML maps with zoom when hidden in a tab / accordion
 * changed: use the [current quarterly (stable) version of the Google Maps API](https://developers.google.com/maps/documentation/javascript/versions)
 * changed: remove support for ancient browsers (Opera 12, IE < 11)
+* tested: WordPress 5.0 (no Gutenberg block yet; maybe next release!)
 
 ### 1.16.0
 
