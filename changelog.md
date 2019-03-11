@@ -2,6 +2,12 @@
 
 ## Changelog
 
+### 1.17.1
+
+Released soon...
+
+* fixed: KML map with center but no zoom breaks the map
+
 ### 1.17.0
 
 Released 2018-11-19

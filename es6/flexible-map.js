@@ -224,6 +224,9 @@ window.FlexibleMap = function() {
 		* reset the map back to the recorded centre coordinates -- only used when centre is set for map
 		*/
 		function resetCentre() {
+			if (!self.zoom) {
+				map.fitBounds(kmlLayer.getDefaultViewport());
+			}
 			self.setCenter(new google.maps.LatLng(self.kmlCentre[0], self.kmlCentre[1]));
 		}
 
