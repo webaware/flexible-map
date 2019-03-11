@@ -7,6 +7,7 @@
 Released soon...
 
 * fixed: KML map with center but no zoom breaks the map
+* fixed: recognize center coodinates with whitespace before and after the separating comma
 
 ### 1.17.0
 

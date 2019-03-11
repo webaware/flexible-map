@@ -629,7 +629,7 @@ HTML;
 	*/
 	public static function isCoordinates($text) {
 		// TODO: handle degrees minutes seconds, degrees minutes.decimal, NSEW
-		return preg_match('/^-?[0-9]+(?:\.[0-9]+),\s*-?[0-9]+(?:\.[0-9]+)$/', $text);
+		return preg_match('/^-?[0-9]+(?:\.[0-9]+)\s*,\s*-?[0-9]+(?:\.[0-9]+)$/', $text);
 	}
 
 	/**
