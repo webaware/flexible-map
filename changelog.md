@@ -7,7 +7,7 @@
 Released 2019-05-04
 
 * fixed: KML map with center but no zoom breaks the map
-* fixed: recognize center coodinates with whitespace before and after the separating comma
+* fixed: recognize center coordinates with whitespace before and after the separating comma
 
 ### 1.17.0
 
