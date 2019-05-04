@@ -6,8 +6,8 @@ Author URI: https://shop.webaware.com.au/
 Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, kml
 Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 1.17.0
+Tested up to: 5.2
+Stable tag: 1.17.1
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -228,19 +228,17 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 ## Upgrade Notice
 
-### 1.17.0
+### 1.17.1
 
-track the latest stable version of the Google Maps API; remove support for ancient browsers (Opera 12, IE < 11); fix KML maps with zoom when hidden in a tab
+KML map with center but no zoom no longer breaks the map; recognizes center coodinates with whitespace before and after the separating comma
 
 ## Changelog
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.17.0
+### 1.17.1
 
-Released 2018-11-19
+Released 2019-05-04
 
-* fixed: map tiles don't redraw for KML maps with zoom when hidden in a tab / accordion
-* changed: use the [current quarterly (stable) version of the Google Maps API](https://developers.google.com/maps/documentation/javascript/versions)
-* changed: remove support for ancient browsers (Opera 12, IE < 11)
-* tested: WordPress 5.0 (no Gutenberg block yet; maybe next release!)
+* fixed: KML map with center but no zoom breaks the map
+* fixed: recognize center coodinates with whitespace before and after the separating comma
