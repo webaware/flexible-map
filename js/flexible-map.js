@@ -238,6 +238,10 @@ window.FlexibleMap = function () {
     */
 
     function resetCentre() {
+      if (!self.zoom) {
+        map.fitBounds(kmlLayer.getDefaultViewport());
+      }
+
       self.setCenter(new google.maps.LatLng(self.kmlCentre[0], self.kmlCentre[1]));
     }
     /**
