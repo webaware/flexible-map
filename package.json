@@ -16,15 +16,13 @@
     "not dead"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "grunt": "^1.0.4",
     "grunt-babel": "^8.0.0",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-compress": "^1.5.0",
-    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify-es": "^3.3.0",
-    "grunt-eslint": "^21.0.0"
+    "grunt-eslint": "^22.0.0",
+    "grunt-shell": "^3.0.1"
   }
 }

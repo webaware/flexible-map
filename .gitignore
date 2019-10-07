@@ -1,6 +1,6 @@
-.svn
-.vscode
-dist
-languages/flexible-map.mo
-node_modules
-vendor
+/.svn
+/.vscode
+/.dist
+/.wordpress.org
+/node_modules
+/vendor
