@@ -589,6 +589,7 @@ HTML;
 			}
 			catch (Exception $e) {
 				$coords = "address: $address; " . $e->getMessage();
+				// phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged
 				error_log(__METHOD__ . ': ' . $coords);
 
 				// save error to prevent unnecessary requery
