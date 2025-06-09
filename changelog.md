@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### 1.18.0, soon...
+### 1.18.0, 2025-06-09
 
 * fixed: PHP warning for dynamic property creation in PHP 8.1+
 
