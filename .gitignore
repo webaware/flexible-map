@@ -1,6 +1,6 @@
-/.svn
-/.vscode
-/.dist
-/.wordpress.org
-/node_modules
-/vendor
+/.vscode/
+/.wordpress.org/
+/.dist/
+/.make-flag*
+/node_modules/
+/vendor/

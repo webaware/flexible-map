@@ -101,10 +101,10 @@ class FlxMapPlugin {
 
 		$min = SCRIPT_DEBUG ? '' : '.min';
 		$ver = SCRIPT_DEBUG ? time() : FLXMAP_PLUGIN_VERSION;
-		wp_register_script('flxmap', plugins_url("js/flexible-map$min.js", FLXMAP_PLUGIN_FILE), array(), $ver, true);
+		wp_register_script('flxmap', plugins_url("static/js/flexible-map$min.js", FLXMAP_PLUGIN_FILE), array(), $ver, true);
 
 		// theme writers: you can remove this stylesheet by calling wp_dequeue_script('flxmap');
-		wp_enqueue_style('flxmap', plugins_url('css/styles.css', FLXMAP_PLUGIN_FILE), false, $ver);
+		wp_enqueue_style('flxmap', plugins_url('static/css/styles.css', FLXMAP_PLUGIN_FILE), false, $ver);
 	}
 
 	/**
@@ -166,7 +166,6 @@ class FlxMapPlugin {
 		$this->mapTypes = apply_filters('flexmap_custom_map_types', $this->mapTypes, $attrs);
 
 		if (!empty($attrs['src']) || !empty($attrs['center']) || !empty($attrs['address'])) {
-			$this->loadScripts = true;
 			if (empty($attrs['id'])) {
 				$ID = uniqid();
 				$divID = 'flxmap-' . $ID;
@@ -344,7 +343,7 @@ HTML;
 				$script .= " f.setlocale(\"{$this->str2js($locale)}\");\n";
 				$this->enqueueLocale($attrs['locale']);
 			}
-			else if ($this->locale != '' || $this->locale != 'en-US') {
+			else if ($this->locale !== '' || $this->locale !== 'en-US') {
 				$locale = self::str2js(str_replace('_', '-', $this->locale));
 				$script .= " f.setlocale(\"$locale\");\n";
 				$this->enqueueLocale($locale);
@@ -500,7 +499,7 @@ HTML;
 			wp_enqueue_script('google-maps');
 		}
 		wp_enqueue_script('flxmap');
-		if ($this->locale != '' && $this->locale != 'en_US') {
+		if ($this->locale !== '' && $this->locale !== 'en_US') {
 			$this->enqueueLocale($this->locale);
 		}
 

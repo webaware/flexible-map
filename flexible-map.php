@@ -32,7 +32,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-
+// phpcs:disable Modernize.FunctionCalls.Dirname.FileConstant
 define('FLXMAP_PLUGIN_FILE', __FILE__);
 define('FLXMAP_PLUGIN_ROOT', dirname(__FILE__) . '/');
 define('FLXMAP_PLUGIN_NAME', basename(dirname(__FILE__)) . '/' . basename(__FILE__));

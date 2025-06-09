@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.18.0, soon...
+
+* fixed: PHP warning for dynamic property creation in PHP 8.1+
+
 ### 1.17.1, 2019-05-04
 
 * fixed: KML map with center but no zoom breaks the map

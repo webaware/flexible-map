@@ -747,7 +747,7 @@ FlexibleMap.prototype = (function() {
 						googleLinks[i].href += "&mrt=loc&iwloc=A&q=" + query;
 					}
 				}
-				catch (e) {
+				catch {
 					// we don't care about IE8 and earlier...
 				}
 			}

@@ -74,7 +74,7 @@ class FlxMapAdmin {
 	*/
 	public function addPluginDetailsLinks($links, $file) {
 		// add settings link
-		if ($file == FLXMAP_PLUGIN_NAME) {
+		if ($file === FLXMAP_PLUGIN_NAME) {
 			$links[] = sprintf('<a href="https://flexible-map.webaware.net.au/manual/getting-started/" rel="noopener" target="_blank">%s</a>', _x('Instructions', 'plugin details links', 'wp-flexible-map'));
 			$links[] = sprintf('<a href="https://wordpress.org/support/plugin/wp-flexible-map" rel="noopener" target="_blank">%s</a>', _x('Get Help', 'plugin details links', 'wp-flexible-map'));
 			$links[] = sprintf('<a href="https://wordpress.org/plugins/wp-flexible-map/" rel="noopener" target="_blank">%s</a>', _x('Rating', 'plugin details links', 'wp-flexible-map'));
