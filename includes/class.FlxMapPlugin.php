@@ -65,9 +65,6 @@ class FlxMapPlugin {
 	public function init() {
 		// start off required locales with this website's WP locale
 		$this->locale = get_locale();
-
-		// load translation strings for the admin
-		load_plugin_textdomain('wp-flexible-map', false, basename(dirname(FLXMAP_PLUGIN_FILE)) . '/languages/');
 	}
 
 	/**
