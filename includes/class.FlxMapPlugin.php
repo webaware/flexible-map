@@ -195,7 +195,7 @@ class FlxMapPlugin {
 			if (isset($attrs['directions']) && !self::isNo($attrs['directions'])) {
 				$directions = true;
 				if (!self::isYes($attrs['directions'])) {
-					$divDirectionsID = self::str2js($attrs['directions']);
+					$divDirectionsID = esc_js($attrs['directions']);
 				}
 			}
 			if (isset($attrs['showdirections']) && self::isYes($attrs['showdirections'])) {
@@ -240,7 +240,8 @@ HTML;
 			}
 
 			if (!empty($attrs['zoomstyle'])) {
-				$script .= " f.zoomControlStyle = \"{$this->str2js($attrs['zoomstyle'])}\";\n";
+				$text = esc_js($attrs['zoomstyle']);
+				$script .= " f.zoomControlStyle = \"$text\";\n";
 			}
 
 			if (isset($attrs['hidestreetview']) && self::isNo($attrs['hidestreetview'])) {
@@ -286,7 +287,8 @@ HTML;
 			}
 
 			if (isset($attrs['directionsfrom'])) {
-				$script .= " f.markerDirectionsDefault = \"{$this->str2js($attrs['directionsfrom'])}\";\n";
+				$text = esc_js($attrs['directionsfrom']);
+				$script .= " f.markerDirectionsDefault = \"$text\";\n";
 			}
 
 			if (isset($attrs['directions']) && self::isNo($attrs['directions'])) {
@@ -324,24 +326,27 @@ HTML;
 			}
 
 			if (isset($attrs['maptype'])) {
-				$script .= " f.mapTypeId = \"{$this->str2js($attrs['maptype'])}\";\n";
+				$text = esc_js($attrs['maptype']);
+				$script .= " f.mapTypeId = \"$text\";\n";
 			}
 
 			if (isset($attrs['maptypes'])) {
-				$script .= " f.mapTypeIds = \"{$this->str2js($attrs['maptypes'])}\";\n";
+				$text = esc_js($attrs['maptypes']);
+				$script .= " f.mapTypeIds = \"$text\";\n";
 			}
 
 			if (isset($attrs['region'])) {
-				$script .= " f.region = \"{$this->str2js($attrs['region'])}\";\n";
+				$text = esc_js($attrs['region']);
+				$script .= " f.region = \"$text\";\n";
 			}
 
 			if (isset($attrs['locale'])) {
-				$locale = self::str2js(str_replace('_', '-', $attrs['locale']));
-				$script .= " f.setlocale(\"{$this->str2js($locale)}\");\n";
+				$locale = esc_js(str_replace('_', '-', $attrs['locale']));
+				$script .= " f.setlocale(\"$locale\");\n";
 				$this->enqueueLocale($attrs['locale']);
 			}
 			else if ($this->locale !== '' || $this->locale !== 'en-US') {
-				$locale = self::str2js(str_replace('_', '-', $this->locale));
+				$locale = esc_js(str_replace('_', '-', $this->locale));
 				$script .= " f.setlocale(\"$locale\");\n";
 				$this->enqueueLocale($locale);
 			}
@@ -357,32 +362,40 @@ HTML;
 
 			// add map based on coordinates, with optional marker coordinates -- but not if KML source file is set
 			if (isset($attrs['center']) && self::isCoordinates($attrs['center']) && empty($attrs['src'])) {
-				$marker = self::str2js(self::getCoordinates($attrs['center']));
-				if (isset($attrs['marker']) && self::isCoordinates($attrs['marker']))
-					$marker = self::str2js(self::getCoordinates($attrs['marker']));
+				$marker = esc_js(self::getCoordinates($attrs['center']));
+				if (isset($attrs['marker']) && self::isCoordinates($attrs['marker'])) {
+					$marker = esc_js(self::getCoordinates($attrs['marker']));
+				}
 
-				if (isset($attrs['zoom']))
+				if (isset($attrs['zoom'])) {
 					$script .= ' f.zoom = ' . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
+				}
 
-				if (!empty($attrs['title']))
+				if (!empty($attrs['title'])) {
 					$script .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
+				}
 
-				if (!empty($attrs['description']))
+				if (!empty($attrs['description'])) {
 					$script .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
+				}
 
-				if (!empty($attrs['html']))
-					$script .= " f.markerHTML = \"{$this->str2js($attrs['html'])}\";\n";
+				if (!empty($attrs['html'])) {
+					$text = wp_json_encode(wp_kses_post($attrs['html']));
+					$script .= " f.markerHTML = $text;\n";
+				}
 
-				if (!empty($attrs['address']))
+				if (!empty($attrs['address'])) {
 					$script .= " f.markerAddress = \"{$this->unhtml($attrs['address'])}\";\n";
+				}
 
 				if (!empty($attrs['link'])) {
-					$link = self::str2js($attrs['link']);
+					$link = esc_js(esc_url($attrs['link']));
 					$script .= " f.markerLink = \"$link\";\n";
 				}
 
 				if (!empty($attrs['linktarget'])) {
-					$script .= " f.markerLinkTarget = \"{$this->str2js($attrs['linktarget'])}\";\n";
+					$text = esc_js($attrs['linktarget']);
+					$script .= " f.markerLinkTarget = \"$text\";\n";
 				}
 
 				if (!empty($attrs['linktext'])) {
@@ -390,7 +403,7 @@ HTML;
 				}
 
 				if (!empty($attrs['icon'])) {
-					$icon = self::str2js($attrs['icon']);
+					$icon = esc_js($attrs['icon']);
 					$script .= " f.markerIcon = \"$icon\";\n";
 				}
 
@@ -399,25 +412,30 @@ HTML;
 
 			// add map based on address query
 			else if (isset($attrs['address'])) {
-				if (isset($attrs['zoom']))
+				if (isset($attrs['zoom'])) {
 					$script .= ' f.zoom = ' . preg_replace('/\D/', '', $attrs['zoom']) . ";\n";
+				}
 
-				if (!empty($attrs['title']))
+				if (!empty($attrs['title'])) {
 					$script .= " f.markerTitle = \"{$this->unhtml($attrs['title'])}\";\n";
+				}
 
-				if (!empty($attrs['description']))
+				if (!empty($attrs['description'])) {
 					$script .= " f.markerDescription = \"{$this->unhtml($attrs['description'])}\";\n";
+				}
 
-				if (!empty($attrs['html']))
-					$script .= " f.markerHTML = \"{$this->str2js($attrs['html'])}\";\n";
+				if (!empty($attrs['html'])) {
+					$text = wp_json_encode(wp_kses_post($attrs['html']));
+					$script .= " f.markerHTML = \"$text\";\n";
+				}
 
 				if (!empty($attrs['link'])) {
-					$link = self::str2js($attrs['link']);
+					$link = esc_js($attrs['link']);
 					$script .= " f.markerLink = \"$link\";\n";
 				}
 
 				if (!empty($attrs['icon'])) {
-					$icon = self::str2js($attrs['icon']);
+					$icon = esc_js($attrs['icon']);
 					$script .= " f.markerIcon = \"$icon\";\n";
 				}
 
@@ -435,10 +453,10 @@ HTML;
 				}
 
 				if (isset($attrs['center']) && self::isCoordinates($attrs['center'])) {
-					$script .= sprintf(" f.kmlCentre = [%s];\n", self::str2js(self::getCoordinates($attrs['center'])));
+					$script .= sprintf(" f.kmlCentre = [%s];\n", esc_js(self::getCoordinates($attrs['center'])));
 				}
 
-				$kmlfile = self::str2js($attrs['src']);
+				$kmlfile = esc_js($attrs['src']);
 				$script .= " f.showKML(\"$divID\", \"$kmlfile\"";
 
 				if (isset($attrs['zoom'])) {
@@ -655,16 +673,7 @@ HTML;
 	* @return string
 	*/
 	protected static function unhtml($text) {
-		return self::str2js(html_entity_decode($text, ENT_QUOTES, get_option('blog_charset')));
-	}
-
-	/**
-	* encode for JavaScript string
-	* @param string $text
-	* @return string
-	*/
-	protected static function str2js($text) {
-		return addcslashes($text, "\\/\'\"&\n\r<>");
+		return esc_js(html_entity_decode($text, ENT_QUOTES, get_option('blog_charset')));
 	}
 
 }

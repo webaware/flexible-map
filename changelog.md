@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### 1.19.0, soon…
+
+* security: authenticated Cross-Site Scripting (XSS) vulnerability (thanks Wordfence, zer0gh0st for responsible disclosure)
+
 ### 1.18.0, 2025-06-09
 
 * fixed: PHP warning for dynamic property creation in PHP 8.1+
