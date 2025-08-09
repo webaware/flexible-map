@@ -6,8 +6,8 @@ Author URI: https://shop.webaware.com.au/
 Donate link: https://shop.webaware.com.au/donations/?donation_for=Flexible+Map
 Tags: google, map, maps, google maps, kml
 Requires at least: 4.6
-Tested up to: 6.8.1
-Stable tag: 1.18.0
+Tested up to: 6.8
+Stable tag: 1.19.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -214,15 +214,19 @@ The plugin will detect when AJAX is being used via the [WordPress standard metho
 
 NB: currently, only AJAX methods that parse script tags will work correctly; this includes some [jQuery methods](https://stackoverflow.com/q/2203762/911083) (but [not all](https://stackoverflow.com/a/2699905/911083)). A future version of the plugin will be more AJAX friendly.
 
-### I have CloudFlare Rocketscript turned on and the map doesn't work
+### I have Cloudflare protecting my website and KML maps don't work
 
-Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscript](https://gist.github.com/webaware/8949605) plugin by loading that file into your website's wp-content/plugins folder and activating through the plugins admin page. Use the plugin if you still want Rocketscript to manage all of your other scripts but leave the Flexible Map scripts alone.
+Cloudflare now seems to block the Google Maps agent that fetches the KML file. If you use Cloudflare to proxy requests for your website, you should have a separate domain name for hosting just the map files and set it up without the Cloudflare proxy (the orange cloud).
+
+### I have Cloudflare Rocketscript turned on and the map doesn't work
+
+Either turn off Cloudflare Rocketscript 🙂 or install the [Flxmap No Rocketscript](https://gist.github.com/webaware/8949605) plugin by loading that file into your website's wp-content/plugins folder and activating through the plugins admin page. Use the plugin if you still want Rocketscript to manage all of your other scripts but leave the Flexible Map scripts alone.
 
 ## Screenshots
 
 1. `[flexiblemap center="-32.918657,151.797894" title="Nobby's Head" zoom="14" width="100%" height="400px" directions="true" maptype="satellite"]`
 2. `[flexiblemap address="116 Beaumont Street Hamilton NSW Australia" title="Raj's Corner" description="SWMBO's favourite Indian diner" width="100%" height="400px" directions="true"]`
-3. `[flexiblemap src="https://webaware.com.au/maps/example-toronto.kml" width="100%" height="400px" maptype="satellite"]`
+3. `[flexiblemap src="https://maps.webaware.au/maps/example-toronto.kml" width="100%" height="400px" maptype="satellite"]`
 4. `[flexiblemap center="-34.916721,138.828878" width="100%" height="400px" title="Adelaide Hills" directions="true" showdirections="true" directionsfrom="Adelaide" region="au"]`
 5. Setting screen with API key field
 
@@ -230,14 +234,14 @@ Either turn off CloudFlare Rocketscript :) or install the [Flxmap No Rocketscrip
 
 ### 1.18.0
 
-fixed PHP warning for dynamic property creation in PHP 8.1+
+security: fix authenticated XSS vulnerability (thanks Wordfence, zer0gh0st for responsible disclosure)
 
 ## Changelog
 
 The full changelog can be found [on GitHub](https://github.com/webaware/flexible-map/blob/master/changelog.md). Recent entries:
 
-### 1.18.0
+### 1.19.0
 
-Released 2025-06-09
+Released 2025-08-09
 
-* fixed: PHP warning for dynamic property creation in PHP 8.1+
+* security: authenticated Cross-Site Scripting (XSS) vulnerability (thanks Wordfence, zer0gh0st for responsible disclosure)

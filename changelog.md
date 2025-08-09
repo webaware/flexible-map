@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### 1.19.0, soon…
+### 1.19.0, 2025-08-09
 
 * security: authenticated Cross-Site Scripting (XSS) vulnerability (thanks Wordfence, zer0gh0st for responsible disclosure)
 
