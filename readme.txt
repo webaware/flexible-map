@@ -232,7 +232,7 @@ Either turn off Cloudflare Rocketscript 🙂 or install the [Flxmap No Rocketscr
 
 ## Upgrade Notice
 
-### 1.18.0
+### 1.19.0
 
 security: fix authenticated XSS vulnerability (thanks Wordfence, zer0gh0st for responsible disclosure)
 
